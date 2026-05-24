@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Praveen Sundar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #ff5000;
+      --bg: #ffffff;
+      --text: #0a0a0a;
+      --muted: #888888;
+      --line: #e8e8e8;
+      --nav-h: 56px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 4vw, 48px);
+      background: var(--bg);
+      border-bottom: 1px solid #ebebeb;
+    }
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s ease;
+    }
+    .back-home:hover { color: var(--accent); }
+    .topbar-right {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    main { padding-top: calc(var(--nav-h) + 32px); }
+    .wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 4vw, 48px) 80px;
+    }
+    .hero-label {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .hero-title {
+      font-weight: 800;
+      font-size: clamp(32px, 5vw, 48px);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+    .hero-lede {
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.65;
+      color: #555;
+      max-width: 560px;
+    }
+
+    .grid {
+      margin-top: 48px;
+      display: grid;
+      gap: 18px;
+    }
+    .card {
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      padding: 0;
+      background: var(--bg);
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-inner { padding: 26px 26px 22px; }
+    .card-thumb img {
+      display: block;
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--line);
+    }
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 44px rgba(0, 0, 0, 0.06);
+    }
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 18px;
+      margin-bottom: 12px;
+    }
+    .card-date {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .card-read {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      color: #aaa;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(255, 80, 0, 0.35);
+      padding: 4px 10px;
+    }
+    .card-title {
+      font-weight: 700;
+      font-size: 21px;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .card-excerpt {
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 18px;
+    }
+    .card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    footer {
+      padding: 40px clamp(20px, 4vw, 48px) 56px;
+      text-align: center;
+      font-weight: 300;
+      font-size: 12px;
+      color: #bdbdbd;
+      border-top: 1px solid #ebebeb;
+    }
+    .empty {
+      margin-top: 40px;
+      padding: 28px;
+      border: 1px dashed var(--line);
+      color: #666;
+      font-weight: 300;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-home" href="/">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Portfolio
+    </a>
+    <span class="topbar-right">Essays</span>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="hero-label">THE BLOG</p>
+      <h1 class="hero-title">Notes from the build</h1>
+      <p class="hero-lede">Long-form writing on AI systems, infrastructure, and shipping COSMIC.</p>
+
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" hidden>No posts found.</div>
+    </div>
+  </main>
+
+  <footer>PRAVEEN SUNDAR — Built with intent.</footer>
+
+  <script>
+  (function () {
+    var grid = document.getElementById('grid');
+    var empty = document.getElementById('empty');
+
+    function fmt(iso) {
+      var d = new Date(iso + 'T12:00:00');
+      return isNaN(d.getTime()) ? iso : d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function readMinutes(p, body) {
+      if (typeof p.readTime === 'number' && p.readTime > 0) return p.readTime;
+      var w = String(body || '').trim().split(/\s+/).filter(Boolean).length;
+      return Math.max(1, Math.ceil(w / 200));
+    }
+
+    function mdUrl(p) {
+      if (p.filepath) return p.filepath;
+      return '/posts/' + encodeURIComponent(p.filename || '');
+    }
+
+    fetch('/posts.json?v=' + Date.now())
+      .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+      .then(function (posts) {
+        if (!Array.isArray(posts) || !posts.length) {
+          empty.hidden = false;
+          return null;
+        }
+        return Promise.all(posts.map(function (p) {
+          return fetch(mdUrl(p))
+            .then(function (r) { return r.ok ? r.text() : ''; })
+            .catch(function () { return ''; })
+            .then(function (body) {
+              return { p: p, body: body, minutes: readMinutes(p, body) };
+            });
+        }));
+      })
+      .then(function (rows) {
+        if (!rows) return;
+        rows.forEach(function (row) {
+          var p = row.p;
+          var a = document.createElement('a');
+          a.className = 'card';
+          a.href = '/blog/post.html?slug=' + encodeURIComponent(p.slug);
+
+          if (p.image || p.thumbnail) {
+            var thumb = document.createElement('div');
+            thumb.className = 'card-thumb';
+            var im = document.createElement('img');
+            im.src = p.image || p.thumbnail;
+            im.alt = '';
+            im.loading = 'lazy';
+            im.referrerPolicy = 'no-referrer-when-downgrade';
+            im.onerror = function () { thumb.style.display = 'none'; };
+            thumb.appendChild(im);
+            a.appendChild(thumb);
+          }
+
+          var inner = document.createElement('div');
+          inner.className = 'card-inner';
+
+          var meta = document.createElement('div');
+          meta.className = 'card-meta';
+          var d = document.createElement('span');
+          d.className = 'card-date';
+          d.textContent = fmt(p.date);
+          var rt = document.createElement('span');
+          rt.className = 'card-read';
+          rt.textContent = row.minutes + ' min read';
+          meta.appendChild(d);
+          meta.appendChild(rt);
+          inner.appendChild(meta);
+
+          if (Array.isArray(p.tags) && p.tags.length) {
+            var tags = document.createElement('div');
+            tags.className = 'tags';
+            p.tags.forEach(function (t) {
+              var s = document.createElement('span');
+              s.className = 'tag';
+              s.textContent = t;
+              tags.appendChild(s);
+            });
+            inner.appendChild(tags);
+          }
+
+          var h = document.createElement('h2');
+          h.className = 'card-title';
+          h.textContent = p.title;
+          inner.appendChild(h);
+
+          var ex = document.createElement('p');
+          ex.className = 'card-excerpt';
+          ex.textContent = p.excerpt || '';
+          inner.appendChild(ex);
+
+          var cta = document.createElement('span');
+          cta.className = 'card-cta';
+          cta.innerHTML = 'Read <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+          inner.appendChild(cta);
+
+          a.appendChild(inner);
+          grid.appendChild(a);
+        });
+      })
+      .catch(function () {
+        empty.hidden = false;
+      });
+  })();
+  </script>
+</body>
+</html>

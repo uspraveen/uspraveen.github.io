@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRAVEEN SUNDAR — Data Engineer · COSMOS Research Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #ff5000;
+      --text: #0a0a0a;
+      --muted: #888888;
+      --muted2: #aaaaaa;
+      --border: #e8e8e8;
+      --nav-h: 56px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      z-index: 10001;
+      background: #ff5000;
+      pointer-events: none;
+      transition: width 0.06s linear;
+    }
+
+    .site-nav {
+      position: fixed;
+      top: 2px;
+      left: 0;
+      right: 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 4vw, 48px);
+      z-index: 1000;
+      background: #fff;
+      border-bottom: 1px solid #ebebeb;
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #000;
+    }
+
+    .nav-desktop {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 3vw, 28px);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 400;
+      font-size: 12px;
+    }
+
+    .nav-links a {
+      color: #888;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover { color: #ff5000; }
+
+    .nav-sep {
+      color: #ccc;
+      user-select: none;
+      pointer-events: none;
+      font-size: 12px;
+    }
+
+    .nav-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+      font-size: 11px;
+      font-weight: 400;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .nav-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.9); }
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ebebeb;
+      background: #fff;
+      border-radius: 2px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      padding: 0;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: #0a0a0a;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    body.menu-open .nav-toggle span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    body.menu-open .nav-toggle span:nth-child(2) { opacity: 0; }
+    body.menu-open .nav-toggle span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      top: calc(2px + var(--nav-h));
+      background: #fff;
+      z-index: 999;
+      flex-direction: column;
+      padding: 32px 24px;
+      gap: 8px;
+    }
+    body.menu-open .nav-overlay {
+      display: flex;
+    }
+    .nav-overlay a {
+      font-size: 18px;
+      font-weight: 400;
+      color: #0a0a0a;
+      padding: 16px 0;
+      border-bottom: 1px solid #ebebeb;
+    }
+    .nav-overlay a:hover { color: #ff5000; }
+
+    @media (max-width: 900px) {
+      .nav-desktop { display: none; }
+      .nav-toggle { display: flex; }
+    }
+
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-top: calc(2px + var(--nav-h));
+      background: #fff;
+    }
+
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: clamp(32px, 6vw, 80px) clamp(20px, 4vw, 48px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(28px, 4vw, 48px);
+      align-items: center;
+      min-height: calc(100vh - 2px - var(--nav-h));
+      min-height: calc(100dvh - 2px - var(--nav-h));
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-bottom: 48px;
+      }
+    }
+
+    .hero-eyebrow-1 {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ff5000;
+      opacity: 0;
+      animation: heroIn 0.6s ease-out 0ms forwards;
+    }
+
+    .hero-pill {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 10px;
+      font-weight: 400;
+      color: #999;
+      border: 1px solid #ddd;
+      border-radius: 2px;
+      padding: 3px 8px;
+      opacity: 0;
+      animation: heroIn 0.6s ease-out 0ms forwards;
+    }
+
+    .hero-loc {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      color: #bdbdbd;
+      margin-top: 6px;
+      opacity: 0;
+      animation: heroIn 0.6s ease-out 0ms forwards;
+    }
+
+    .hero-name {
+      font-weight: 900;
+      font-size: clamp(48px, 10vw, 92px);
+      line-height: 0.9;
+      color: #0a0a0a;
+      margin-top: 24px;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: heroIn 0.6s ease-out 120ms forwards;
+    }
+
+    .hero-type-row {
+      margin-top: 20px;
+      font-size: 28px;
+      line-height: 1.35;
+      min-height: 1.35em;
+      opacity: 0;
+      animation: heroIn 0.6s ease-out 240ms forwards;
+    }
+    .hero-type-prefix {
+      font-weight: 400;
+      color: #555;
+    }
+    .hero-type-text {
+      font-weight: 600;
+      color: #ff5000;
+    }
+
+    .hero-statement {
+      margin-top: 24px;
+      max-width: 520px;
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.7;
+      color: #555;
+      opacity: 0;
+      animation: heroIn 0.6s ease-out 360ms forwards;
+    }
+    .hero-statement p + p { margin-top: 0.85em; }
+
+    .hero-ctas {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      opacity: 0;
+      animation: heroIn 0.6s ease-out 480ms forwards;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: #0a0a0a;
+      color: #fff;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      padding: 14px 28px;
+      border-radius: 2px;
+      border: none;
+      transition: background 0.2s ease;
+    }
+    .btn-primary:hover { background: #ff5000; color: #fff; }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: #0a0a0a;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      padding: 14px 28px;
+      border-radius: 2px;
+      border: 1.5px solid #0a0a0a;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .btn-secondary:hover {
+      border-color: #ff5000;
+      color: #ff5000;
+    }
+
+    .term-card {
+      background: #0a0a0a;
+      border-radius: 6px;
+      padding: 28px;
+      max-width: 420px;
+      width: 100%;
+      margin-left: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: termCardIn 0.7s ease-out 800ms forwards;
+    }
+    @keyframes termCardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .term-card { margin-left: 0; max-width: none; }
+    }
+
+    .term-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .term-dots { display: flex; gap: 6px; }
+    .term-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .term-dots span:nth-child(1) { background: #ff5f57; }
+    .term-dots span:nth-child(2) { background: #febc2e; }
+    .term-dots span:nth-child(3) { background: #28c840; }
+    .term-title {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      color: #666;
+    }
+    .term-divider {
+      height: 1px;
+      background: #1f1f1f;
+      margin-bottom: 16px;
+    }
+    .term-body {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #e0e0e0;
+      min-height: 280px;
+    }
+    .term-line--prompt { color: #00ff88; }
+    .term-line--out { color: #aaa; }
+    .term-line--blank { height: 0.6em; }
+    .term-cursor-line {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-top: 4px;
+      color: #00ff88;
+    }
+    .term-caret {
+      width: 1px;
+      height: 16px;
+      background: #ff5000;
+      animation: caretBlink 1s step-end infinite;
+    }
+    @keyframes caretBlink {
+      50% { opacity: 0; }
+    }
+
+    .section {
+      padding: clamp(72px, 12vw, 120px) clamp(20px, 4vw, 48px);
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #ff5000;
+      margin-bottom: 16px;
+    }
+
+    .chapter-title {
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 52px);
+      color: #0a0a0a;
+      line-height: 1.1;
+      margin-bottom: 40px;
+    }
+
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-section .section-inner > .stagger-child {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal-section.is-visible .section-inner > .stagger-child {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-section.is-visible .section-inner > .stagger-child:nth-child(1) { transition-delay: 0ms; }
+    .reveal-section.is-visible .section-inner > .stagger-child:nth-child(2) { transition-delay: 80ms; }
+    .reveal-section.is-visible .section-inner > .stagger-child:nth-child(3) { transition-delay: 160ms; }
+    .reveal-section.is-visible .section-inner > .stagger-child:nth-child(4) { transition-delay: 240ms; }
+    .reveal-section.is-visible .section-inner > .stagger-child:nth-child(5) { transition-delay: 320ms; }
+    .reveal-section.is-visible .section-inner > .stagger-child:nth-child(6) { transition-delay: 400ms; }
+    .reveal-section.is-visible .section-inner > .stagger-child:nth-child(7) { transition-delay: 480ms; }
+    .reveal-section.is-visible .section-inner > .stagger-child:nth-child(8) { transition-delay: 560ms; }
+
+    .story-prose {
+      border-left: 3px solid #ff5000;
+      padding-left: clamp(20px, 3vw, 32px);
+      display: grid;
+      gap: 1.25em;
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.85;
+      color: #444;
+    }
+
+    #work {
+      background: #fff;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #ebebeb;
+    }
+
+    .tl-item {
+      position: relative;
+      padding-bottom: 48px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -26px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ff5000;
+      border: 2px solid #fff;
+      box-sizing: border-box;
+    }
+    #timeline-root.is-active .tl-item:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
+    #timeline-root.is-active .tl-item:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 100ms; }
+    #timeline-root.is-active .tl-item:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 200ms; }
+    #timeline-root.is-active .tl-item:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 300ms; }
+
+    .tl-badge {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .tl-badge--accent { color: #ff5000; }
+    .tl-badge--muted { color: #888; }
+
+    .tl-company {
+      font-weight: 700;
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .tl-tag {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 14px;
+    }
+    .tl-body {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.75;
+      color: #444;
+      max-width: 720px;
+      margin-bottom: 16px;
+    }
+    .tl-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tl-pill {
+      font-size: 12px;
+      font-weight: 400;
+      color: #666;
+      border: 1px solid #e8e8e8;
+      border-radius: 2px;
+      padding: 6px 12px;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .tl-pill:hover {
+      border-color: #ff5000;
+      color: #ff5000;
+    }
+
+    /* —— COSMIC showcase (scoped) —— */
+    #cosmic.cosmic-spotlight {
+      position: relative;
+      overflow: hidden;
+      background: #0a0a0f;
+      color: #f4f4f5;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      isolation: isolate;
+    }
+    #cosmic.cosmic-spotlight::before {
+      content: '';
+      position: absolute;
+      inset: -20%;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 25%, rgba(255, 80, 0, 0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 88% 78%, rgba(34, 211, 238, 0.09) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 100%, rgba(255, 80, 0, 0.06) 0%, transparent 45%);
+      animation: cosmicMeshShift 14s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes cosmicMeshShift {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(-3%, 2%) scale(1.06); opacity: 0.92; }
+    }
+    .cosmic-spotlight__noise {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      opacity: 0.04;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+    #cosmic.cosmic-spotlight .section-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+    }
+    #cosmic.cosmic-spotlight.reveal-section {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .cosmic-showcase__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: clamp(32px, 5vw, 56px);
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .cosmic-showcase__layout {
+        grid-template-columns: 1fr;
+      }
+      .cosmic-showcase__col--visual {
+        order: 2;
+      }
+      .cosmic-showcase__col--copy {
+        order: 1;
+      }
+    }
+    .cosmic-showcase__kicker {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #ff5000;
+      margin-bottom: 14px;
+    }
+    .cosmic-showcase__title {
+      font-weight: 900;
+      font-size: clamp(52px, 12vw, 112px);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.02em;
+    }
+    .cosmic-showcase__title-char {
+      display: inline-block;
+      text-shadow:
+        0 0 40px rgba(255, 80, 0, 0.35),
+        0 0 80px rgba(255, 80, 0, 0.12);
+      opacity: 0;
+      transform: translateY(0.35em) rotateX(12deg);
+      transition:
+        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        color 0.2s ease;
+    }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char {
+      opacity: 1;
+      transform: translateY(0) rotateX(0deg);
+    }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(1) { transition-delay: 0.05s; }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(2) { transition-delay: 0.1s; }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(3) { transition-delay: 0.15s; }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(4) { transition-delay: 0.2s; }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(5) { transition-delay: 0.25s; }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(6) { transition-delay: 0.3s; }
+    @keyframes cosmicTitleGlow {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.08); }
+    }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title {
+      animation: cosmicTitleGlow 4s ease-in-out infinite;
+    }
+    .cosmic-showcase__subtitle {
+      font-weight: 400;
+      font-size: clamp(18px, 2.4vw, 22px);
+      color: rgba(255, 255, 255, 0.72);
+      margin-bottom: 22px;
+      letter-spacing: -0.01em;
+    }
+    .cosmic-showcase__desc {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.58);
+      max-width: 540px;
+      margin-bottom: 28px;
+    }
+    .cosmic-showcase__features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .cosmic-feature-card {
+      position: relative;
+      background: rgba(17, 17, 24, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 18px 20px 18px 22px;
+      transform: perspective(900px) rotateX(8deg) translateY(28px);
+      opacity: 0;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+    .cosmic-feature-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      bottom: 12px;
+      width: 3px;
+      border-radius: 0 2px 2px 0;
+      background: transparent;
+      box-shadow: none;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card {
+      opacity: 1;
+      transform: perspective(900px) rotateX(0deg) translateY(0);
+    }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card:nth-child(1) { transition-delay: 0.15s; }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card:nth-child(2) { transition-delay: 0.3s; }
+    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card:nth-child(3) { transition-delay: 0.45s; }
+    .cosmic-feature-card:hover {
+      transform: perspective(900px) translateY(-4px) scale(1.01);
+      border-color: rgba(255, 80, 0, 0.45);
+      box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 80, 0, 0.12);
+    }
+    .cosmic-feature-card:hover::before {
+      background: #ff5000;
+      box-shadow: 0 0 18px rgba(255, 80, 0, 0.65);
+    }
+    .cosmic-feature-card__row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .cosmic-feature-card__icon {
+      font-size: 22px;
+      line-height: 1;
+      flex-shrink: 0;
+      filter: grayscale(0.15);
+    }
+    .cosmic-feature-card__title {
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+    .cosmic-feature-card__body {
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.55);
+    }
+    .cosmic-showcase__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px 24px;
+    }
+    .cosmic-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+    }
+    .cosmic-status-badge__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.75);
+      animation: cosmicLivePulse 1.8s ease-in-out infinite;
+    }
+    @keyframes cosmicLivePulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.25); opacity: 0.75; }
+    }
+    .cosmic-cta-link {
+      display: inline-flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 14px;
+      color: #ff5000;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 80, 0, 0.35);
+      background: rgba(255, 80, 0, 0.06);
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+    .cosmic-cta-link:hover {
+      background: rgba(255, 80, 0, 0.14);
+      border-color: rgba(255, 80, 0, 0.6);
+      color: #fff;
+      transform: translateX(2px);
+    }
+    .cosmic-mockup {
+      border-radius: 12px;
+      background: #111118;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 80, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      min-height: 320px;
+    }
+    .cosmic-mockup__chrome {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.35);
+    }
+    .cosmic-mockup__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ff5000;
+      box-shadow: 0 0 12px rgba(255, 80, 0, 0.7);
+      flex-shrink: 0;
+    }
+    .cosmic-mockup__dots-rest {
+      display: flex;
+      gap: 6px;
+      opacity: 0.35;
+    }
+    .cosmic-mockup__dots-rest span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .cosmic-mockup__url {
+      margin-left: auto;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.06em;
+    }
+    .cosmic-mockup__body {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      min-height: 280px;
+    }
+    @media (max-width: 480px) {
+      .cosmic-mockup__body {
+        grid-template-columns: 56px 1fr;
+      }
+    }
+    .cosmic-mockup__rail {
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.25);
+    }
+    .cosmic-mockup__rail-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(145deg, rgba(255, 80, 0, 0.2), rgba(34, 211, 238, 0.08));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .cosmic-mockup__rail-icon--glow {
+      box-shadow: 0 0 20px rgba(255, 80, 0, 0.25);
+    }
+    .cosmic-mockup__main {
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 12px;
+      min-height: 260px;
+    }
+    .cosmic-mockup__header {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+    }
+    .cosmic-mockup__log {
+      flex: 1;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      line-height: 1.65;
+      color: rgba(34, 211, 238, 0.85);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 6px;
+      mask-image: linear-gradient(180deg, transparent 0%, #000 18%);
+    }
+    .cosmic-mockup__log-line {
+      opacity: 0;
+      transform: translateY(6px);
+      animation: cosmicLogIn 0.45s ease forwards;
+      color: rgba(200, 245, 255, 0.88);
+    }
+    .cosmic-mockup__log-line--accent {
+      color: rgba(255, 176, 120, 0.95);
+    }
+    @keyframes cosmicLogIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cosmic-mockup__input {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .cosmic-mockup__input-prompt {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.35);
+      flex: 1;
+    }
+    .cosmic-mockup__cursor {
+      width: 2px;
+      height: 14px;
+      background: #ff5000;
+      border-radius: 1px;
+      animation: cosmicInputBlink 1s step-end infinite;
+      box-shadow: 0 0 8px rgba(255, 80, 0, 0.8);
+    }
+    @keyframes cosmicInputBlink {
+      50% { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #cosmic.cosmic-spotlight::before { animation: none; }
+      #cosmic.cosmic-spotlight.reveal-section,
+      #cosmic.cosmic-spotlight.reveal-section.is-visible {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .cosmic-showcase__title-char {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title {
+        animation: none;
+      }
+      .cosmic-feature-card {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .cosmic-status-badge__dot { animation: none; }
+      .cosmic-mockup__log-line { animation: none; opacity: 1; transform: none; }
+      .cosmic-mockup__cursor { animation: none; opacity: 1; }
+    }
+
+    #stack .stack-lede {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.65;
+      color: #666666;
+      max-width: 42em;
+      margin-bottom: 28px;
+    }
+
+    .stack-marquee-band {
+      background: #0a0a0a;
+      border-top: 1px solid #ff5000;
+      border-bottom: none;
+      padding: 0;
+      margin-bottom: 48px;
+      overflow: hidden;
+    }
+    .stack-marquee-band:hover .stack-marquee-track {
+      animation-play-state: paused;
+    }
+    .stack-marquee-row {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .stack-marquee-row--2 {
+      border-top: 1px solid #1a1a1a;
+    }
+    .stack-marquee-viewport {
+      width: 100%;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    }
+    .stack-marquee-track {
+      display: flex;
+      width: max-content;
+      align-items: center;
+      flex-wrap: nowrap;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+    /* Row 1: scroll left-to-right (reverse of default -50% drift) */
+    .stack-marquee-track--ltr {
+      animation-name: stackMarqueeScroll;
+      animation-direction: reverse;
+    }
+    /* Row 2: right-to-left */
+    .stack-marquee-track--rtl {
+      animation-name: stackMarqueeScroll;
+    }
+    @keyframes stackMarqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .stack-marquee-chunk {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .stack-marquee-name {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      color: #666666;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+      transition: color 0.2s ease;
+    }
+    .stack-marquee-name:hover {
+      color: #ff5000;
+    }
+    .stack-marquee-sep {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      color: #ff5000;
+      letter-spacing: 0.12em;
+      white-space: pre;
+      pointer-events: none;
+    }
+
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 900px) {
+      .bento { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .bento { grid-template-columns: 1fr; }
+    }
+
+    .bento-cell {
+      background: #fff;
+      border: 1px solid #ebebeb;
+      border-radius: 2px;
+      padding: 24px;
+    }
+    .bento-cat {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #ff5000;
+      margin-bottom: 14px;
+    }
+    .bento-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .bento-pill {
+      font-size: 12px;
+      color: #444;
+      border: 1px solid #eee;
+      border-radius: 2px;
+      padding: 6px 10px;
+      transition: border-color 0.2s ease;
+    }
+    .bento-pill:hover { border-color: #ff5000; }
+
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .proj-grid { grid-template-columns: 1fr; }
+    }
+
+    .proj-card {
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      padding: 32px;
+      background: #fff;
+      transition: border-top 0.2s ease;
+      border-top: 1px solid #e8e8e8;
+    }
+    .proj-card:hover {
+      border-top-width: 3px;
+      border-top-color: #ff5000;
+    }
+    .proj-label {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .proj-label--accent { color: #ff5000; }
+    .proj-label--muted { color: #888; }
+    .proj-body {
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #444;
+    }
+
+    .contact-head {
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 56px);
+      color: #0a0a0a;
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+    .contact-sub {
+      font-weight: 300;
+      font-size: 18px;
+      color: #777;
+      max-width: 560px;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+    .contact-email {
+      display: inline-block;
+      font-weight: 600;
+      font-size: 18px;
+      color: #0a0a0a;
+      margin-bottom: 24px;
+    }
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .contact-btn-solid {
+      background: #0a0a0a;
+      color: #fff;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 14px 28px;
+      border-radius: 2px;
+      border: 1.5px solid #0a0a0a;
+      transition: background 0.2s ease;
+    }
+    .contact-btn-solid:hover { background: #ff5000; border-color: #ff5000; }
+    .contact-btn-outline {
+      background: transparent;
+      color: #0a0a0a;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 14px 28px;
+      border-radius: 2px;
+      border: 1.5px solid #0a0a0a;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .contact-btn-outline:hover {
+      border-color: #ff5000;
+      color: #ff5000;
+    }
+
+    .site-footer {
+      padding: 48px clamp(20px, 4vw, 48px) 64px;
+      text-align: center;
+      font-weight: 300;
+      font-size: 12px;
+      color: #bdbdbd;
+      border-top: 1px solid #ebebeb;
+    }
+  </style>
+</head>
+<body>
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <header class="site-nav" id="site-nav">
+    <a class="nav-brand" href="#">PRAVEEN SUNDAR</a>
+    <div class="nav-desktop">
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#story">Story</a><span class="nav-sep">·</span>
+        <a href="#work">Work</a><span class="nav-sep">·</span>
+        <a href="#cosmic">COSMIC</a><span class="nav-sep">·</span>
+        <a href="#stack">Stack</a><span class="nav-sep">·</span>
+        <a href="/blog/">Blog</a><span class="nav-sep">·</span>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-pill" aria-live="polite">
+        <span class="nav-pill-dot" aria-hidden="true"></span>
+        <span>Building COSMIC</span>
+      </div>
+    </div>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="nav-overlay" id="nav-overlay" aria-hidden="true">
+    <a href="#story">Story</a>
+    <a href="#work">Work</a>
+    <a href="#cosmic">COSMIC</a>
+    <a href="#stack">Stack</a>
+    <a href="/blog/">Blog</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-inner">
+        <div class="hero-col-text">
+          <p class="hero-eyebrow-1">DATA ENGINEER 3 — COSMOS RESEARCH CENTER</p>
+          <div><span class="hero-pill">DARPA / NSF / DoD Funded</span></div>
+          <p class="hero-loc">AR, USA</p>
+          <h1 class="hero-name">PRAVEEN SUNDAR</h1>
+          <div class="hero-type-row">
+            <span class="hero-type-prefix">I build </span><span class="hero-type-text" id="typewriter-text"></span>
+          </div>
+          <div class="hero-statement">
+            <p>By day, I engineer the data pipelines and GPU infrastructure that power DARPA-funded research.</p>
+            <p>By night, I build COSMIC — a multi-agent AI OS that lives inside your computer and acts before you ask.</p>
+            <p>EE by training. Systems thinker by obsession. Builder by default.</p>
+          </div>
+          <div class="hero-ctas">
+            <a class="btn-primary" href="#work">View My Work</a>
+            <a class="btn-secondary" href="#cosmic">Explore COSMIC</a>
+          </div>
+        </div>
+        <div class="term-card" aria-label="Terminal introduction">
+          <div class="term-bar">
+            <div class="term-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span class="term-title">cosmos ~ terminal</span>
+          </div>
+          <div class="term-divider"></div>
+          <div class="term-body" id="hero-term-host"></div>
+          <div class="term-cursor-line" id="hero-term-cursor-wrap" hidden>
+            <span class="term-caret" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="section reveal-section">
+      <div class="section-inner">
+        <p class="eyebrow">CHAPTER ZERO</p>
+        <h2 class="chapter-title">The Origin Story</h2>
+        <div class="story-prose">
+          <p>I started with a soldering iron. Electrical engineering at KCT gave me the discipline to think in systems — how signals travel, how circuits fail, how precision compounds. That foundation never left me.</p>
+          <p>Today I work at COSMOS Research Center, where I build the data and GPU infrastructure that powers DARPA and NSF-funded research. Multi-server GPU networking, Arista switching, NFS-backed storage at scale, vLLM inference stacks — the kind of infrastructure most engineers only read about in papers.</p>
+          <p>But the work I care most about happens after hours. I am building COSMIC — a multi-agent AI OS that runs persistently on your desktop, understands your context across every app, and acts before you ask. Not a chatbot. Not a copilot. An OS layer that thinks.</p>
+          <p>EE from UPenn. Embedded systems roots. Distributed infrastructure by practice. Agentic AI by obsession. I do not stay in one lane — I am interested in what happens when the signal becomes a decision.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="section">
+      <div class="section-inner">
+        <p class="eyebrow reveal-section" id="work-eyebrow">EXPERIENCE</p>
+        <h2 class="chapter-title reveal-section" id="work-title">Where I Build</h2>
+        <div class="timeline" id="timeline-root">
+          <article class="tl-item">
+            <p class="tl-badge tl-badge--accent">DATA ENGINEER 3 — PRESENT</p>
+            <h3 class="tl-company">COSMOS Research Center</h3>
+            <p class="tl-tag">DARPA / NSF / DoD Funded — AR, USA</p>
+            <p class="tl-body">The infrastructure layer for frontier AI research. I own end-to-end GPU cluster networking — Arista switching, VLANs, NIC bonding, LACP — and the shared storage that feeds it (TrueNAS NFS, quotas, ACLs, high-throughput access patterns). I deploy and tune LLM inference services on multi-GPU servers: vLLM stacks, memory utilization tuning, reliability-focused redeploy workflows. I also built large-scale multimedia data pipelines — automated video ingestion, Whisper transcription, translation, and downstream embedding/RAG pipelines.</p>
+            <div class="tl-pills">
+              <span class="tl-pill">GPU Networking</span>
+              <span class="tl-pill">Arista Switching</span>
+              <span class="tl-pill">vLLM</span>
+              <span class="tl-pill">TrueNAS</span>
+              <span class="tl-pill">NFS</span>
+              <span class="tl-pill">Whisper</span>
+              <span class="tl-pill">RAG</span>
+              <span class="tl-pill">Kubernetes</span>
+              <span class="tl-pill">Python</span>
+            </div>
+          </article>
+          <article class="tl-item">
+            <p class="tl-badge tl-badge--muted">CO-FOUNDER &amp; CEO</p>
+            <h3 class="tl-company">TriZ AI</h3>
+            <p class="tl-body">Founded and led TriZ AI — an AI infrastructure and services company. Designed and shipped LearnChain, a cross-cloud ETL and knowledge graph system built on Neo4j and GraphRAG, processing 100K+ nodes. Also built Supersense — a large-scale multimedia analysis system. Responsible for technical architecture, hiring, and go-to-market.</p>
+            <div class="tl-pills">
+              <span class="tl-pill">Neo4j</span>
+              <span class="tl-pill">GraphRAG</span>
+              <span class="tl-pill">ETL</span>
+              <span class="tl-pill">LLM Fine-tuning</span>
+              <span class="tl-pill">Distributed Systems</span>
+            </div>
+          </article>
+          <article class="tl-item">
+            <p class="tl-badge tl-badge--muted">ENGINEER</p>
+            <h3 class="tl-company">Dot Corp — Superclouds</h3>
+            <p class="tl-body">Infrastructure and systems engineering at Dot Corp, building cloud infrastructure products. Worked on backend resilience, distributed compute, and cloud networking foundations.</p>
+            <div class="tl-pills">
+              <span class="tl-pill">Cloud Infrastructure</span>
+              <span class="tl-pill">Backend Systems</span>
+              <span class="tl-pill">Distributed Compute</span>
+            </div>
+          </article>
+          <article class="tl-item">
+            <p class="tl-badge tl-badge--muted">MS ELECTRICAL ENGINEERING</p>
+            <h3 class="tl-company">University of Pennsylvania</h3>
+            <p class="tl-body">Graduate study in Electrical Engineering at Penn — deepening foundations in signal processing, embedded systems, and hardware-software co-design. Built the academic foundation for everything that followed.</p>
+            <div class="tl-pills">
+              <span class="tl-pill">EE</span>
+              <span class="tl-pill">Embedded Systems</span>
+              <span class="tl-pill">Signal Processing</span>
+              <span class="tl-pill">Hardware Design</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cosmic" class="section cosmic-spotlight reveal-section" aria-labelledby="cosmic-showcase-title">
+      <div class="cosmic-spotlight__noise" aria-hidden="true"></div>
+      <div class="section-inner cosmic-showcase">
+        <div class="cosmic-showcase__layout">
+          <div class="cosmic-showcase__col cosmic-showcase__col--copy">
+            <p class="cosmic-showcase__kicker">FOUNDER · CEO</p>
+            <h2 class="cosmic-showcase__title" id="cosmic-showcase-title">
+              <span class="cosmic-showcase__title-char" data-cosmic-final="C">C</span><span class="cosmic-showcase__title-char" data-cosmic-final="O">O</span><span class="cosmic-showcase__title-char" data-cosmic-final="S">S</span><span class="cosmic-showcase__title-char" data-cosmic-final="M">M</span><span class="cosmic-showcase__title-char" data-cosmic-final="I">I</span><span class="cosmic-showcase__title-char" data-cosmic-final="C">C</span>
+            </h2>
+            <p class="cosmic-showcase__subtitle">Personal AI Operating System</p>
+            <p class="cosmic-showcase__desc">COSMIC is a deeply personal AI OS — always on, always learning, always acting on your behalf. It orchestrates your email, calendar, tasks, memory, and agents through a single unified intelligence layer.</p>
+            <ul class="cosmic-showcase__features">
+              <li class="cosmic-feature-card">
+                <div class="cosmic-feature-card__row"><div>
+                    <p class="cosmic-feature-card__title">Always Remembers</p>
+                    <p class="cosmic-feature-card__body">Persistent memory across every interaction. Never repeat yourself.</p>
+                  </div>
+                </div>
+              </li>
+              <li class="cosmic-feature-card">
+                <div class="cosmic-feature-card__row"><div>
+                    <p class="cosmic-feature-card__title">Proactive Agents</p>
+                    <p class="cosmic-feature-card__body">Specialist AI agents that act autonomously — schedule, email, research, deploy.</p>
+                  </div>
+                </div>
+              </li>
+              <li class="cosmic-feature-card">
+                <div class="cosmic-feature-card__row"><div>
+                    <p class="cosmic-feature-card__title">Always On</p>
+                    <p class="cosmic-feature-card__body">Lives in your browser, phone, and desktop. Ambient intelligence 24/7.</p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div class="cosmic-showcase__meta">
+              <span class="cosmic-status-badge"><span class="cosmic-status-badge__dot" aria-hidden="true"></span> LIVE PRODUCT</span>
+              <a class="cosmic-cta-link" href="https://cosmic.build" target="_blank" rel="noopener noreferrer">→ cosmic.build</a>
+            </div>
+          </div>
+          <div class="cosmic-showcase__col cosmic-showcase__col--visual">
+            <div class="cosmic-mockup" aria-hidden="true">
+              <div class="cosmic-mockup__chrome">
+                <span class="cosmic-mockup__dot"></span>
+                <div class="cosmic-mockup__dots-rest"><span></span><span></span></div>
+                <span class="cosmic-mockup__url">cosmic.build</span>
+              </div>
+              <div class="cosmic-mockup__body">
+                <div class="cosmic-mockup__rail">
+                  <span class="cosmic-mockup__rail-icon cosmic-mockup__rail-icon--glow"></span>
+                  <span class="cosmic-mockup__rail-icon"></span>
+                  <span class="cosmic-mockup__rail-icon"></span>
+                </div>
+                <div class="cosmic-mockup__main">
+                  <p class="cosmic-mockup__header">Agent stream</p>
+                  <div id="cosmic-agent-log" class="cosmic-mockup__log"></div>
+                  <div class="cosmic-mockup__input">
+                    <span class="cosmic-mockup__input-prompt">Ask COSMIC…</span>
+                    <span class="cosmic-mockup__cursor"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack" class="section reveal-section">
+      <div class="section-inner">
+        <p class="eyebrow stagger-child">THE STACK</p>
+        <h2 class="chapter-title stagger-child">Technologies I've Built With</h2>
+        <p class="stack-lede stagger-child">Languages, frameworks, and platforms I've shipped real work on</p>
+
+        <div class="stack-marquee-band stagger-child">
+        <div class="stack-marquee-row stack-marquee-row--1">
+          <div class="stack-marquee-viewport">
+            <div class="stack-marquee-track stack-marquee-track--ltr" style="animation-duration:50s;">
+              <div class="stack-marquee-chunk"><span class="stack-marquee-name">Python</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">SQL</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">TypeScript</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Apache Spark</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Kafka</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Apache Airflow</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">dbt</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">FastAPI</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">NumPy</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Pandas</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">PyTorch</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">TensorFlow</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">React</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Docker</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Kubernetes</span></div>
+              <div class="stack-marquee-chunk" aria-hidden="true"><span class="stack-marquee-name">Python</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">SQL</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">TypeScript</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Apache Spark</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Kafka</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Apache Airflow</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">dbt</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">FastAPI</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">NumPy</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Pandas</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">PyTorch</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">TensorFlow</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">React</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Docker</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Kubernetes</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="stack-marquee-row stack-marquee-row--2">
+          <div class="stack-marquee-viewport">
+            <div class="stack-marquee-track stack-marquee-track--rtl" style="animation-duration:38s;">
+              <div class="stack-marquee-chunk"><span class="stack-marquee-name">Data Engineering</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">MLOps</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Stream Processing</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">ETL Pipelines</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Vector Databases</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">LLM Infrastructure</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Graph Analytics</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Real-time Analytics</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Data Lakehouse</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Feature Engineering</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Model Serving</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">AWS</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Snowflake</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">PostgreSQL</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Redis</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Apache Flink</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Databricks</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">AWS Glue</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">S3</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">EC2</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Prometheus</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Grafana</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">OpenTelemetry</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Elasticsearch</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Cassandra</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">MongoDB</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Terraform</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Linux</span></div>
+              <div class="stack-marquee-chunk" aria-hidden="true"><span class="stack-marquee-name">Data Engineering</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">MLOps</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Stream Processing</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">ETL Pipelines</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Vector Databases</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">LLM Infrastructure</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Graph Analytics</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Real-time Analytics</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Data Lakehouse</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Feature Engineering</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Model Serving</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">AWS</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Snowflake</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">PostgreSQL</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Redis</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Apache Flink</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Databricks</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">AWS Glue</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">S3</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">EC2</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Prometheus</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Grafana</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">OpenTelemetry</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Elasticsearch</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Cassandra</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">MongoDB</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Terraform</span><span class="stack-marquee-sep"> / </span><span class="stack-marquee-name">Linux</span></div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+
+        <div class="bento stagger-child">
+          <div class="bento-cell">
+            <p class="bento-cat">Languages</p>
+            <div class="bento-pills">
+              <span class="bento-pill">Python</span>
+              <span class="bento-pill">C</span>
+              <span class="bento-pill">SQL</span>
+              <span class="bento-pill">Bash</span>
+            </div>
+          </div>
+          <div class="bento-cell">
+            <p class="bento-cat">AI &amp; ML</p>
+            <div class="bento-pills">
+              <span class="bento-pill">PyTorch</span>
+              <span class="bento-pill">TensorFlow</span>
+              <span class="bento-pill">vLLM</span>
+              <span class="bento-pill">Whisper</span>
+              <span class="bento-pill">Embeddings</span>
+            </div>
+          </div>
+          <div class="bento-cell">
+            <p class="bento-cat">Data &amp; ETL</p>
+            <div class="bento-pills">
+              <span class="bento-pill">Spark</span>
+              <span class="bento-pill">Kafka</span>
+              <span class="bento-pill">Airflow</span>
+              <span class="bento-pill">dbt</span>
+            </div>
+          </div>
+          <div class="bento-cell">
+            <p class="bento-cat">Infrastructure</p>
+            <div class="bento-pills">
+              <span class="bento-pill">Kubernetes</span>
+              <span class="bento-pill">Docker</span>
+              <span class="bento-pill">Linux</span>
+              <span class="bento-pill">Prometheus</span>
+              <span class="bento-pill">Grafana</span>
+            </div>
+          </div>
+          <div class="bento-cell">
+            <p class="bento-cat">Databases</p>
+            <div class="bento-pills">
+              <span class="bento-pill">PostgreSQL</span>
+              <span class="bento-pill">Neo4j</span>
+              <span class="bento-pill">Redis</span>
+              <span class="bento-pill">Snowflake</span>
+            </div>
+          </div>
+          <div class="bento-cell">
+            <p class="bento-cat">Cloud</p>
+            <div class="bento-pills">
+              <span class="bento-pill">AWS</span>
+              <span class="bento-pill">GPU fleets</span>
+              <span class="bento-pill">Object storage</span>
+            </div>
+          </div>
+          <div class="bento-cell">
+            <p class="bento-cat">Networking &amp; Hardware</p>
+            <div class="bento-pills">
+              <span class="bento-pill">Arista</span>
+              <span class="bento-pill">NFS</span>
+              <span class="bento-pill">TrueNAS</span>
+              <span class="bento-pill">VLANs</span>
+              <span class="bento-pill">LACP</span>
+              <span class="bento-pill">NIC bonding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section reveal-section">
+      <div class="section-inner">
+        <p class="eyebrow stagger-child">PROJECTS</p>
+        <h2 class="chapter-title stagger-child">Shipped Systems</h2>
+        <div class="proj-grid stagger-child">
+          <article class="proj-card">
+            <p class="proj-label proj-label--accent">FOUNDER — ACTIVE</p>
+            <h3 class="tl-company" style="margin-bottom: 12px;">LearnChain</h3>
+            <p class="proj-body">Cross-cloud ETL and knowledge graph platform. Neo4j-backed GraphRAG processing 100K+ nodes. Semantic search, embedding pipelines, and intelligent document analysis at scale.</p>
+          </article>
+          <article class="proj-card">
+            <p class="proj-label proj-label--muted">SYSTEMS PROJECT</p>
+            <h3 class="tl-company" style="margin-bottom: 12px;">InfraDoc</h3>
+            <p class="proj-body">1000+ node multi-agent LLM orchestration. Automated infrastructure documentation from live system state — agents that read your infra and write the docs.</p>
+          </article>
+          <article class="proj-card">
+            <p class="proj-label proj-label--muted">AI PIPELINE</p>
+            <h3 class="tl-company" style="margin-bottom: 12px;">Supersense</h3>
+            <p class="proj-body">Large-scale multimedia intelligence. Automated video ingestion, Whisper transcription, multilingual translation, downstream embedding and relevancy scoring.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section reveal-section">
+      <div class="section-inner">
+        <p class="eyebrow stagger-child">WHAT IS NEXT</p>
+        <h2 class="contact-head stagger-child">Build something real.</h2>
+        <p class="contact-sub stagger-child">I am always open to interesting infrastructure problems, AI research conversations, and people building things that matter.</p>
+        <div class="stagger-child">
+          <a class="contact-email" href="/cdn-cgi/l/email-protection#7f0f0d1e091a1a113f1a071e120f131a511c1012"><span class="__cf_email__" data-cfemail="bfcfcddec9dadad1ffdac7ded2cfd3da91dcd0d2">[email&#160;protected]</span></a>
+          <div class="contact-row">
+            <a class="contact-btn-solid" href="/cdn-cgi/l/email-protection#d8a8aab9aebdbdb698bda0b9b5a8b4bdf6bbb7b5">Email</a>
+            <a class="contact-btn-outline" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    PRAVEEN SUNDAR — AR, USA — Built with intent. <span id="footer-year"></span>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  (function () {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    var bar = document.getElementById('scroll-progress');
+    function onScrollProgress() {
+      var h = document.documentElement;
+      var scrolled = (h.scrollTop || document.body.scrollTop) / ((h.scrollHeight - h.clientHeight) || 1);
+      bar.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+    }
+    window.addEventListener('scroll', onScrollProgress, { passive: true });
+    onScrollProgress();
+
+    var toggle = document.getElementById('nav-toggle');
+    var overlay = document.getElementById('nav-overlay');
+    function closeMenu() {
+      document.body.classList.remove('menu-open');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+      }
+      if (overlay) overlay.setAttribute('aria-hidden', 'true');
+    }
+    function openMenu() {
+      document.body.classList.add('menu-open');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+      }
+      if (overlay) overlay.setAttribute('aria-hidden', 'false');
+    }
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        if (document.body.classList.contains('menu-open')) closeMenu();
+        else openMenu();
+      });
+    }
+    if (overlay) {
+      overlay.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', closeMenu);
+      });
+    }
+
+    var phrases = [
+      'intelligent data systems.',
+      'GPU infrastructure at scale.',
+      'agents that think for you.',
+      'the future of personal AI.'
+    ];
+    var twEl = document.getElementById('typewriter-text');
+    function runTypewriter() {
+      if (!twEl) return;
+      if (reduceMotion) {
+        twEl.textContent = phrases[0];
+        return;
+      }
+      var i = 0;
+      var c = 0;
+      var del = false;
+      function step() {
+        var full = phrases[i];
+        if (!del) {
+          c++;
+          twEl.textContent = full.slice(0, c);
+          if (c >= full.length) {
+            del = true;
+            setTimeout(step, 2200);
+            return;
+          }
+          setTimeout(step, 72);
+        } else {
+          c--;
+          twEl.textContent = full.slice(0, c);
+          if (c <= 0) {
+            del = false;
+            i = (i + 1) % phrases.length;
+          }
+          setTimeout(step, 36);
+        }
+      }
+      setTimeout(step, 900);
+    }
+    runTypewriter();
+
+var termHost = document.getElementById('hero-term-host');
+    var cursorWrap = document.getElementById('hero-term-cursor-wrap');
+    var segments = [
+      { kind: 'prompt', text: '$ whoami' },
+      { kind: 'out', text: 'praveen sundar — systems engineer, AR' },
+      { kind: 'blank' },
+      { kind: 'prompt', text: '$ cat role.txt' },
+      { kind: 'out', text: 'Data Engineer 3 @ COSMOS Research Center' },
+      { kind: 'out', text: 'DARPA / NSF / DoD Funded Research' },
+      { kind: 'blank' },
+      { kind: 'prompt', text: '$ ls projects/' },
+      { kind: 'out', text: 'LearnChain/  InfraDoc/  COSMIC/  Supersense/' },
+      { kind: 'blank' },
+      { kind: 'prompt', text: '$ cat COSMIC/status.md' },
+      { kind: 'out', text: 'Multi-Agent AI OS — Public Beta' },
+      { kind: 'out', text: 'cosmic.thelearnchain.com' },
+      { kind: 'blank' },
+      { kind: 'prompt', text: '$ echo $MISSION' },
+      { kind: 'out', text: 'Build systems that think. Build AI that acts.' }
+    ];
+
+    function runTerminal() {
+      if (!termHost) return;
+      if (reduceMotion) {
+        segments.forEach(function (seg) {
+          var div = document.createElement('div');
+          if (seg.kind === 'blank') div.className = 'term-line--blank';
+          else {
+            div.className = 'term-line--' + seg.kind;
+            div.textContent = seg.text || '';
+          }
+          termHost.appendChild(div);
+        });
+        if (cursorWrap) cursorWrap.removeAttribute('hidden');
+        return;
+      }
+      var si = 0;
+      var pos = 0;
+      var cur = null;
+      function pauseThen(fn) {
+        setTimeout(fn, 600);
+      }
+      function typeChar() {
+        var seg = segments[si];
+        var full = seg.text || '';
+        pos++;
+        cur.textContent = full.slice(0, pos);
+        if (pos >= full.length) {
+          si++;
+          pauseThen(startSeg);
+        } else {
+          setTimeout(typeChar, 45);
+        }
+      }
+      function startSeg() {
+        if (si >= segments.length) {
+          if (cursorWrap) cursorWrap.removeAttribute('hidden');
+          return;
+        }
+        var seg = segments[si];
+        if (seg.kind === 'blank') {
+          var blank = document.createElement('div');
+          blank.className = 'term-line--blank';
+          termHost.appendChild(blank);
+          si++;
+          pauseThen(startSeg);
+          return;
+        }
+        cur = document.createElement('div');
+        cur.className = 'term-line--' + seg.kind;
+        termHost.appendChild(cur);
+        pos = 0;
+        typeChar();
+      }
+      setTimeout(startSeg, 1200);
+    }
+    runTerminal();
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) en.target.classList.add('is-visible');
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+
+    document.querySelectorAll('.reveal-section').forEach(function (el) { io.observe(el); });
+
+    var tl = document.getElementById('timeline-root');
+    if (tl) {
+      var ioTl = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) tl.classList.add('is-active');
+        });
+      }, { threshold: 0.15 });
+      ioTl.observe(tl);
+    }
+
+  })();
+  </script>
+  <script>
+  (function () {
+    var cosmicRoot = document.getElementById('cosmic');
+    var cosmicLog = document.getElementById('cosmic-agent-log');
+    if (!cosmicRoot || !cosmicLog) return;
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var cosmicLines = [
+      '→ Email drafted to team...',
+      '→ Calendar block created 3pm',
+      '→ Memory saved: user prefers dark mode',
+      '→ Research brief ready'
+    ];
+    var cosmicLineIndex = 0;
+    var cosmicLogTimer = null;
+    var cosmicScrambleStarted = false;
+
+    function cosmicAppendLogLine() {
+      var text = cosmicLines[cosmicLineIndex % cosmicLines.length];
+      cosmicLineIndex += 1;
+      var row = document.createElement('div');
+      row.className = 'cosmic-mockup__log-line' +
+        (cosmicLineIndex % 2 === 0 ? ' cosmic-mockup__log-line--accent' : '');
+      row.textContent = text;
+      cosmicLog.appendChild(row);
+      while (cosmicLog.children.length > 6) {
+        cosmicLog.removeChild(cosmicLog.firstChild);
+      }
+    }
+
+    function cosmicRunHeadlineScramble() {
+      if (cosmicScrambleStarted || reduceMotion) return;
+      cosmicScrambleStarted = true;
+      var pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      var spans = cosmicRoot.querySelectorAll('.cosmic-showcase__title-char[data-cosmic-final]');
+      spans.forEach(function (span, si) {
+        var finalCh = span.getAttribute('data-cosmic-final') || '';
+        var step = 0;
+        var maxStep = 8 + Math.floor(Math.random() * 6);
+        setTimeout(function scrambleTick() {
+          if (step >= maxStep) {
+            span.textContent = finalCh;
+            return;
+          }
+          step += 1;
+          span.textContent = pool.charAt(Math.floor(Math.random() * pool.length));
+          setTimeout(scrambleTick, 45);
+        }, si * 60);
+      });
+    }
+
+    function cosmicStartAgentLog() {
+      if (cosmicLogTimer) return;
+      cosmicAppendLogLine();
+      cosmicLogTimer = window.setInterval(cosmicAppendLogLine, 2000);
+    }
+
+    if ('IntersectionObserver' in window) {
+      var cosmicIo = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          cosmicRunHeadlineScramble();
+          cosmicStartAgentLog();
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+      cosmicIo.observe(cosmicRoot);
+    } else {
+      cosmicRunHeadlineScramble();
+      cosmicStartAgentLog();
+    }
+  })();
+  </script>
+</body>
+</html>

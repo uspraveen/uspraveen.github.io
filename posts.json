@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "building-cosmic",
+    "title": "Building COSMIC: A Personal AI OS",
+    "date": "2026-05-01",
+    "tags": ["AI", "Building", "COSMIC"],
+    "excerpt": "What happens when you try to build an AI that truly knows you?",
+    "filename": "building-cosmic.md",
+    "image": "/images/building-cosmic-banner.jpg",
+    "thumbnail": "/images/building-cosmic-banner.jpg"
+  },
+  {
+    "slug": "thalapathy-vijay-blueprint",
+    "title": "THALAPATHY: From Silver Screen to Political Arena",
+    "date": "2026-05-09",
+    "tags": ["Politics", "Tamil Nadu", "Thalapathy Vijay"],
+    "excerpt": "A name that once resonated in movie theaters is now echoing through the streets, homes, hearts and the whole State of Tamil Nadu.",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Vijay_at_Protest_of_the_Nadigar_Sangam.jpg/960px-Vijay_at_Protest_of_the_Nadigar_Sangam.jpg",
+    "filename": "thalapathy-vijay-blueprint.md",
+    "filepath": "/blog/posts/thalapathy-vijay-blueprint.md",
+    "readTime": 10
+  }
+]

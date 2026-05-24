@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post — Praveen Sundar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+  <style>
+    :root {
+      --accent: #ff5000;
+      --bg: #ffffff;
+      --text: #0a0a0a;
+      --muted: #888888;
+      --line: #e8e8e8;
+      --nav-h: 56px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 4vw, 48px);
+      background: var(--bg);
+      border-bottom: 1px solid #ebebeb;
+    }
+    .back-blog {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s ease;
+    }
+    .back-blog:hover { color: var(--accent); }
+    .topbar-right {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    main { padding-top: calc(var(--nav-h) + 28px); }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 4vw, 48px) 72px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(255, 80, 0, 0.35);
+      padding: 4px 10px;
+    }
+    .title {
+      font-weight: 800;
+      font-size: clamp(26px, 4.5vw, 36px);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
+
+    .md {
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.85;
+      color: #333;
+    }
+    .md > * + * { margin-top: 1.05em; }
+    .md h1 {
+      font-weight: 800;
+      font-size: 26px;
+      margin-top: 1.4em;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent);
+    }
+    .md h2, .md h3 {
+      font-weight: 700;
+      margin-top: 1.35em;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--accent);
+    }
+    .md h2 { font-size: 20px; }
+    .md h3 { font-size: 17px; }
+    .md a { color: var(--accent); font-weight: 600; border-bottom: 1px solid rgba(255, 80, 0, 0.35); }
+    .md blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 12px 18px;
+      margin: 1.2em 0;
+      background: #fafafa;
+      color: #444;
+    }
+    .md pre {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      background: #0a0a0a;
+      color: #f2f2f2;
+      padding: 16px 18px;
+      overflow-x: auto;
+      border: 1px solid #111;
+    }
+    .md code {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 0.88em;
+      background: #f4f4f4;
+      border: 1px solid var(--line);
+      padding: 2px 6px;
+    }
+    .md pre code { background: none; border: none; padding: 0; }
+
+    .panel {
+      margin-top: 44px;
+      padding-top: 32px;
+      border-top: 1px solid #ebebeb;
+    }
+    .panel h2 {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .like-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .like-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .like-btn:disabled { opacity: 0.7; cursor: default; }
+
+    .comments { margin-top: 10px; }
+    .comment-list { display: grid; gap: 12px; margin-top: 18px; }
+    .comment {
+      border: 1px solid var(--line);
+      padding: 14px 16px;
+    }
+    .comment-top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-bottom: 8px;
+    }
+    .comment-name {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .comment-ts {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      color: #aaa;
+    }
+    .comment-msg {
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #333;
+      white-space: pre-wrap;
+    }
+
+    form.grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    form.grid label {
+      display: grid;
+      gap: 6px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #666;
+    }
+    form.grid input, form.grid textarea {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    form.grid textarea { min-height: 100px; resize: vertical; }
+    form.grid button {
+      justify-self: start;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+    }
+    form.grid button:hover { background: #e04800; }
+    .form-err { color: #b42318; font-size: 13px; }
+
+    .err {
+      padding: 14px;
+      border: 1px solid #f3b19a;
+      background: #fff5f0;
+      color: #7a2e0e;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-blog" href="/blog/">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Blog
+    </a>
+    <span class="topbar-right">Post</span>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="err" id="err" hidden></p>
+      <article id="root" hidden>
+        <div class="tags" id="tags"></div>
+        <h1 class="title" id="title"></h1>
+        <div class="meta">
+          <span id="date"></span>
+          <span id="read"></span>
+        </div>
+        <div class="md" id="md"></div>
+
+        <section class="panel" aria-labelledby="lk">
+          <h2 id="lk">Likes</h2>
+          <button type="button" class="like-btn" id="like-btn" aria-pressed="false">
+            <span id="like-ic"></span>
+            <span id="like-n">0</span>
+          </button>
+          <p class="form-err" id="like-err" hidden></p>
+        </section>
+
+        <section class="panel" aria-labelledby="cm">
+          <h2 id="cm">Comments</h2>
+          <div class="comments">
+            <div class="comment-list" id="clist"></div>
+            <form class="grid" id="cform">
+              <label>Name<input type="text" id="cname" maxlength="80" required /></label>
+              <label>Message<textarea id="cmsg" maxlength="2000" required></textarea></label>
+              <span class="form-err" id="cerr" hidden></span>
+              <button type="submit">Post comment</button>
+            </form>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <script>
+  (function () {
+    var API = 'http://3.12.241.200:3001';
+    var params = new URLSearchParams(window.location.search);
+    var slug = params.get('slug');
+    var err = document.getElementById('err');
+    var root = document.getElementById('root');
+    var likeKey = slug ? 'liked_' + slug : '';
+
+    function heartOut() {
+      return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.35-9-8.5C.58 9.58 2.5 6.5 6 6.5c1.74 0 3.41.81 4.5 2.09C11.59 7.31 13.26 6.5 15 6.5c3.5 0 5.42 3.08 3 6C19 16.65 12 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+    }
+    function heartIn() {
+      return '<svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 21s-7-4.35-9-8.5C.58 9.58 2.5 6.5 6 6.5c1.74 0 3.41.81 4.5 2.09C11.59 7.31 13.26 6.5 15 6.5c3.5 0 5.42 3.08 3 6C19 16.65 12 21 12 21Z"/></svg>';
+    }
+
+    function fmtTs(iso) {
+      var d = new Date(iso);
+      return isNaN(d.getTime()) ? String(iso) : d.toLocaleString();
+    }
+
+    function readMin(md, fallback) {
+      var w = String(md || '').trim().split(/\s+/).filter(Boolean).length;
+      var m = Math.max(1, Math.ceil(w / 200));
+      return typeof fallback === 'number' && fallback > 0 ? fallback : m;
+    }
+
+    function mdUrl(p) {
+      if (p.filepath) return p.filepath;
+      return '/posts/' + encodeURIComponent(p.filename || '');
+    }
+
+    function readJsonResponse(r) {
+      return r.text().then(function (t) {
+        var j = null;
+        try {
+          j = t ? JSON.parse(t) : null;
+        } catch (e) {
+          j = null;
+        }
+        if (!r.ok) {
+          var msg = (j && (j.error || j.message)) || ('HTTP ' + r.status);
+          var err = new Error(msg);
+          err.body = j;
+          throw err;
+        }
+        return j;
+      });
+    }
+
+    if (!slug) {
+      err.hidden = false;
+      err.textContent = 'Missing slug in URL.';
+      return;
+    }
+
+    var liked = window.localStorage.getItem(likeKey) === '1';
+    var likeBtn = document.getElementById('like-btn');
+    var likeIc = document.getElementById('like-ic');
+    var likeN = document.getElementById('like-n');
+
+    function paintLike(count) {
+      likeN.textContent = String(count);
+      likeIc.innerHTML = liked ? heartIn() : heartOut();
+      likeIc.style.color = liked ? 'var(--accent)' : '#333';
+      likeBtn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+      likeBtn.disabled = liked;
+    }
+
+    function loadLikes() {
+      var le = document.getElementById('like-err');
+      if (le) { le.hidden = true; le.textContent = ''; }
+      return fetch(API + '/api/likes/' + encodeURIComponent(slug))
+        .then(readJsonResponse)
+        .then(function (d) {
+          paintLike(typeof d.count === 'number' ? d.count : 0);
+        })
+        .catch(function (e) {
+          if (le) {
+            le.hidden = false;
+            le.textContent = (e && e.message) ? e.message : 'Could not load likes.';
+          }
+          paintLike(0);
+        });
+    }
+
+    likeBtn.addEventListener('click', function () {
+      if (liked) return;
+      var le = document.getElementById('like-err');
+      if (le) { le.hidden = true; le.textContent = ''; }
+      fetch(API + '/api/likes/' + encodeURIComponent(slug), { method: 'POST' })
+        .then(readJsonResponse)
+        .then(function (d) {
+          liked = true;
+          window.localStorage.setItem(likeKey, '1');
+          paintLike(typeof d.count === 'number' ? d.count : parseInt(likeN.textContent, 10) + 1);
+        })
+        .catch(function (e) {
+          if (le) {
+            le.hidden = false;
+            le.textContent = (e && e.message) ? e.message : 'Could not save like.';
+          }
+        });
+    });
+
+    var clist = document.getElementById('clist');
+    function renderComments(arr) {
+      clist.innerHTML = '';
+      if (!arr.length) {
+        var p = document.createElement('p');
+        p.className = 'comment-msg';
+        p.style.opacity = '0.65';
+        p.textContent = 'No comments yet.';
+        clist.appendChild(p);
+        return;
+      }
+      arr.forEach(function (c) {
+        var card = document.createElement('div');
+        card.className = 'comment';
+        var top = document.createElement('div');
+        top.className = 'comment-top';
+        var n = document.createElement('span');
+        n.className = 'comment-name';
+        n.textContent = c.name;
+        var t = document.createElement('span');
+        t.className = 'comment-ts';
+        t.textContent = fmtTs(c.timestamp);
+        top.appendChild(n);
+        top.appendChild(t);
+        var m = document.createElement('div');
+        m.className = 'comment-msg';
+        m.textContent = c.message;
+        card.appendChild(top);
+        card.appendChild(m);
+        clist.appendChild(card);
+      });
+    }
+
+    function loadComments() {
+      return fetch(API + '/api/comments/' + encodeURIComponent(slug))
+        .then(readJsonResponse)
+        .then(function (d) { renderComments(Array.isArray(d) ? d : []); })
+        .catch(function () { renderComments([]); });
+    }
+
+    document.getElementById('cform').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var ce = document.getElementById('cerr');
+      ce.hidden = true;
+      var name = document.getElementById('cname').value.trim();
+      var message = document.getElementById('cmsg').value.trim();
+      if (!name || !message) {
+        ce.hidden = false;
+        ce.textContent = 'Name and message are required.';
+        return;
+      }
+      fetch(API + '/api/comments/' + encodeURIComponent(slug), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, message: message }),
+      })
+        .then(readJsonResponse)
+        .then(function () {
+          document.getElementById('cmsg').value = '';
+          return loadComments();
+        })
+        .catch(function (x) {
+          ce.hidden = false;
+          ce.textContent = (x && x.message) ? x.message : 'Could not post.';
+        });
+    });
+
+    fetch('/posts.json')
+      .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+      .then(function (posts) {
+        var post = null;
+        if (Array.isArray(posts)) {
+          for (var i = 0; i < posts.length; i++) {
+            if (posts[i].slug === slug) { post = posts[i]; break; }
+          }
+        }
+        if (!post) throw new Error();
+        return fetch(mdUrl(post)).then(function (r) {
+          if (!r.ok) throw new Error();
+          return r.text().then(function (md) { return { post: post, md: md }; });
+        });
+      })
+      .then(function (b) {
+        var post = b.post;
+        var md = b.md;
+        document.title = post.title + ' — Blog';
+        document.getElementById('title').textContent = post.title;
+        document.getElementById('date').textContent = new Date(post.date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('read').textContent = readMin(md, post.readTime) + ' min read';
+
+        var th = document.getElementById('tags');
+        th.innerHTML = '';
+        (post.tags || []).forEach(function (t) {
+          var s = document.createElement('span');
+          s.className = 'tag';
+          s.textContent = t;
+          th.appendChild(s);
+        });
+
+        var body = md.replace(/^\s*#[^\n]+\n+/, '');
+        document.getElementById('md').innerHTML = marked.parse(body);
+
+        root.hidden = false;
+        liked = window.localStorage.getItem(likeKey) === '1';
+        likeN.textContent = '0';
+        paintLike(0);
+        return Promise.all([loadLikes(), loadComments()]);
+      })
+      .catch(function () {
+        err.hidden = false;
+        err.textContent = 'Could not load this post.';
+      });
+  })();
+  </script>
+</body>
+</html>

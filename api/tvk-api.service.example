@@ -1,0 +1,17 @@
+[Unit]
+Description=Portfolio blog API (Express on 3001)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/tmp/site
+ExecStart=/usr/bin/node /tmp/site/api/server.js
+Restart=on-failure
+RestartSec=3
+Environment=NODE_ENV=production
+StandardOutput=append:/tmp/api.log
+StandardError=append:/tmp/api.log
+
+[Install]
+WantedBy=multi-user.target
