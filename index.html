@@ -93,6 +93,59 @@
     }
     .nav-links a:hover { color: #ff5000; }
 
+    @keyframes updatesGlowRun {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
+    }
+    @keyframes updatesTextHue {
+      0% { color: #9333ea; filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.55)); }
+      25% { color: #0891b2; filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.5)); }
+      50% { color: #ff5000; filter: drop-shadow(0 0 6px rgba(255, 80, 0, 0.55)); }
+      75% { color: #db2777; filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.5)); }
+      100% { color: #9333ea; filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.55)); }
+    }
+    .nav-links a.nav-updates,
+    .nav-overlay a.nav-updates {
+      position: relative;
+      font-weight: 500;
+      animation: updatesTextHue 4s ease-in-out infinite;
+    }
+    .nav-links a.nav-updates::after,
+    .nav-overlay a.nav-updates::after {
+      content: '';
+      position: absolute;
+      left: -2px;
+      right: -2px;
+      bottom: -4px;
+      height: 2px;
+      background: linear-gradient(90deg, #a855f7, #22d3ee, #ff5000, #ec4899, #a855f7);
+      background-size: 400% 100%;
+      animation: updatesGlowRun 3.5s linear infinite;
+      opacity: 0.85;
+    }
+    .nav-links a.nav-updates:hover,
+    .nav-overlay a.nav-updates:hover {
+      animation-play-state: paused;
+    }
+    .nav-links a.nav-updates:hover::after,
+    .nav-overlay a.nav-updates:hover::after {
+      animation-play-state: paused;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav-links a.nav-updates,
+      .nav-overlay a.nav-updates {
+        animation: none;
+        color: #ff5000;
+        filter: none;
+      }
+      .nav-links a.nav-updates::after,
+      .nav-overlay a.nav-updates::after {
+        animation: none;
+        background: #ff5000;
+        background-size: 100% 100%;
+      }
+    }
+
     .nav-sep {
       color: #ccc;
       user-select: none;
@@ -1210,7 +1263,7 @@
         <a href="#cosmic">COSMIC</a><span class="nav-sep">·</span>
         <a href="#stack">Stack</a><span class="nav-sep">·</span>
         <a href="/blog/">Blog</a><span class="nav-sep">·</span>
-        <a href="/updates/">Updates</a><span class="nav-sep">·</span>
+        <a href="/updates/" class="nav-updates">Updates</a><span class="nav-sep">·</span>
         <a href="#contact">Contact</a>
       </nav>
       <div class="nav-pill" aria-live="polite">
@@ -1229,7 +1282,7 @@
     <a href="#cosmic">COSMIC</a>
     <a href="#stack">Stack</a>
     <a href="/blog/">Blog</a>
-    <a href="/updates/">Updates</a>
+    <a href="/updates/" class="nav-updates">Updates</a>
     <a href="#contact">Contact</a>
   </div>
 
