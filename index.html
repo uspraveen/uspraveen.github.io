@@ -97,18 +97,11 @@
       0% { background-position: 0% 50%; }
       100% { background-position: 400% 50%; }
     }
-    @keyframes updatesTextHue {
-      0% { color: #9333ea; filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.55)); }
-      25% { color: #0891b2; filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.5)); }
-      50% { color: #ff5000; filter: drop-shadow(0 0 6px rgba(255, 80, 0, 0.55)); }
-      75% { color: #db2777; filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.5)); }
-      100% { color: #9333ea; filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.55)); }
-    }
     .nav-links a.nav-updates,
     .nav-overlay a.nav-updates {
       position: relative;
       font-weight: 500;
-      animation: updatesTextHue 4s ease-in-out infinite;
+      color: #666666;
     }
     .nav-links a.nav-updates::after,
     .nav-overlay a.nav-updates::after {
@@ -125,7 +118,7 @@
     }
     .nav-links a.nav-updates:hover,
     .nav-overlay a.nav-updates:hover {
-      animation-play-state: paused;
+      color: #ff5000;
     }
     .nav-links a.nav-updates:hover::after,
     .nav-overlay a.nav-updates:hover::after {
@@ -134,9 +127,7 @@
     @media (prefers-reduced-motion: reduce) {
       .nav-links a.nav-updates,
       .nav-overlay a.nav-updates {
-        animation: none;
         color: #ff5000;
-        filter: none;
       }
       .nav-links a.nav-updates::after,
       .nav-overlay a.nav-updates::after {

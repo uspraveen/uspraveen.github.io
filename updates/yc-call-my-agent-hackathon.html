@@ -6,7 +6,7 @@
   <title>YC Call My Agent Hackathon — Updates</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/updates/site-shell.css" />
   <link rel="stylesheet" href="/updates/common.css" />
 </head>
@@ -47,56 +47,76 @@
 
   <main class="updates-main">
     <article class="wrap wrap--article">
-      <div class="article-glass glass-panel">
+      <a class="article-back" href="/updates/">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        All updates
+      </a>
+
+      <header class="article-header">
         <p class="hero-label">YC #CallMyAgent</p>
         <h1 class="hero-title">YC Call My Agent Hackathon</h1>
         <p class="article-meta">May 17, 2026 · With Arunachalam Barathidasan</p>
+        <p class="article-dek">Browser agents do not have a browsing problem. They have a memory problem — and we shipped a fix at YC in one weekend.</p>
+      </header>
 
-        <div class="prose">
-          <p>Built <strong>Cosmic Browser Memory</strong> at the YC <strong>#CallMyAgent</strong> hackathon with <strong>Arunachalam Barathidasan</strong>.</p>
+      <div class="prose">
+        <p>Built <strong>Cosmic Browser Memory</strong> at the YC <strong>#CallMyAgent</strong> hackathon with <strong>Arunachalam Barathidasan</strong>.</p>
 
-          <p>Browser agents do not have a browsing problem. They have a <strong>memory problem</strong>.</p>
+        <p><strong>Cosmic Browser Memory</strong> is a web traversal memory layer for browser agents. On each run it captures page states, screenshots, visual anchors, actions, coordinates, failures, fixes, and successful workflows end to end.</p>
 
-          <p><strong>Cosmic Browser Memory</strong> is a web traversal memory layer for browser agents. On each run it captures:</p>
-          <ul>
-            <li>Page states and screenshots</li>
-            <li>Visual anchors on the page</li>
-            <li>Actions, coordinates, failures, and fixes</li>
-            <li>Successful workflows end to end</li>
-          </ul>
+        <ul>
+          <li>Page states and screenshots</li>
+          <li>Visual anchors on the page</li>
+          <li>Actions, coordinates, failures, and fixes</li>
+          <li>Successful workflows end to end</li>
+        </ul>
 
-          <div class="stat-row">
-            <span><strong>First run (cold):</strong> 1–2 minutes — repeated vision and planning calls</span>
-            <span><strong>After indexing (similar task):</strong> 20–40 seconds — often ~3x faster, one or zero vision calls</span>
-            <span><strong>Browser Use 2.0 (same task):</strong> 28–44 seconds — COSMIC's edge is compounding memory, not a single-run race</span>
-          </div>
-
-          <p>The bigger idea: Google indexed pages for humans. <strong>COSMIC indexes actions for agents.</strong></p>
-
-          <p>
-            <a href="https://lnkd.in/gh9vibz5" target="_blank" rel="noopener noreferrer">Demo</a>
-            ·
-            <a href="https://lnkd.in/gPhuuQpd" target="_blank" rel="noopener noreferrer">More info</a>
-          </p>
-
-          <p class="thanks">
-            Thanks to YC, AgentPhone (Manav Modi), Browser Use (Reagan Hsu), and supermemory (Dhravya Shah).
-          </p>
+        <div class="stat-row">
+          <span><strong>First run (cold):</strong> 1–2 minutes — repeated vision and planning calls</span>
+          <span><strong>After indexing (similar task):</strong> 20–40 seconds — often ~3x faster, one or zero vision calls</span>
+          <span><strong>Browser Use 2.0 (same task):</strong> 28–44 seconds — COSMIC's edge is compounding memory, not a single-run race</span>
         </div>
+
+        <p>The bigger idea: Google indexed pages for humans. <strong>COSMIC indexes actions for agents.</strong></p>
+
+        <p>
+          <a href="https://lnkd.in/gh9vibz5" target="_blank" rel="noopener noreferrer">Demo</a>
+          ·
+          <a href="https://lnkd.in/gPhuuQpd" target="_blank" rel="noopener noreferrer">More info</a>
+        </p>
+
+        <p class="thanks">
+          Thanks to YC, AgentPhone (Manav Modi), Browser Use (Reagan Hsu), and supermemory (Dhravya Shah).
+        </p>
       </div>
 
-      <section class="gallery glass-panel" aria-label="Event photos" style="padding: clamp(24px, 4vw, 36px);">
-        <p class="gallery-label">Event photos</p>
-        <div class="gallery-grid gallery-grid--three">
-          <div class="gallery-cell g-full">
-            <img src="/updates/images/event-yc-exterior.jpg" alt="Y Combinator headquarters exterior at 580" loading="lazy" />
-          </div>
-          <div class="gallery-cell">
-            <img src="/updates/images/event-hackathon-hall.jpg" alt="Call My Agent hackathon workspace at YC" loading="lazy" />
-          </div>
-          <div class="gallery-cell gallery-cell--portrait">
-            <img src="/updates/images/event-signage.jpg" alt="Call My Agent Hackathon signage at YC" loading="lazy" />
-          </div>
+      <section class="gallery" aria-label="Event photos">
+        <div class="gallery-heading">
+          <p class="gallery-label">Event photos</p>
+          <p class="gallery-sub">YC HQ · Call My Agent Hackathon · May 2026</p>
+        </div>
+
+        <div class="gallery-grid gallery-grid--split">
+          <figure class="gallery-figure gallery-figure--hero gallery-figure--wide">
+            <div class="figure-frame">
+              <img src="/updates/images/event-yc-exterior.jpg" alt="Y Combinator headquarters exterior at 580" loading="lazy" />
+            </div>
+            <figcaption>Fig. 01 — Y Combinator headquarters, 580 Howard Street</figcaption>
+          </figure>
+
+          <figure class="gallery-figure gallery-figure--wide">
+            <div class="figure-frame">
+              <img src="/updates/images/event-hackathon-hall.jpg" alt="Hackathon participants working at YC" loading="lazy" />
+            </div>
+            <figcaption>Fig. 02 — Main workspace during the hackathon</figcaption>
+          </figure>
+
+          <figure class="gallery-figure gallery-figure--portrait">
+            <div class="figure-frame">
+              <img src="/updates/images/event-signage.jpg" alt="Call My Agent Hackathon digital signage" loading="lazy" />
+            </div>
+            <figcaption>Fig. 03 — Event signage at YC</figcaption>
+          </figure>
         </div>
       </section>
     </article>
