@@ -1179,6 +1179,156 @@
       color: #444;
     }
 
+    #tamil {
+      background: #fff;
+      border-top: 1px solid #ebebeb;
+    }
+
+    .tamil-lede {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #666;
+      max-width: 720px;
+      margin-bottom: 48px;
+    }
+
+    .tamil-flow {
+      display: grid;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .tamil-block {
+      border-left: 3px solid #ebebeb;
+      padding-left: clamp(20px, 3vw, 28px);
+      transition: border-color 0.2s ease;
+    }
+    .tamil-block:hover {
+      border-left-color: #ff5000;
+    }
+
+    .tamil-block-label {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ff5000;
+      margin-bottom: 12px;
+    }
+
+    .tamil-block-body {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #444;
+      max-width: 780px;
+    }
+
+    .tamil-arch-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .tamil-arch-list li {
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.65;
+      color: #444;
+      padding-left: 18px;
+      position: relative;
+    }
+    .tamil-arch-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      color: #ff5000;
+    }
+    .tamil-arch-list code {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: #0a0a0a;
+    }
+
+    .tamil-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 900px) {
+      .tamil-metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .tamil-metrics { grid-template-columns: 1fr; }
+    }
+
+    .tamil-metric {
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      padding: 24px;
+      background: #fff;
+      transition: border-color 0.2s ease;
+    }
+    .tamil-metric:hover {
+      border-color: #ff5000;
+    }
+    .tamil-metric-value {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 600;
+      color: #ff5000;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .tamil-metric-label {
+      font-size: 13px;
+      font-weight: 400;
+      color: #888;
+      line-height: 1.45;
+    }
+
+    .tamil-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .tamil-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      padding: 14px 24px;
+      border-radius: 2px;
+      border: 1.5px solid #0a0a0a;
+      color: #0a0a0a;
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    }
+    .tamil-link:hover {
+      border-color: #ff5000;
+      color: #ff5000;
+    }
+    .tamil-link--primary {
+      background: #0a0a0a;
+      color: #fff;
+      border-color: #0a0a0a;
+    }
+    .tamil-link--primary:hover {
+      background: #ff5000;
+      border-color: #ff5000;
+      color: #fff;
+    }
+
     .contact-head {
       font-weight: 300;
       font-size: clamp(36px, 5vw, 56px);
@@ -1252,6 +1402,7 @@
         <a href="#story">Story</a><span class="nav-sep">·</span>
         <a href="#work">Work</a><span class="nav-sep">·</span>
         <a href="#cosmic">COSMIC</a><span class="nav-sep">·</span>
+        <a href="#tamil">Tamil NLP</a><span class="nav-sep">·</span>
         <a href="#stack">Stack</a><span class="nav-sep">·</span>
         <a href="/blog/">Blog</a><span class="nav-sep">·</span>
         <a href="/updates/" class="nav-updates">Updates</a><span class="nav-sep">·</span>
@@ -1271,6 +1422,7 @@
     <a href="#story">Story</a>
     <a href="#work">Work</a>
     <a href="#cosmic">COSMIC</a>
+    <a href="#tamil">Tamil NLP</a>
     <a href="#stack">Stack</a>
     <a href="/blog/">Blog</a>
     <a href="/updates/" class="nav-updates">Updates</a>
@@ -1451,6 +1603,62 @@
       </div>
     </section>
 
+    <section id="tamil" class="section reveal-section" aria-labelledby="tamil-title">
+      <div class="section-inner">
+        <p class="eyebrow stagger-child">RESEARCH · NLP</p>
+        <h2 class="chapter-title stagger-child" id="tamil-title">Tamil Classical Text Restoration System</h2>
+        <p class="tamil-lede stagger-child">Character-level spacing restoration for Sangam literature and ancient Tamil inscriptions — 20× better than seq2seq baselines, fully deterministic, CPU-native.</p>
+
+        <div class="tamil-flow">
+          <article class="tamil-block stagger-child">
+            <p class="tamil-block-label">The Problem</p>
+            <p class="tamil-block-body">Classical Tamil texts (Sangam literature, ancient inscriptions) suffer from spacing degradation — words merge together when spaces are lost over centuries of manuscript copying and digitization. Existing approaches using seq2seq models (ByT5) achieved only <strong>11.95% CER</strong> with structural failures: repetition loops, hallucination, and character corruption.</p>
+          </article>
+          <article class="tamil-block stagger-child">
+            <p class="tamil-block-label">The Insight</p>
+            <p class="tamil-block-body">Reframed the problem from sequence-to-sequence generation to character-level insertion tagging. Instead of generating the entire output text, the model only needs to decide at each character position: insert a space here, or don't. This eliminates repetition loops and hallucination by design.</p>
+          </article>
+          <article class="tamil-block stagger-child">
+            <p class="tamil-block-label">Architecture</p>
+            <ul class="tamil-arch-list">
+              <li><code>CharConvTagger</code> — 12-layer dilated 1D CNN (~15M parameters, CPU-native inference)</li>
+              <li>Tamil grapheme-constrained decoding — Unicode validity enforced as a hard constraint</li>
+              <li>Vocabulary-expanding domain adaptation for handling diverse text domains</li>
+              <li>Deterministic n-best reranking (no LLM, fully interpretable)</li>
+            </ul>
+          </article>
+          <article class="tamil-block stagger-child">
+            <p class="tamil-block-label">Results</p>
+            <p class="tamil-block-body"><strong>0.59% CER</strong> — a 20× improvement over the ByT5 baseline (11.95%). Repetition loops and hallucination eliminated entirely. Runs on CPU with no GPU required. Fully deterministic and interpretable.</p>
+          </article>
+        </div>
+
+        <div class="tamil-metrics stagger-child">
+          <div class="tamil-metric">
+            <p class="tamil-metric-value">0.59%</p>
+            <p class="tamil-metric-label">Character Error Rate</p>
+          </div>
+          <div class="tamil-metric">
+            <p class="tamil-metric-value">20×</p>
+            <p class="tamil-metric-label">Improvement over ByT5</p>
+          </div>
+          <div class="tamil-metric">
+            <p class="tamil-metric-value">CPU</p>
+            <p class="tamil-metric-label">No GPU required</p>
+          </div>
+          <div class="tamil-metric">
+            <p class="tamil-metric-value">0</p>
+            <p class="tamil-metric-label">Hallucination loops</p>
+          </div>
+        </div>
+
+        <div class="tamil-cta-row stagger-child">
+          <a class="tamil-link tamil-link--primary" href="https://huggingface.co/spaces/Praveenrajus/tamil-spacing-restorer-demo" target="_blank" rel="noopener noreferrer">Live Demo →</a>
+          <a class="tamil-link" href="https://huggingface.co/Praveenrajus/tamil-spacing-restorer" target="_blank" rel="noopener noreferrer">Hugging Face Model</a>
+        </div>
+      </div>
+    </section>
+
     <section id="stack" class="section reveal-section">
       <div class="section-inner">
         <p class="eyebrow stagger-child">THE STACK</p>
@@ -1553,6 +1761,11 @@
         <p class="eyebrow stagger-child">PROJECTS</p>
         <h2 class="chapter-title stagger-child">Shipped Systems</h2>
         <div class="proj-grid stagger-child">
+          <article class="proj-card">
+            <p class="proj-label proj-label--accent">RELEASED — OPEN SOURCE</p>
+            <h3 class="tl-company" style="margin-bottom: 12px;">Tamil Text Restoration</h3>
+            <p class="proj-body">Character-level spacing restoration for classical Tamil. 0.59% CER — 20× better than ByT5. CPU-native, deterministic, no hallucination. <a href="#tamil" style="color: #ff5000; font-weight: 500;">Read more →</a></p>
+          </article>
           <article class="proj-card">
             <p class="proj-label proj-label--accent">FOUNDER — ACTIVE</p>
             <h3 class="tl-company" style="margin-bottom: 12px;">LearnChain</h3>
@@ -1689,7 +1902,7 @@ var termHost = document.getElementById('hero-term-host');
       { kind: 'out', text: 'DARPA / NSF / DoD Funded Research' },
       { kind: 'blank' },
       { kind: 'prompt', text: '$ ls projects/' },
-      { kind: 'out', text: 'LearnChain/  InfraDoc/  COSMIC/  Supersense/' },
+      { kind: 'out', text: 'LearnChain/  InfraDoc/  COSMIC/  TamilNLP/' },
       { kind: 'blank' },
       { kind: 'prompt', text: '$ cat COSMIC/status.md' },
       { kind: 'out', text: 'Multi-Agent AI OS — Public Beta' },
