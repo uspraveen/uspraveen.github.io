@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Post — Praveen Sundar</title>
+  <title>Post - Praveen Sundar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -496,7 +496,7 @@
       .then(function (b) {
         var post = b.post;
         var md = b.md;
-        document.title = post.title + ' — Blog';
+        document.title = post.title + ' - Blog';
         document.getElementById('title').textContent = post.title;
         document.getElementById('date').textContent = new Date(post.date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         document.getElementById('read').textContent = readMin(md, post.readTime) + ' min read';

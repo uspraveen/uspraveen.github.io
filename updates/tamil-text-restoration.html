@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tamil Classical Text Restoration — Updates</title>
+  <title>Tamil Classical Text Restoration - Updates</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -119,13 +119,13 @@
         </div>
 
         <h2 id="insight">Core Insight and Architecture</h2>
-        <p>The standard approach would be seq2seq — ByT5-large as the byte-level encoder-decoder. We started there. The baseline CER was <strong>11.95%</strong>, and we observed structural failure modes: repetition loops, leading-chunk drops, and hallucinated content. These are properties of autoregressive generation over long Tamil byte sequences, not fixable with prompt engineering or decoding tricks.</p>
+        <p>The standard approach would be seq2seq - ByT5-large as the byte-level encoder-decoder. We started there. The baseline CER was <strong>11.95%</strong>, and we observed structural failure modes: repetition loops, leading-chunk drops, and hallucinated content. These are properties of autoregressive generation over long Tamil byte sequences, not fixable with prompt engineering or decoding tricks.</p>
         <p>The key intellectual move was to reframe restoration as <strong>character-level insertion tagging</strong>, not generation.</p>
         <p>Tamil text restoration is near-monotonic: the output is always the input plus insertions of spaces, virama marks, and vowel signs, occasionally with character substitutions. Given this, we replaced the seq2seq model with a tagger that assigns one discrete label to each input character:</p>
         <ul>
-          <li><code>K</code> — keep as-is</li>
-          <li><code>D</code> — delete</li>
-          <li><code>S:x</code> — substitute with character x</li>
+          <li><code>K</code> - keep as-is</li>
+          <li><code>D</code> - delete</li>
+          <li><code>S:x</code> - substitute with character x</li>
           <li>Any of the above with a suffix string (space, virama <span class="tamil-text">்</span>, vowel sign, combinations)</li>
         </ul>
         <p>This makes repetition loops and content hallucination structurally impossible. The model cannot invent characters outside the label vocabulary. Output length is bounded by the input.</p>
@@ -133,7 +133,7 @@
 
         <!-- C. Tagging visualization -->
         <div class="viz reveal">
-          <p class="viz-label">Insertion tagging — annotated example</p>
+          <p class="viz-label">Insertion tagging - annotated example</p>
           <div class="viz-body tag-diagram">
             <div class="tag-row">
               <div class="tag-cell"><span class="tag-badge tag-badge--k">K</span><span class="tag-char tamil-text">த</span><span class="tag-insert"></span></div>
@@ -157,11 +157,11 @@
           </div>
         </div>
 
-        <p><strong>Architecture:</strong> CharConvTagger — a 12-layer dilated 1D CNN with exponentially cycling dilation factors (1, 2, 4, 8, 16, 32, 64, 128, 1, 2, ...), 384-dim hidden, GELU activations, residual connections, LayerNorm, linear projection head. ~15M parameters. <strong>225 Unicode characters</strong> in vocabulary, <strong>48 alignment-derived label types</strong>. Runs on CPU at inference. Linear time over sequence length, receptive field covering ~250 characters. Max sequence length: 2,048 characters.</p>
+        <p><strong>Architecture:</strong> CharConvTagger - a 12-layer dilated 1D CNN with exponentially cycling dilation factors (1, 2, 4, 8, 16, 32, 64, 128, 1, 2, ...), 384-dim hidden, GELU activations, residual connections, LayerNorm, linear projection head. ~15M parameters. <strong>225 Unicode characters</strong> in vocabulary, <strong>48 alignment-derived label types</strong>. Runs on CPU at inference. Linear time over sequence length, receptive field covering ~250 characters. Max sequence length: 2,048 characters.</p>
 
         <!-- D. Architecture diagram -->
         <div class="viz reveal">
-          <p class="viz-label">CharConvTagger — layer stack</p>
+          <p class="viz-label">CharConvTagger - layer stack</p>
           <div class="viz-body">
             <div class="arch-stack">
               <p class="arch-stack-title">Dilated 1D CNN · 12 layers · cycling dilation</p>
@@ -173,7 +173,7 @@
               <div class="arch-layer"><span class="arch-layer-dil">32</span><div class="arch-layer-bar" style="width:55%"></div><span class="arch-layer-label">Conv+GELU</span></div>
               <div class="arch-layer"><span class="arch-layer-dil">64</span><div class="arch-layer-bar" style="width:72%"></div><span class="arch-layer-label">Conv+GELU</span></div>
               <div class="arch-layer"><span class="arch-layer-dil">128</span><div class="arch-layer-bar" style="width:95%"></div><span class="arch-layer-label">Conv+GELU</span></div>
-              <p class="arch-cycle-marker">↻ cycle reset — dilation pattern repeats</p>
+              <p class="arch-cycle-marker">↻ cycle reset - dilation pattern repeats</p>
               <div class="arch-layer"><span class="arch-layer-dil">1</span><div class="arch-layer-bar" style="width:12%"></div><span class="arch-layer-label">Conv+GELU</span></div>
               <div class="arch-layer"><span class="arch-layer-dil">2</span><div class="arch-layer-bar" style="width:18%"></div><span class="arch-layer-label">Conv+GELU</span></div>
               <div class="arch-layer"><span class="arch-layer-dil">4</span><div class="arch-layer-bar" style="width:24%"></div><span class="arch-layer-label">Conv+GELU</span></div>
@@ -194,19 +194,19 @@
 
         <h2 id="training">Training</h2>
         <ul>
-          <li>Curriculum bucketing via <code>LengthBucketBatchSampler</code> — grouped sequences by length to minimize padding waste, critical for long classical stanzas (up to 2,048 characters)</li>
-          <li>Oracle label analysis confirmed near-zero oracle CER — the tagger framework was theoretically sound before a single training run</li>
+          <li>Curriculum bucketing via <code>LengthBucketBatchSampler</code> - grouped sequences by length to minimize padding waste, critical for long classical stanzas (up to 2,048 characters)</li>
+          <li>Oracle label analysis confirmed near-zero oracle CER - the tagger framework was theoretically sound before a single training run</li>
           <li>Multi-seed training with logit ensembling: averaged raw logits from independent runs before decoding, providing calibration improvement without any inference overhead beyond a single model load</li>
           <li>CRF head added to capture adjacent-label dependencies</li>
           <li>Focal loss and class-weighting experiments for the rare substitution labels (~1% of positions)</li>
         </ul>
 
         <h2 id="decoding">Constrained Decoding</h2>
-        <p>Even with the tagger, a subtle failure mode appeared on Agasthiyar medical Tamil: Tamil dependent vowel signs (<span class="tamil-text">ே</span>, <span class="tamil-text">ெ</span>, <span class="tamil-text">ை</span>, etc.) appearing after word boundaries — Unicode-valid but Tamil-grapheme-invalid fragments like <span class="tamil-text">சாற்றின் <span class="orphan-mark">ே</span>னதை</span> or <span class="tamil-text">பிழைக்கவ் <span class="orphan-mark">ே</span>்ண்டி</span>.</p>
+        <p>Even with the tagger, a subtle failure mode appeared on Agasthiyar medical Tamil: Tamil dependent vowel signs (<span class="tamil-text">ே</span>, <span class="tamil-text">ெ</span>, <span class="tamil-text">ை</span>, etc.) appearing after word boundaries - Unicode-valid but Tamil-grapheme-invalid fragments like <span class="tamil-text">சாற்றின் <span class="orphan-mark">ே</span>னதை</span> or <span class="tamil-text">பிழைக்கவ் <span class="orphan-mark">ே</span>்ண்டி</span>.</p>
         <p>We implemented <strong>Tamil grapheme-constrained decoding</strong>: at each position, the decoder walks the ranked label list and accepts only the highest-scoring label whose emitted segment keeps the output a valid Tamil grapheme sequence. A repair heuristic reattaches orphan marks to the nearest preceding valid consonant rather than silently dropping them.</p>
         <p>This is a hard constraint enforced during inference, not a post-processing filter. Zero orphan vowel signs in all tested outputs after this change. The release includes a regression test for the Agasthiyar line that originally exposed this issue.</p>
 
-        <!-- E. Flowchart — inline SVG -->
+        <!-- E. Flowchart - inline SVG -->
         <div class="viz reveal">
           <p class="viz-label">Grapheme-Constrained Decoding Flow</p>
           <div class="viz-body decode-flow-wrap">
@@ -280,7 +280,7 @@
 
         <!-- F. Domain adaptation visual -->
         <div class="viz reveal">
-          <p class="viz-label">Vocabulary expansion — embedding matrix</p>
+          <p class="viz-label">Vocabulary expansion - embedding matrix</p>
           <div class="viz-body domain-viz">
             <div>
               <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#888;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">Before expansion</p>
@@ -320,7 +320,7 @@
         <ul>
           <li><strong>Beam generation:</strong> Constrained beam decoder explores top-k label alternatives per position, maintaining a beam of distinct output strings with cumulative log-probabilities</li>
           <li><strong>Multi-signal scorer</strong> combining: normalized model log-probability; Tamil grapheme validity score; domain lexicon coverage over 7,782 domain word forms; character 4-gram LM score; suspicious fragment penalty; placeholder fragmentation penalty</li>
-          <li><strong>Lexicon repair:</strong> For candidates with high domain lexicon context score, Levenshtein nearest-neighbor search over domain vocabulary proposes token-level repairs — gated by domain-context threshold</li>
+          <li><strong>Lexicon repair:</strong> For candidates with high domain lexicon context score, Levenshtein nearest-neighbor search over domain vocabulary proposes token-level repairs - gated by domain-context threshold</li>
         </ul>
         <p>Reranking improved full Agasthiyar corpus: 1.07% → 0.76% CER, 81.0% → 85.75% exact match. Optional reranking improves Agasthiyar held-out validation from <strong>5.15% → 5.06% CER</strong>.</p>
 
@@ -360,7 +360,7 @@
                 <p class="rerank-score">−0.05</p>
               </div>
               <div class="rerank-final">
-                <p class="rerank-final-label">Combined final score — candidate ranked #1</p>
+                <p class="rerank-final-label">Combined final score - candidate ranked #1</p>
                 <p class="rerank-final-value">2.10</p>
               </div>
             </div>
@@ -408,11 +408,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>ByT5-large baseline</td><td>11.95%</td><td>—</td><td>—</td></tr>
+              <tr><td>ByT5-large baseline</td><td>11.95%</td><td>-</td><td>-</td></tr>
               <tr><td>CharConvTagger (greedy)</td><td class="hl">0.59%</td><td>63.4%</td><td>0.0%</td></tr>
               <tr><td>CharConvTagger + rerank (general)</td><td class="hl">0.59%</td><td>63.4%</td><td>0.0%</td></tr>
               <tr><td>CharConvTagger (domain, fast)</td><td>5.14%</td><td>0.0%</td><td>0.0%</td></tr>
-              <tr><td>CharConvTagger (domain, rerank, held-out)</td><td class="hl">5.06%</td><td>—</td><td>0.0%</td></tr>
+              <tr><td>CharConvTagger (domain, rerank, held-out)</td><td class="hl">5.06%</td><td>-</td><td>0.0%</td></tr>
             </tbody>
           </table>
         </div>
@@ -422,7 +422,7 @@
         <ul>
           <li>Gated proprietary release on Hugging Face: <code>Praveenrajus/tamil-spacing-restorer</code></li>
           <li>Single-file weights (<code>model.pt</code>, ~82 MB)</li>
-          <li>Live playground: <code>Praveenrajus/tamil-spacing-restorer-demo</code> — with fast and advanced reranking mode</li>
+          <li>Live playground: <code>Praveenrajus/tamil-spacing-restorer-demo</code> - with fast and advanced reranking mode</li>
           <li>Structured Python inference package (<code>TamilSpacingRestorer</code>) with <code>restore()</code>, <code>restore_batch()</code>, <code>restore_with_details()</code> APIs</li>
           <li>Preliminary silver post-edit dataset for a planned second-stage LLM (modernization + translation layer)</li>
         </ul>
@@ -444,9 +444,9 @@
 
         <h2 id="interesting">What Makes This Interesting</h2>
         <ol>
-          <li><strong>The reframing is the contribution.</strong> The standard response to a failing seq2seq model is to scale up or tune decoding. But Tamil restoration is near-monotonic — the output is always the input plus insertions. That makes generation the wrong abstraction. Insertion tagging gives hard structural guarantees: no hallucination, no repetition loops, output length bounded by input. The interesting part is recognizing when a problem's structure lets you replace a 1B-parameter generator with a 15M-parameter tagger.</li>
-          <li><strong>Unicode-aware constrained decoding.</strong> Tamil Unicode has strict grapheme rules — dependent vowel signs must follow consonants. Enforcing these as hard constraints during inference, not as a post-processing filter, means catching invalid sequences before they're emitted. This required mapping the Unicode Tamil block onto label-sequence composition rules at the decoder level.</li>
-          <li><strong>Domain adaptation without vocabulary collapse.</strong> Standard fine-tuning on domain data with a fixed vocabulary fails when the domain introduces new character combinations. Expanding embedding and classification matrices mid-training — copying old weights by identity, initializing new rows from nearest-code neighbors — isn't something standard libraries handle by default. It required direct surgery on the model state dict.</li>
+          <li><strong>The reframing is the contribution.</strong> The standard response to a failing seq2seq model is to scale up or tune decoding. But Tamil restoration is near-monotonic - the output is always the input plus insertions. That makes generation the wrong abstraction. Insertion tagging gives hard structural guarantees: no hallucination, no repetition loops, output length bounded by input. The interesting part is recognizing when a problem's structure lets you replace a 1B-parameter generator with a 15M-parameter tagger.</li>
+          <li><strong>Unicode-aware constrained decoding.</strong> Tamil Unicode has strict grapheme rules - dependent vowel signs must follow consonants. Enforcing these as hard constraints during inference, not as a post-processing filter, means catching invalid sequences before they're emitted. This required mapping the Unicode Tamil block onto label-sequence composition rules at the decoder level.</li>
+          <li><strong>Domain adaptation without vocabulary collapse.</strong> Standard fine-tuning on domain data with a fixed vocabulary fails when the domain introduces new character combinations. Expanding embedding and classification matrices mid-training - copying old weights by identity, initializing new rows from nearest-code neighbors - isn't something standard libraries handle by default. It required direct surgery on the model state dict.</li>
           <li><strong>The reranker is interpretable and deployable.</strong> The n-best reranker produces scored candidates with full diagnostics (per-signal scores, repair traces) and adds no neural model at inference time. Explainable, debuggable, no GPU dependency for the reranker itself.</li>
         </ol>
       </div>
@@ -454,7 +454,7 @@
   </main>
 
   <footer class="site-footer">
-    PRAVEEN SUNDAR — AR, USA — Built with intent. <span id="footer-year"></span>
+    PRAVEEN SUNDAR - AR, USA - Built with intent. <span id="footer-year"></span>
   </footer>
   <script src="/updates/site-nav.js"></script>
   <script>
