@@ -308,17 +308,23 @@
       margin-top: 20px;
       font-size: 28px;
       line-height: 1.35;
-      min-height: 1.35em;
+      min-height: calc(2 * 1.35em);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      align-content: flex-start;
       opacity: 0;
       animation: heroIn 0.6s ease-out 240ms forwards;
     }
     .hero-type-prefix {
       font-weight: 400;
       color: #555;
+      line-height: 1.35;
     }
     .hero-type-text {
       font-weight: 600;
       color: #ff5000;
+      line-height: 1.35;
     }
 
     .hero-statement {
