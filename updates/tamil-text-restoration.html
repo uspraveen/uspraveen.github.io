@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tamil Classical Text Restoration — Updates</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/updates/site-shell.css" />
+  <link rel="stylesheet" href="/updates/common.css" />
+  <link rel="stylesheet" href="/updates/tamil-article.css" />
+</head>
+<body class="updates-page">
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <header class="site-nav" id="site-nav">
+    <a class="nav-brand" href="/">PRAVEEN SUNDAR</a>
+    <div class="nav-desktop">
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/#story">Story</a><span class="nav-sep">·</span>
+        <a href="/#work">Work</a><span class="nav-sep">·</span>
+        <a href="/#cosmic">COSMIC</a><span class="nav-sep">·</span>
+        <a href="/#stack">Stack</a><span class="nav-sep">·</span>
+        <a href="/blog/">Blog</a><span class="nav-sep">·</span>
+        <a href="/updates/" class="nav-updates">Updates</a><span class="nav-sep">·</span>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <div class="nav-pill" aria-live="polite">
+        <span class="nav-pill-dot" aria-hidden="true"></span>
+        <span>Building COSMIC</span>
+      </div>
+    </div>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="nav-overlay" id="nav-overlay" aria-hidden="true">
+    <a href="/#story">Story</a>
+    <a href="/#work">Work</a>
+    <a href="/#cosmic">COSMIC</a>
+    <a href="/#stack">Stack</a>
+    <a href="/blog/">Blog</a>
+    <a href="/updates/" class="nav-updates">Updates</a>
+    <a href="/#contact">Contact</a>
+  </div>
+
+  <main class="updates-main">
+    <article class="wrap wrap--article">
+      <a class="article-back" href="/#research">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to portfolio
+      </a>
+
+      <header class="article-header">
+        <p class="hero-label">Research</p>
+        <h1 class="hero-title">Tamil Classical Text Restoration System</h1>
+        <p class="article-meta">June 2026 · NLP · Classical Tamil</p>
+        <p class="article-dek">An end-to-end research and production system for restoring word boundaries and diacritics in classical Tamil, with domain adaptation for Siddha medical manuscripts.</p>
+      </header>
+
+      <!-- A. Hero before/after -->
+      <div class="hero-restore reveal" aria-label="Dramatic restoration example">
+        <div class="hero-restore-before tamil-text">தானானவயிததியததிலரெண்டு</div>
+        <svg class="hero-restore-arrow" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="22" fill="none" stroke="#ff5000" stroke-width="1.5" opacity="0.3"/>
+          <path d="M16 24h16M28 18l6 6-6 6" stroke="#ff5000" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="hero-restore-after tamil-text">தானான<span class="ins"> </span>வயித்தியத்தில்<span class="ins"> </span>ரெண்டு</div>
+        <p class="hero-restore-caption">Two characters become fifteen. Human readability collapses entirely.</p>
+      </div>
+
+      <!-- H. Pipeline -->
+      <div class="viz reveal">
+        <p class="viz-label">End-to-end pipeline</p>
+        <div class="viz-body">
+          <div class="pipeline">
+            <div class="pipeline-stage"><p class="pipeline-stage-num">01</p><p class="pipeline-stage-title">Input</p><p class="pipeline-stage-desc">Unspaced Tamil text</p></div>
+            <span class="pipeline-arrow" aria-hidden="true">→</span>
+            <div class="pipeline-stage"><p class="pipeline-stage-num">02</p><p class="pipeline-stage-title">CharConvTagger</p><p class="pipeline-stage-desc">12-layer dilated CNN</p></div>
+            <span class="pipeline-arrow" aria-hidden="true">→</span>
+            <div class="pipeline-stage"><p class="pipeline-stage-num">03</p><p class="pipeline-stage-title">Constrained Decode</p><p class="pipeline-stage-desc">Tamil grapheme validity</p></div>
+            <span class="pipeline-arrow" aria-hidden="true">→</span>
+            <div class="pipeline-stage"><p class="pipeline-stage-num">04</p><p class="pipeline-stage-title">N-Best Rerank</p><p class="pipeline-stage-desc">Multi-signal scorer</p></div>
+            <span class="pipeline-arrow" aria-hidden="true">→</span>
+            <div class="pipeline-stage"><p class="pipeline-stage-num">05</p><p class="pipeline-stage-title">Output</p><p class="pipeline-stage-desc">Restored Tamil</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prose">
+        <h2 id="problem">Problem</h2>
+        <p>Classical and Agasthiyar-style Tamil is commonly digitized without word spaces or vowel diacritic marks (due to historical manuscript conventions and OCR pipelines). The text <span class="tamil-text">தானானவயிததியததிலரெண்டு</span> looks nothing like its readable form <span class="tamil-text">தானான வயித்தியத்தில் ரெண்டு</span>. Two characters become fifteen. Human readability collapses entirely.</p>
+        <p>The task: map unspaced, partially diacritized Tamil to correctly spaced, fully restored Tamil. At scale, across a corpus of ~14,000 sentence pairs spanning modern and classical domains.</p>
+
+        <!-- B. Multiple examples -->
+        <div class="example-grid reveal">
+          <div class="example-card">
+            <p class="example-card-tag">Modern Tamil</p>
+            <p class="example-degraded tamil-text">நான்இப்போதொருசெய்தியைபடிக்கிறேன்</p>
+            <p class="example-restored tamil-text">நான்<span class="ins"> </span>இப்போது<span class="ins"> </span>ஒரு<span class="ins"> </span>செய்தியை<span class="ins"> </span>படிக்கிறேன்</p>
+          </div>
+          <div class="example-card">
+            <p class="example-card-tag">Classical / Sangam</p>
+            <p class="example-degraded tamil-text">யாதும்ஊரேயாவரும்கேளிர்</p>
+            <p class="example-restored tamil-text">யாதும்<span class="ins"> </span>ஊரே<span class="ins"> </span>யாவரும்<span class="ins"> </span>கேளிர்</p>
+          </div>
+          <div class="example-card">
+            <p class="example-card-tag">Agasthiyar Medical</p>
+            <p class="example-degraded tamil-text">இஞ்சிசாற்றிலவெந்தநெய்கலந்து</p>
+            <p class="example-restored tamil-text">இஞ்சி<span class="ins"> </span>சாற்றில்<span class="ins"> </span>வெந்த<span class="ins"> </span>நெய்<span class="ins"> </span>கலந்து</p>
+          </div>
+          <div class="example-card">
+            <p class="example-card-tag">Diacritic restoration</p>
+            <p class="example-degraded tamil-text">கண்ணதசன்படங்கள</p>
+            <p class="example-restored tamil-text">கண்ணதாசன்<span class="ins"> </span>படங்கள்</p>
+          </div>
+        </div>
+
+        <h2 id="insight">Core Insight and Architecture</h2>
+        <p>The standard approach would be seq2seq — ByT5-large as the byte-level encoder-decoder. We started there. The baseline CER was <strong>11.95%</strong>, and we observed structural failure modes: repetition loops, leading-chunk drops, and hallucinated content. These are properties of autoregressive generation over long Tamil byte sequences, not fixable with prompt engineering or decoding tricks.</p>
+        <p>The key intellectual move was to reframe restoration as <strong>character-level insertion tagging</strong>, not generation.</p>
+        <p>Tamil text restoration is near-monotonic: the output is always the input plus insertions of spaces, virama marks, and vowel signs, occasionally with character substitutions. Given this, we replaced the seq2seq model with a tagger that assigns one discrete label to each input character:</p>
+        <ul>
+          <li><code>K</code> — keep as-is</li>
+          <li><code>D</code> — delete</li>
+          <li><code>S:x</code> — substitute with character x</li>
+          <li>Any of the above with a suffix string (space, virama <span class="tamil-text">்</span>, vowel sign, combinations)</li>
+        </ul>
+        <p>This makes repetition loops and content hallucination structurally impossible. The model cannot invent characters outside the label vocabulary. Output length is bounded by the input.</p>
+        <p>We derived these labels from ~14,000 aligned pairs using edit-path alignment (Levenshtein editops), collapsing all alignment decisions into a compact per-character label set.</p>
+
+        <!-- C. Tagging visualization -->
+        <div class="viz reveal">
+          <p class="viz-label">Insertion tagging — annotated example</p>
+          <div class="viz-body tag-diagram">
+            <div class="tag-row">
+              <div class="tag-cell"><span class="tag-badge tag-badge--k">K</span><span class="tag-char tamil-text">த</span><span class="tag-insert"></span></div>
+              <div class="tag-cell"><span class="tag-badge tag-badge--k">K</span><span class="tag-char tamil-text">ா</span><span class="tag-insert"></span></div>
+              <div class="tag-cell"><span class="tag-badge tag-badge--k">K</span><span class="tag-char tamil-text">ன</span><span class="tag-insert"></span></div>
+              <div class="tag-cell"><span class="tag-badge tag-badge--k">K</span><span class="tag-char tamil-text">்</span><span class="tag-insert"></span></div>
+              <div class="tag-cell"><span class="tag-badge tag-badge--i">K+space</span><span class="tag-char tamil-text">ஆ</span><span class="tag-insert">+space</span></div>
+              <div class="tag-cell"><span class="tag-badge tag-badge--s">S:வ</span><span class="tag-char tamil-text">ன</span><span class="tag-insert">→வ</span></div>
+              <div class="tag-cell"><span class="tag-badge tag-badge--k">K</span><span class="tag-char tamil-text">வ</span><span class="tag-insert"></span></div>
+              <div class="tag-cell"><span class="tag-badge tag-badge--i">K+ி</span><span class="tag-char tamil-text">ய</span><span class="tag-insert">+ி</span></div>
+              <div class="tag-cell"><span class="tag-badge tag-badge--i">K+த்</span><span class="tag-char tamil-text">த</span><span class="tag-insert">+த்</span></div>
+              <div class="tag-cell"><span class="tag-badge tag-badge--i">K+space</span><span class="tag-char tamil-text">த</span><span class="tag-insert">+space</span></div>
+            </div>
+            <div class="tag-legend">
+              <span><span class="tag-badge tag-badge--k">K</span> keep</span>
+              <span><span class="tag-badge tag-badge--d">D</span> delete</span>
+              <span><span class="tag-badge tag-badge--s">S:x</span> substitute</span>
+              <span><span class="tag-badge tag-badge--i">K+suffix</span> insert space/mark</span>
+            </div>
+            <div class="tag-output tamil-text">தானான <span class="ins" style="color:#ff5000"> </span>வயித்தியத்தில்</div>
+          </div>
+        </div>
+
+        <p><strong>Architecture:</strong> CharConvTagger — a 12-layer dilated 1D CNN with exponentially cycling dilation factors (1, 2, 4, 8, 16, 32, 64, 128, 1, 2, ...), 384-dim hidden, GELU activations, residual connections, LayerNorm, linear projection head. ~15M parameters. Runs on CPU at inference. Linear time over sequence length, receptive field covering ~250 characters.</p>
+
+        <!-- D. Architecture diagram -->
+        <div class="viz reveal">
+          <p class="viz-label">CharConvTagger — layer stack</p>
+          <div class="viz-body">
+            <div class="arch-stack">
+              <p class="arch-stack-title">Dilated 1D CNN · 12 layers · cycling dilation</p>
+              <div class="arch-layer"><span class="arch-layer-dil">1</span><div class="arch-layer-bar" style="width:12%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">2</span><div class="arch-layer-bar" style="width:18%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">4</span><div class="arch-layer-bar" style="width:24%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">8</span><div class="arch-layer-bar" style="width:32%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">16</span><div class="arch-layer-bar" style="width:42%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">32</span><div class="arch-layer-bar" style="width:55%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">64</span><div class="arch-layer-bar" style="width:72%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">128</span><div class="arch-layer-bar" style="width:95%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <p class="arch-cycle-marker">↻ cycle reset — dilation pattern repeats</p>
+              <div class="arch-layer"><span class="arch-layer-dil">1</span><div class="arch-layer-bar" style="width:12%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">2</span><div class="arch-layer-bar" style="width:18%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">4</span><div class="arch-layer-bar" style="width:24%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-layer"><span class="arch-layer-dil">8</span><div class="arch-layer-bar" style="width:32%"></div><span class="arch-layer-label">Conv+GELU</span></div>
+              <div class="arch-footer">
+                <span><strong>384-dim</strong> hidden</span>
+                <span><strong>GELU</strong> + Residual + LayerNorm</span>
+                <span><strong>~15M</strong> params</span>
+                <span><strong>CPU-native</strong></span>
+                <span><strong>O(n)</strong> linear time</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="training">Training</h2>
+        <ul>
+          <li>Curriculum bucketing via <code>LengthBucketBatchSampler</code> — grouped sequences by length to minimize padding waste, critical for long classical stanzas (up to 2,000 characters)</li>
+          <li>Oracle label analysis confirmed near-zero oracle CER — the tagger framework was theoretically sound before a single training run</li>
+          <li>Multi-seed training with logit ensembling: averaged raw logits from independent runs before decoding, providing calibration improvement without any inference overhead beyond a single model load</li>
+          <li>CRF head added to capture adjacent-label dependencies</li>
+          <li>Focal loss and class-weighting experiments for the rare substitution labels (~1% of positions)</li>
+        </ul>
+
+        <h2 id="decoding">Constrained Decoding</h2>
+        <p>Even with the tagger, a subtle failure mode appeared on Agasthiyar medical Tamil: Tamil dependent vowel signs (<span class="tamil-text">ே</span>, <span class="tamil-text">ெ</span>, <span class="tamil-text">ை</span>, etc.) appearing after word boundaries — a Unicode-valid but Tamil-grapheme-invalid sequence like <span class="tamil-text">சாற்றின் ேனதை</span>.</p>
+        <p>We implemented <strong>Tamil grapheme-constrained decoding</strong>: at each position, the decoder walks the ranked label list and accepts only the highest-scoring label whose emitted segment keeps the output a valid Tamil grapheme sequence. A repair heuristic reattaches orphan marks to the nearest preceding valid consonant rather than silently dropping them.</p>
+        <p>This is a hard constraint enforced during inference, not a post-processing filter. Zero orphan vowel signs in all tested outputs after this change.</p>
+
+        <!-- E. Flowchart -->
+        <div class="viz reveal">
+          <p class="viz-label">Grapheme-constrained decoding flow</p>
+          <div class="viz-body">
+            <div class="flowchart">
+              <div class="flow-box">Ranked label candidates at position <em>t</em></div>
+              <div class="flow-arrow"></div>
+              <div class="flow-diamond">Valid Tamil<br/>grapheme?</div>
+              <div class="flow-branch">
+                <div class="flow-path flow-path--yes">
+                  <div class="flow-arrow"></div>
+                  <div class="flow-box">Accept label</div>
+                  <div class="flow-arrow"></div>
+                  <div class="flow-box" style="border-color:#22c55e">Emit segment</div>
+                </div>
+                <div class="flow-path flow-path--no">
+                  <div class="flow-arrow"></div>
+                  <div class="flow-box">Try next candidate</div>
+                  <div class="flow-arrow"></div>
+                  <div class="flow-box" style="border-color:#ef4444">Loop back</div>
+                </div>
+              </div>
+            </div>
+            <div class="flow-example">
+              <div class="flow-example-invalid">
+                <strong style="color:#991b1b">Invalid</strong>
+                <p class="tamil-text" style="margin-top:8px">சாற்றின் ேனதை</p>
+              </div>
+              <div class="flow-example-valid">
+                <strong style="color:#166534">Repaired</strong>
+                <p class="tamil-text" style="margin-top:8px">சாற்றின் நேதை</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="domain">Domain Adaptation: Agasthiyar Medical Tamil</h2>
+        <p>Standard fine-tuning on domain data with a fixed vocabulary fails when the domain introduces new character combinations and label patterns. We implemented vocabulary expansion without weight loss:</p>
+        <ul>
+          <li>Identified new characters and label patterns from 379 Agasthiyar/Siddha medical Tamil parallel pairs</li>
+          <li>Expanded embedding and classification head matrices; copied all old weights by identity; initialized new rows from the nearest-code existing label</li>
+          <li>Fine-tuned with mixed batches (domain repeated 120×, 40,000 general-domain samples per epoch)</li>
+          <li>Agasthiyar validation CER improved from <strong>8.45% → 5.14%</strong>. General-domain CER moved negligibly from 0.53% to 0.59%.</li>
+        </ul>
+
+        <!-- F. Domain adaptation visual -->
+        <div class="viz reveal">
+          <p class="viz-label">Vocabulary expansion — embedding matrix</p>
+          <div class="viz-body domain-viz">
+            <div>
+              <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#888;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">Before expansion</p>
+              <div class="embed-matrix" aria-hidden="true">
+                <span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span>
+                <span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span>
+                <span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span>
+              </div>
+              <p style="font-size:11px;color:#22c55e;margin-top:8px;font-family:'JetBrains Mono',monospace">Preserved weights (green)</p>
+            </div>
+            <div style="font-size:28px;color:#ff5000;text-align:center">→</div>
+            <div>
+              <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#888;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">After expansion</p>
+              <div class="embed-matrix" aria-hidden="true">
+                <span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span>
+                <span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span>
+                <span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--old"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--old"></span>
+                <span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--new"></span><span class="embed-cell embed-cell--new"></span>
+              </div>
+              <p style="font-size:11px;color:#ff5000;margin-top:8px;font-family:'JetBrains Mono',monospace">New rows initialized from nearest (orange)</p>
+            </div>
+          </div>
+          <div class="domain-stats" style="padding:20px">
+            <div class="domain-stat">
+              <p class="domain-stat-label">Agasthiyar domain CER</p>
+              <p class="domain-stat-values"><span class="from">8.45%</span> → <span class="to">5.14%</span></p>
+            </div>
+            <div class="domain-stat">
+              <p class="domain-stat-label">General domain CER</p>
+              <p class="domain-stat-values"><span class="from">0.53%</span> → <span class="to">0.59%</span> <span style="font-size:12px;color:#888;font-weight:400">(negligible drift)</span></p>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="reranking">N-Best Reranking</h2>
+        <p>For ambiguous domain text, we built a deterministic n-best reranking layer that avoids any LLM call:</p>
+        <ul>
+          <li><strong>Beam generation:</strong> Constrained beam decoder explores top-k label alternatives per position, maintaining a beam of distinct output strings with cumulative log-probabilities</li>
+          <li><strong>Multi-signal scorer</strong> combining: normalized model log-probability; Tamil grapheme validity score; domain lexicon coverage over 7,782 domain word forms; character 4-gram LM score; suspicious fragment penalty; placeholder fragmentation penalty</li>
+          <li><strong>Lexicon repair:</strong> For candidates with high domain lexicon context score, Levenshtein nearest-neighbor search over domain vocabulary proposes token-level repairs — gated by domain-context threshold</li>
+        </ul>
+        <p>Reranking improved full Agasthiyar corpus: 1.07% → 0.76% CER, 81.0% → 85.75% exact match.</p>
+
+        <!-- I. Rerank dashboard -->
+        <div class="viz reveal">
+          <p class="viz-label">Multi-signal reranking dashboard</p>
+          <div class="viz-body">
+            <div class="rerank-dash">
+              <div class="rerank-signal">
+                <p class="rerank-signal-name">Model Log-Prob</p>
+                <div class="rerank-meter"><div class="rerank-meter-fill" style="width:82%"></div></div>
+                <p class="rerank-score">0.82</p>
+              </div>
+              <div class="rerank-signal">
+                <p class="rerank-signal-name">Grapheme Validity</p>
+                <div class="rerank-meter"><div class="rerank-meter-fill" style="width:98%"></div></div>
+                <p class="rerank-score">0.98</p>
+              </div>
+              <div class="rerank-signal">
+                <p class="rerank-signal-name">Domain Lexicon</p>
+                <div class="rerank-meter"><div class="rerank-meter-fill" style="width:76%"></div></div>
+                <p class="rerank-score">0.76</p>
+              </div>
+              <div class="rerank-signal">
+                <p class="rerank-signal-name">Char 4-gram LM</p>
+                <div class="rerank-meter"><div class="rerank-meter-fill" style="width:71%"></div></div>
+                <p class="rerank-score">0.71</p>
+              </div>
+              <div class="rerank-signal">
+                <p class="rerank-signal-name">Fragment Penalty</p>
+                <div class="rerank-meter"><div class="rerank-meter-fill" style="width:12%"></div></div>
+                <p class="rerank-score">−0.12</p>
+              </div>
+              <div class="rerank-signal">
+                <p class="rerank-signal-name">Placeholder Penalty</p>
+                <div class="rerank-meter"><div class="rerank-meter-fill" style="width:5%"></div></div>
+                <p class="rerank-score">−0.05</p>
+              </div>
+              <div class="rerank-final">
+                <p class="rerank-final-label">Combined final score — candidate ranked #1</p>
+                <p class="rerank-final-value">2.10</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="results">Results Summary</h2>
+
+        <!-- G. Bar chart -->
+        <div class="viz reveal">
+          <p class="viz-label">Character Error Rate comparison</p>
+          <div class="viz-body cer-chart">
+            <div class="cer-bar-row">
+              <span class="cer-bar-label">ByT5-large</span>
+              <div class="cer-bar-track"><div class="cer-bar-fill cer-bar-fill--bad" style="width:100%"></div></div>
+              <span class="cer-bar-value" style="color:#ef4444">11.95%</span>
+            </div>
+            <div class="cer-bar-row">
+              <span class="cer-bar-label">CharConvTagger</span>
+              <div class="cer-bar-track"><div class="cer-bar-fill cer-bar-fill--good" style="width:4.9%"></div></div>
+              <span class="cer-bar-value" style="color:#22c55e">0.59%</span>
+            </div>
+            <div class="cer-bar-row">
+              <span class="cer-bar-label">Domain (fast)</span>
+              <div class="cer-bar-track"><div class="cer-bar-fill cer-bar-fill--mid" style="width:43%"></div></div>
+              <span class="cer-bar-value">5.14%</span>
+            </div>
+            <div class="cer-bar-row">
+              <span class="cer-bar-label">Domain (rerank)</span>
+              <div class="cer-bar-track"><div class="cer-bar-fill cer-bar-fill--mid" style="width:42.3%"></div></div>
+              <span class="cer-bar-value">5.06%</span>
+            </div>
+            <p class="cer-callout">20× reduction in CER vs byte-level seq2seq baseline</p>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>System</th>
+                <th>Corpus CER</th>
+                <th>Exact Match</th>
+                <th>&gt;30% CER</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>ByT5-large baseline</td><td>11.95%</td><td>—</td><td>—</td></tr>
+              <tr><td>CharConvTagger (greedy)</td><td class="hl">0.59%</td><td>63.4%</td><td>0.0%</td></tr>
+              <tr><td>CharConvTagger + rerank (general)</td><td class="hl">0.59%</td><td>63.4%</td><td>0.0%</td></tr>
+              <tr><td>CharConvTagger (domain, fast)</td><td>5.14%</td><td>0.0%</td><td>0.0%</td></tr>
+              <tr><td>CharConvTagger (domain, rerank)</td><td>5.06%</td><td>—</td><td>0.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="release">Release and Infrastructure</h2>
+        <ul>
+          <li>Gated proprietary release on Hugging Face: <code>Praveenrajus/tamil-spacing-restorer</code></li>
+          <li>Live playground: <code>Praveenrajus/tamil-spacing-restorer-demo</code> — with fast and advanced reranking mode</li>
+          <li>Structured Python inference package (<code>TamilSpacingRestorer</code>) with <code>restore()</code>, <code>restore_batch()</code>, <code>restore_with_details()</code> APIs</li>
+          <li>Preliminary silver post-edit dataset for a planned second-stage LLM (modernization + translation layer)</li>
+        </ul>
+
+        <div class="link-cards">
+          <a class="link-card" href="https://huggingface.co/spaces/Praveenrajus/tamil-spacing-restorer-demo" target="_blank" rel="noopener noreferrer">
+            <p class="link-card-label">Live Playground</p>
+            <p class="link-card-title">tamil-spacing-restorer-demo</p>
+            <p class="link-card-desc">Interactive demo with fast and advanced reranking modes.</p>
+            <span class="link-card-cta">Open demo →</span>
+          </a>
+          <a class="link-card" href="https://huggingface.co/Praveenrajus/tamil-spacing-restorer" target="_blank" rel="noopener noreferrer">
+            <p class="link-card-label">Hugging Face Model</p>
+            <p class="link-card-title">tamil-spacing-restorer</p>
+            <p class="link-card-desc">Gated model release with structured Python inference APIs.</p>
+            <span class="link-card-cta">View model →</span>
+          </a>
+        </div>
+
+        <h2 id="interesting">What Makes This Interesting</h2>
+        <ol>
+          <li><strong>The reframing is the contribution.</strong> Most people would train a larger seq2seq model or add beam search. Recognizing that the monotonicity of Tamil restoration makes generation the wrong abstraction — and that insertion tagging gives you hard structural guarantees — is the kind of decision that shows understanding of inductive bias.</li>
+          <li><strong>Unicode-aware constrained decoding.</strong> Tamil Unicode has strict grapheme rules (dependent signs must follow consonants). Building a decoder that respects these as hard constraints during inference — not as a post-processing filter — required understanding both the Unicode Tamil block and how label sequences compose at character boundaries.</li>
+          <li><strong>Domain adaptation without vocabulary collapse.</strong> Expanding embedding and classification matrices mid-training while preserving existing weights by character identity is not the default behavior of any standard fine-tuning library. It required deliberate surgery on the model state dict.</li>
+          <li><strong>The reranker is interpretable and deployable.</strong> The n-best reranker produces scored candidates with full diagnostics (per-signal scores, repair traces) and adds no neural model at inference time. That's a practical engineering choice: explainable, debuggable, no GPU dependency for the reranker itself.</li>
+        </ol>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    PRAVEEN SUNDAR — AR, USA — Built with intent. <span id="footer-year"></span>
+  </footer>
+  <script src="/updates/site-nav.js"></script>
+  <script>
+  (function () {
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) e.target.classList.add('is-visible');
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-visible'); });
+    }
+  })();
+  </script>
+</body>
+</html>
