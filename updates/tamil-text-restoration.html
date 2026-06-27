@@ -92,7 +92,7 @@
       <div class="prose">
         <h2 id="problem">Problem</h2>
         <p>Classical and Agasthiyar-style Tamil is commonly digitized without word spaces or vowel diacritic marks (due to historical manuscript conventions and OCR pipelines). The text <span class="tamil-text">தானானவயிததியததிலரெண்டு</span> looks nothing like its readable form <span class="tamil-text">தானான வயித்தியத்தில் ரெண்டு</span>. Two characters become fifteen. Human readability collapses entirely.</p>
-        <p>The task: map unspaced, partially diacritized Tamil to correctly spaced, fully restored Tamil. At scale, across a corpus of ~14,000 sentence pairs spanning modern and classical domains.</p>
+        <p>The task: map unspaced, partially diacritized Tamil to correctly spaced, fully restored Tamil. At scale, across a corpus of ~70,000 sentence pairs spanning modern and classical domains, plus 379 Agasthiyar domain pairs.</p>
 
         <!-- B. Multiple examples -->
         <div class="example-grid reveal">
@@ -129,7 +129,7 @@
           <li>Any of the above with a suffix string (space, virama <span class="tamil-text">்</span>, vowel sign, combinations)</li>
         </ul>
         <p>This makes repetition loops and content hallucination structurally impossible. The model cannot invent characters outside the label vocabulary. Output length is bounded by the input.</p>
-        <p>We derived these labels from ~14,000 aligned pairs using edit-path alignment (Levenshtein editops), collapsing all alignment decisions into a compact per-character label set.</p>
+        <p>We derived these labels from ~70,000 aligned pairs using edit-path alignment (Levenshtein editops), collapsing all alignment decisions into a compact per-character label set, plus 379 Agasthiyar domain pairs for adaptation.</p>
 
         <!-- C. Tagging visualization -->
         <div class="viz reveal">
@@ -157,7 +157,7 @@
           </div>
         </div>
 
-        <p><strong>Architecture:</strong> CharConvTagger — a 12-layer dilated 1D CNN with exponentially cycling dilation factors (1, 2, 4, 8, 16, 32, 64, 128, 1, 2, ...), 384-dim hidden, GELU activations, residual connections, LayerNorm, linear projection head. ~15M parameters. Runs on CPU at inference. Linear time over sequence length, receptive field covering ~250 characters.</p>
+        <p><strong>Architecture:</strong> CharConvTagger — a 12-layer dilated 1D CNN with exponentially cycling dilation factors (1, 2, 4, 8, 16, 32, 64, 128, 1, 2, ...), 384-dim hidden, GELU activations, residual connections, LayerNorm, linear projection head. ~15M parameters. <strong>225 Unicode characters</strong> in vocabulary, <strong>48 alignment-derived label types</strong>. Runs on CPU at inference. Linear time over sequence length, receptive field covering ~250 characters. Max sequence length: 2,048 characters.</p>
 
         <!-- D. Architecture diagram -->
         <div class="viz reveal">
@@ -184,6 +184,9 @@
                 <span><strong>~15M</strong> params</span>
                 <span><strong>CPU-native</strong></span>
                 <span><strong>O(n)</strong> linear time</span>
+                <span><strong>225</strong> Unicode chars</span>
+                <span><strong>48</strong> label types</span>
+                <span><strong>2,048</strong> max seq len</span>
               </div>
             </div>
           </div>
@@ -191,7 +194,7 @@
 
         <h2 id="training">Training</h2>
         <ul>
-          <li>Curriculum bucketing via <code>LengthBucketBatchSampler</code> — grouped sequences by length to minimize padding waste, critical for long classical stanzas (up to 2,000 characters)</li>
+          <li>Curriculum bucketing via <code>LengthBucketBatchSampler</code> — grouped sequences by length to minimize padding waste, critical for long classical stanzas (up to 2,048 characters)</li>
           <li>Oracle label analysis confirmed near-zero oracle CER — the tagger framework was theoretically sound before a single training run</li>
           <li>Multi-seed training with logit ensembling: averaged raw logits from independent runs before decoding, providing calibration improvement without any inference overhead beyond a single model load</li>
           <li>CRF head added to capture adjacent-label dependencies</li>
@@ -199,41 +202,68 @@
         </ul>
 
         <h2 id="decoding">Constrained Decoding</h2>
-        <p>Even with the tagger, a subtle failure mode appeared on Agasthiyar medical Tamil: Tamil dependent vowel signs (<span class="tamil-text">ே</span>, <span class="tamil-text">ெ</span>, <span class="tamil-text">ை</span>, etc.) appearing after word boundaries — a Unicode-valid but Tamil-grapheme-invalid sequence like <span class="tamil-text">சாற்றின் ேனதை</span>.</p>
+        <p>Even with the tagger, a subtle failure mode appeared on Agasthiyar medical Tamil: Tamil dependent vowel signs (<span class="tamil-text">ே</span>, <span class="tamil-text">ெ</span>, <span class="tamil-text">ை</span>, etc.) appearing after word boundaries — Unicode-valid but Tamil-grapheme-invalid fragments like <span class="tamil-text">சாற்றின் <span class="orphan-mark">ே</span>னதை</span> or <span class="tamil-text">பிழைக்கவ் <span class="orphan-mark">ே</span>்ண்டி</span>.</p>
         <p>We implemented <strong>Tamil grapheme-constrained decoding</strong>: at each position, the decoder walks the ranked label list and accepts only the highest-scoring label whose emitted segment keeps the output a valid Tamil grapheme sequence. A repair heuristic reattaches orphan marks to the nearest preceding valid consonant rather than silently dropping them.</p>
-        <p>This is a hard constraint enforced during inference, not a post-processing filter. Zero orphan vowel signs in all tested outputs after this change.</p>
+        <p>This is a hard constraint enforced during inference, not a post-processing filter. Zero orphan vowel signs in all tested outputs after this change. The release includes a regression test for the Agasthiyar line that originally exposed this issue.</p>
 
-        <!-- E. Flowchart -->
+        <!-- E. Flowchart — inline SVG -->
         <div class="viz reveal">
-          <p class="viz-label">Grapheme-constrained decoding flow</p>
-          <div class="viz-body">
-            <div class="flowchart">
-              <div class="flow-box">Ranked label candidates at position <em>t</em></div>
-              <div class="flow-arrow"></div>
-              <div class="flow-diamond">Valid Tamil<br/>grapheme?</div>
-              <div class="flow-branch">
-                <div class="flow-path flow-path--yes">
-                  <div class="flow-arrow"></div>
-                  <div class="flow-box">Accept label</div>
-                  <div class="flow-arrow"></div>
-                  <div class="flow-box" style="border-color:#22c55e">Emit segment</div>
-                </div>
-                <div class="flow-path flow-path--no">
-                  <div class="flow-arrow"></div>
-                  <div class="flow-box">Try next candidate</div>
-                  <div class="flow-arrow"></div>
-                  <div class="flow-box" style="border-color:#ef4444">Loop back</div>
-                </div>
+          <p class="viz-label">Grapheme-Constrained Decoding Flow</p>
+          <div class="viz-body decode-flow-wrap">
+            <svg class="decode-flow-svg" viewBox="0 0 560 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Grapheme-constrained decoding flowchart">
+              <defs>
+                <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                  <path d="M0,0 L8,4 L0,8 Z" fill="#0a0a0a"/>
+                </marker>
+                <marker id="arrowhead-orange" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                  <path d="M0,0 L8,4 L0,8 Z" fill="#ff5000"/>
+                </marker>
+                <marker id="arrowhead-green" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                  <path d="M0,0 L8,4 L0,8 Z" fill="#22c55e"/>
+                </marker>
+                <marker id="arrowhead-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                  <path d="M0,0 L8,4 L0,8 Z" fill="#ef4444"/>
+                </marker>
+              </defs>
+
+              <!-- Start box -->
+              <rect x="130" y="12" width="300" height="44" rx="2" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+              <text x="280" y="40" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#0a0a0a">Ranked label candidates at position t</text>
+
+              <!-- Arrow to diamond -->
+              <line x1="280" y1="56" x2="280" y2="88" stroke="#0a0a0a" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+              <!-- Diamond -->
+              <polygon points="280,92 360,132 280,172 200,132" fill="#fff" stroke="#ff5000" stroke-width="2"/>
+              <text x="280" y="128" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#0a0a0a">Valid Tamil</text>
+              <text x="280" y="142" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#0a0a0a">grapheme?</text>
+
+              <!-- YES branch (right) -->
+              <line x1="360" y1="132" x2="420" y2="132" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrowhead-green)"/>
+              <text x="378" y="124" font-family="'JetBrains Mono', monospace" font-size="9" fill="#166534">YES</text>
+              <rect x="424" y="110" width="120" height="44" rx="2" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+              <text x="484" y="128" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#166534">Accept label</text>
+              <text x="484" y="142" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#166534">→ Emit segment</text>
+
+              <!-- NO branch (left) -->
+              <line x1="200" y1="132" x2="140" y2="132" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrowhead-red)"/>
+              <text x="168" y="124" font-family="'JetBrains Mono', monospace" font-size="9" fill="#991b1b">NO</text>
+              <rect x="20" y="110" width="116" height="44" rx="2" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+              <text x="78" y="137" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#991b1b">Try next candidate</text>
+
+              <!-- Loop back arrow -->
+              <path d="M 78 154 L 78 200 L 140 200 L 140 172" fill="none" stroke="#ff5000" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrowhead-orange)"/>
+              <text x="92" y="192" font-family="'JetBrains Mono', monospace" font-size="8" fill="#ff5000">loop back</text>
+            </svg>
+
+            <div class="decode-examples">
+              <div class="decode-example decode-example--invalid">
+                <p class="decode-example-label">Invalid (orphan vowel sign)</p>
+                <p class="decode-example-text tamil-text">பிழைக்கவ் <span class="orphan-mark">ே</span>்ண்டி ... மற்பாடின <span class="orphan-mark">ே</span>ன்<span class="orphan-mark">ே</span></p>
               </div>
-            </div>
-            <div class="flow-example">
-              <div class="flow-example-invalid">
-                <strong style="color:#991b1b">Invalid</strong>
-                <p class="tamil-text" style="margin-top:8px">சாற்றின் ேனதை</p>
-              </div>
-              <div class="flow-example-valid">
-                <strong style="color:#166534">Repaired</strong>
-                <p class="tamil-text" style="margin-top:8px">சாற்றின் நேதை</p>
+              <div class="decode-example decode-example--valid">
+                <p class="decode-example-label">Repaired (regression-test output)</p>
+                <p class="decode-example-text tamil-text">பிழைக்க வேண்டி ... மற்பாடின<span class="repair-mark">ே</span>ன<span class="repair-mark">ே</span></p>
               </div>
             </div>
           </div>
@@ -245,7 +275,7 @@
           <li>Identified new characters and label patterns from 379 Agasthiyar/Siddha medical Tamil parallel pairs</li>
           <li>Expanded embedding and classification head matrices; copied all old weights by identity; initialized new rows from the nearest-code existing label</li>
           <li>Fine-tuned with mixed batches (domain repeated 120×, 40,000 general-domain samples per epoch)</li>
-          <li>Agasthiyar validation CER improved from <strong>8.45% → 5.14%</strong>. General-domain CER moved negligibly from 0.53% to 0.59%.</li>
+          <li>Agasthiyar validation CER improved from <strong>8.45% → 5.14%</strong>. General-domain CER remained at <strong>0.59%</strong> (no measurable drift).</li>
         </ul>
 
         <!-- F. Domain adaptation visual -->
@@ -280,7 +310,7 @@
             </div>
             <div class="domain-stat">
               <p class="domain-stat-label">General domain CER</p>
-              <p class="domain-stat-values"><span class="from">0.53%</span> → <span class="to">0.59%</span> <span style="font-size:12px;color:#888;font-weight:400">(negligible drift)</span></p>
+              <p class="domain-stat-values"><span class="to">0.59%</span> <span style="font-size:12px;color:#888;font-weight:400">(no measurable drift)</span></p>
             </div>
           </div>
         </div>
@@ -292,7 +322,7 @@
           <li><strong>Multi-signal scorer</strong> combining: normalized model log-probability; Tamil grapheme validity score; domain lexicon coverage over 7,782 domain word forms; character 4-gram LM score; suspicious fragment penalty; placeholder fragmentation penalty</li>
           <li><strong>Lexicon repair:</strong> For candidates with high domain lexicon context score, Levenshtein nearest-neighbor search over domain vocabulary proposes token-level repairs — gated by domain-context threshold</li>
         </ul>
-        <p>Reranking improved full Agasthiyar corpus: 1.07% → 0.76% CER, 81.0% → 85.75% exact match.</p>
+        <p>Reranking improved full Agasthiyar corpus: 1.07% → 0.76% CER, 81.0% → 85.75% exact match. Optional reranking improves Agasthiyar held-out validation from <strong>5.15% → 5.06% CER</strong>.</p>
 
         <!-- I. Rerank dashboard -->
         <div class="viz reveal">
@@ -382,14 +412,16 @@
               <tr><td>CharConvTagger (greedy)</td><td class="hl">0.59%</td><td>63.4%</td><td>0.0%</td></tr>
               <tr><td>CharConvTagger + rerank (general)</td><td class="hl">0.59%</td><td>63.4%</td><td>0.0%</td></tr>
               <tr><td>CharConvTagger (domain, fast)</td><td>5.14%</td><td>0.0%</td><td>0.0%</td></tr>
-              <tr><td>CharConvTagger (domain, rerank)</td><td>5.06%</td><td>—</td><td>0.0%</td></tr>
+              <tr><td>CharConvTagger (domain, rerank, held-out)</td><td class="hl">5.06%</td><td>—</td><td>0.0%</td></tr>
             </tbody>
           </table>
         </div>
+        <p class="results-callout">Optional advanced reranking improves Agasthiyar held-out validation from <strong>5.15% → 5.06% CER</strong> (fast path: 5.14%).</p>
 
         <h2 id="release">Release and Infrastructure</h2>
         <ul>
           <li>Gated proprietary release on Hugging Face: <code>Praveenrajus/tamil-spacing-restorer</code></li>
+          <li>Single-file weights (<code>model.pt</code>, ~82 MB)</li>
           <li>Live playground: <code>Praveenrajus/tamil-spacing-restorer-demo</code> — with fast and advanced reranking mode</li>
           <li>Structured Python inference package (<code>TamilSpacingRestorer</code>) with <code>restore()</code>, <code>restore_batch()</code>, <code>restore_with_details()</code> APIs</li>
           <li>Preliminary silver post-edit dataset for a planned second-stage LLM (modernization + translation layer)</li>
