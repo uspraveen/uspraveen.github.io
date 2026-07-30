@@ -308,23 +308,17 @@
       margin-top: 20px;
       font-size: 28px;
       line-height: 1.35;
-      min-height: calc(2 * 1.35em);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      align-content: flex-start;
+      min-height: 1.35em;
       opacity: 0;
       animation: heroIn 0.6s ease-out 240ms forwards;
     }
     .hero-type-prefix {
       font-weight: 400;
       color: #555;
-      line-height: 1.35;
     }
     .hero-type-text {
       font-weight: 600;
       color: #ff5000;
-      line-height: 1.35;
     }
 
     .hero-statement {
@@ -606,8 +600,8 @@
       color: #ff5000;
     }
 
-    /* -- COSMIC showcase (scoped) -- */
-    #cosmic.cosmic-spotlight {
+    /* -- Coppr showcase (scoped) -- */
+    #coppr.cosmic-spotlight {
       position: relative;
       overflow: hidden;
       background: #0a0a0f;
@@ -616,7 +610,7 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       isolation: isolate;
     }
-    #cosmic.cosmic-spotlight::before {
+    #coppr.cosmic-spotlight::before {
       content: '';
       position: absolute;
       inset: -20%;
@@ -641,17 +635,17 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       mix-blend-mode: overlay;
     }
-    #cosmic.cosmic-spotlight .section-inner {
+    #coppr.cosmic-spotlight .section-inner {
       position: relative;
       z-index: 2;
       max-width: 1200px;
     }
-    #cosmic.cosmic-spotlight.reveal-section {
+    #coppr.cosmic-spotlight.reveal-section {
       opacity: 0;
       transform: translateY(36px);
       transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible {
+    #coppr.cosmic-spotlight.reveal-section.is-visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -703,21 +697,20 @@
         transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
         color 0.2s ease;
     }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char {
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char {
       opacity: 1;
       transform: translateY(0) rotateX(0deg);
     }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(1) { transition-delay: 0.05s; }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(2) { transition-delay: 0.1s; }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(3) { transition-delay: 0.15s; }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(4) { transition-delay: 0.2s; }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(5) { transition-delay: 0.25s; }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(6) { transition-delay: 0.3s; }
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(1) { transition-delay: 0.05s; }
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(2) { transition-delay: 0.1s; }
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(3) { transition-delay: 0.15s; }
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(4) { transition-delay: 0.2s; }
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title-char:nth-child(5) { transition-delay: 0.25s; }
     @keyframes cosmicTitleGlow {
       0%, 100% { filter: brightness(1); }
       50% { filter: brightness(1.08); }
     }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title {
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title {
       animation: cosmicTitleGlow 4s ease-in-out infinite;
     }
     .cosmic-showcase__subtitle {
@@ -769,13 +762,13 @@
       box-shadow: none;
       transition: background 0.25s ease, box-shadow 0.25s ease;
     }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card {
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card {
       opacity: 1;
       transform: perspective(900px) rotateX(0deg) translateY(0);
     }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card:nth-child(1) { transition-delay: 0.15s; }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card:nth-child(2) { transition-delay: 0.3s; }
-    #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card:nth-child(3) { transition-delay: 0.45s; }
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card:nth-child(1) { transition-delay: 0.15s; }
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card:nth-child(2) { transition-delay: 0.3s; }
+    #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-feature-card:nth-child(3) { transition-delay: 0.45s; }
     .cosmic-feature-card:hover {
       transform: perspective(900px) translateY(-4px) scale(1.01);
       border-color: rgba(255, 80, 0, 0.45);
@@ -997,9 +990,9 @@
       50% { opacity: 0; }
     }
     @media (prefers-reduced-motion: reduce) {
-      #cosmic.cosmic-spotlight::before { animation: none; }
-      #cosmic.cosmic-spotlight.reveal-section,
-      #cosmic.cosmic-spotlight.reveal-section.is-visible {
+      #coppr.cosmic-spotlight::before { animation: none; }
+      #coppr.cosmic-spotlight.reveal-section,
+      #coppr.cosmic-spotlight.reveal-section.is-visible {
         opacity: 1;
         transform: none;
         transition: none;
@@ -1009,7 +1002,7 @@
         transform: none;
         transition: none;
       }
-      #cosmic.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title {
+      #coppr.cosmic-spotlight.reveal-section.is-visible .cosmic-showcase__title {
         animation: none;
       }
       .cosmic-feature-card {
@@ -1407,7 +1400,7 @@
       <nav class="nav-links" aria-label="Primary">
         <a href="#story">Story</a><span class="nav-sep">·</span>
         <a href="#work">Work</a><span class="nav-sep">·</span>
-        <a href="#cosmic">COSMIC</a><span class="nav-sep">·</span>
+        <a href="#coppr">Coppr</a><span class="nav-sep">·</span>
         <a href="#stack">Stack</a><span class="nav-sep">·</span>
         <a href="/blog/">Blog</a><span class="nav-sep">·</span>
         <a href="/updates/" class="nav-updates">Updates</a><span class="nav-sep">·</span>
@@ -1415,7 +1408,7 @@
       </nav>
       <div class="nav-pill" aria-live="polite">
         <span class="nav-pill-dot" aria-hidden="true"></span>
-        <span>Building COSMIC</span>
+        <span>Building Coppr</span>
       </div>
     </div>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
@@ -1426,7 +1419,7 @@
   <div class="nav-overlay" id="nav-overlay" aria-hidden="true">
     <a href="#story">Story</a>
     <a href="#work">Work</a>
-    <a href="#cosmic">COSMIC</a>
+    <a href="#coppr">Coppr</a>
     <a href="#stack">Stack</a>
     <a href="/blog/">Blog</a>
     <a href="/updates/" class="nav-updates">Updates</a>
@@ -1446,12 +1439,12 @@
           </div>
           <div class="hero-statement">
             <p>By day, I engineer the data pipelines and GPU infrastructure that power DARPA-funded research.</p>
-            <p>By night, I build COSMIC - a multi-agent AI OS that lives inside your computer and acts before you ask.</p>
+            <p>By night, I build Coppr - an agentic EDA platform that turns natural language into manufacturing-ready circuit boards.</p>
             <p>EE by training. Systems thinker by obsession. Builder by default.</p>
           </div>
           <div class="hero-ctas">
             <a class="btn-primary" href="#work">View My Work</a>
-            <a class="btn-secondary" href="#cosmic">Explore COSMIC</a>
+            <a class="btn-secondary" href="#coppr">Explore Coppr</a>
           </div>
         </div>
         <div class="term-card" aria-label="Terminal introduction">
@@ -1474,8 +1467,8 @@
         <h2 class="chapter-title">The Origin Story</h2>
         <div class="story-prose">
           <p>I started with a soldering iron. Electrical engineering at KCT gave me the discipline to think in systems - how signals travel, how circuits fail, how precision compounds. That foundation never left me.</p>
-          <p>Today I work at COSMOS Research Center, where I build the data and GPU infrastructure that powers DARPA and NSF-funded research. Multi-server GPU networking, Arista switching, NFS-backed storage at scale, vLLM inference stacks - the kind of systems you only understand by building, breaking, and rebuilding them.</p>
-          <p>But the work I care most about happens after hours. I am building COSMIC - a multi-agent AI OS that runs persistently on your desktop, understands your context across every app, and acts before you ask. Not a chatbot. Not a copilot. An OS layer that thinks.</p>
+          <p>Today I work at COSMOS Research Center, where I build the data and GPU infrastructure that powers DARPA and NSF-funded research. Multi-server GPU networking, Arista switching, NFS-backed storage at scale, vLLM inference stacks - the kind of infrastructure most engineers only read about in papers.</p>
+          <p>But the work I care most about happens after hours. I am building Coppr - an agentic EDA platform that automates the entire PCB design workflow, from natural language intent to Gerbers. EE roots meet agentic AI: an autonomous hardware engineer that designs, verifies, and ships real circuit boards.</p>
           <p>EE from UPenn. Embedded systems roots. Distributed infrastructure by practice. Agentic AI by obsession. I do not stay in one lane - I am interested in what happens when the signal becomes a decision.</p>
         </div>
       </div>
@@ -1540,43 +1533,43 @@
       </div>
     </section>
 
-    <section id="cosmic" class="section cosmic-spotlight reveal-section" aria-labelledby="cosmic-showcase-title">
+    <section id="coppr" class="section cosmic-spotlight reveal-section" aria-labelledby="coppr-showcase-title">
       <div class="cosmic-spotlight__noise" aria-hidden="true"></div>
       <div class="section-inner cosmic-showcase">
         <div class="cosmic-showcase__layout">
           <div class="cosmic-showcase__col cosmic-showcase__col--copy">
             <p class="cosmic-showcase__kicker">FOUNDER · CEO</p>
-            <h2 class="cosmic-showcase__title" id="cosmic-showcase-title">
-              <span class="cosmic-showcase__title-char" data-cosmic-final="C">C</span><span class="cosmic-showcase__title-char" data-cosmic-final="O">O</span><span class="cosmic-showcase__title-char" data-cosmic-final="S">S</span><span class="cosmic-showcase__title-char" data-cosmic-final="M">M</span><span class="cosmic-showcase__title-char" data-cosmic-final="I">I</span><span class="cosmic-showcase__title-char" data-cosmic-final="C">C</span>
+            <h2 class="cosmic-showcase__title" id="coppr-showcase-title">
+              <span class="cosmic-showcase__title-char" data-coppr-final="C">C</span><span class="cosmic-showcase__title-char" data-coppr-final="O">O</span><span class="cosmic-showcase__title-char" data-coppr-final="P">P</span><span class="cosmic-showcase__title-char" data-coppr-final="P">P</span><span class="cosmic-showcase__title-char" data-coppr-final="R">R</span>
             </h2>
-            <p class="cosmic-showcase__subtitle">Personal AI Operating System</p>
-            <p class="cosmic-showcase__desc">COSMIC is a deeply personal AI OS - always on, always learning, always acting on your behalf. It orchestrates your email, calendar, tasks, memory, and agents through a single unified intelligence layer.</p>
+            <p class="cosmic-showcase__subtitle">An AI hardware engineer that designs, verifies, and ships real circuit boards - from intent to Gerbers</p>
+            <p class="cosmic-showcase__desc">Coppr is an agentic EDA platform that replaces weeks of tedious manual PCB work with an autonomous AI hardware engineer. Describe your board in natural language - Coppr generates schematics, runs DRC/ERC verification, and exports manufacturing-ready Gerber files. From first intent to fab-ready output, in one continuous workflow.</p>
             <ul class="cosmic-showcase__features">
               <li class="cosmic-feature-card">
                 <div class="cosmic-feature-card__row"><div>
-                    <p class="cosmic-feature-card__title">Always Remembers</p>
-                    <p class="cosmic-feature-card__body">Persistent memory across every interaction. Never repeat yourself.</p>
+                    <p class="cosmic-feature-card__title">Intent to Schematic</p>
+                    <p class="cosmic-feature-card__body">Turn natural language requirements into complete circuit designs - components placed, nets routed, no manual schematic entry.</p>
                   </div>
                 </div>
               </li>
               <li class="cosmic-feature-card">
                 <div class="cosmic-feature-card__row"><div>
-                    <p class="cosmic-feature-card__title">Proactive Agents</p>
-                    <p class="cosmic-feature-card__body">Specialist AI agents that act autonomously - schedule, email, research, deploy.</p>
+                    <p class="cosmic-feature-card__title">Autonomous Verification</p>
+                    <p class="cosmic-feature-card__body">DRC, ERC, and simulation checks run continuously. Catch design-rule violations and electrical errors before they reach fabrication.</p>
                   </div>
                 </div>
               </li>
               <li class="cosmic-feature-card">
                 <div class="cosmic-feature-card__row"><div>
-                    <p class="cosmic-feature-card__title">Always On</p>
-                    <p class="cosmic-feature-card__body">Lives in your browser, phone, and desktop. Ambient intelligence 24/7.</p>
+                    <p class="cosmic-feature-card__title">Gerbers Ready</p>
+                    <p class="cosmic-feature-card__body">Export manufacturing-ready files in standard formats. Ship real boards to production - not just prototypes on a breadboard.</p>
                   </div>
                 </div>
               </li>
             </ul>
             <div class="cosmic-showcase__meta">
-              <span class="cosmic-status-badge"><span class="cosmic-status-badge__dot" aria-hidden="true"></span> LIVE PRODUCT</span>
-              <a class="cosmic-cta-link" href="https://cosmic.thelearnchain.com/" target="_blank" rel="noopener noreferrer">→ cosmic.thelearnchain.com</a>
+              <span class="cosmic-status-badge"><span class="cosmic-status-badge__dot" aria-hidden="true"></span> BUILDING</span>
+              <a class="cosmic-cta-link" href="https://copprlab.com/" target="_blank" rel="noopener noreferrer">→ copprlab.com</a>
             </div>
           </div>
           <div class="cosmic-showcase__col cosmic-showcase__col--visual">
@@ -1584,7 +1577,7 @@
               <div class="cosmic-mockup__chrome">
                 <span class="cosmic-mockup__dot"></span>
                 <div class="cosmic-mockup__dots-rest"><span></span><span></span></div>
-                <span class="cosmic-mockup__url">cosmic.thelearnchain.com</span>
+                <span class="cosmic-mockup__url">copprlab.com</span>
               </div>
               <div class="cosmic-mockup__body">
                 <div class="cosmic-mockup__rail">
@@ -1593,10 +1586,10 @@
                   <span class="cosmic-mockup__rail-icon"></span>
                 </div>
                 <div class="cosmic-mockup__main">
-                  <p class="cosmic-mockup__header">Agent stream</p>
-                  <div id="cosmic-agent-log" class="cosmic-mockup__log"></div>
+                  <p class="cosmic-mockup__header">Design stream</p>
+                  <div id="coppr-agent-log" class="cosmic-mockup__log"></div>
                   <div class="cosmic-mockup__input">
-                    <span class="cosmic-mockup__input-prompt">Ask COSMIC…</span>
+                    <span class="cosmic-mockup__input-prompt">Design a 3.3V buck converter…</span>
                     <span class="cosmic-mockup__cursor"></span>
                   </div>
                 </div>
@@ -1775,8 +1768,8 @@
           </article>
           <article class="proj-card">
             <p class="proj-label proj-label--accent">FOUNDER - ACTIVE</p>
-            <h3 class="tl-company" style="margin-bottom: 12px;">LearnChain</h3>
-            <p class="proj-body">Cross-cloud ETL and knowledge graph platform. Neo4j-backed GraphRAG processing 100K+ nodes. Semantic search, embedding pipelines, and intelligent document analysis at scale.</p>
+            <h3 class="tl-company" style="margin-bottom: 12px;">Coppr</h3>
+            <p class="proj-body">Agentic EDA platform - an AI hardware engineer that designs, verifies, and ships real circuit boards. Natural language intent to manufacturing-ready Gerbers. <a href="#coppr" style="color: #ff5000; font-weight: 500;">View showcase →</a></p>
           </article>
           <article class="proj-card">
             <p class="proj-label proj-label--muted">SYSTEMS PROJECT</p>
@@ -1858,10 +1851,10 @@
     }
 
     var phrases = [
-      'data pipelines at scale.',
-      'GPU clusters for frontier AI.',
-      'agents that act before you ask.',
-      'systems that think.'
+      'intelligent data systems.',
+      'GPU infrastructure at scale.',
+      'circuit boards from intent.',
+      'agentic EDA workflows.'
     ];
     var twEl = document.getElementById('typewriter-text');
     function runTypewriter() {
@@ -1909,11 +1902,11 @@ var termHost = document.getElementById('hero-term-host');
       { kind: 'out', text: 'DARPA / NSF / DoD Funded Research' },
       { kind: 'blank' },
       { kind: 'prompt', text: '$ ls projects/' },
-      { kind: 'out', text: 'LearnChain/  InfraDoc/  COSMIC/  TamilNLP/' },
+      { kind: 'out', text: 'LearnChain/  InfraDoc/  Coppr/  TamilNLP/' },
       { kind: 'blank' },
-      { kind: 'prompt', text: '$ cat COSMIC/status.md' },
-      { kind: 'out', text: 'Multi-Agent AI OS - Public Beta' },
-      { kind: 'out', text: 'cosmic.thelearnchain.com' },
+      { kind: 'prompt', text: '$ cat Coppr/status.md' },
+      { kind: 'out', text: 'Agentic EDA Platform - Building' },
+      { kind: 'out', text: 'copprlab.com' },
       { kind: 'blank' },
       { kind: 'prompt', text: '$ echo $MISSION' },
       { kind: 'out', text: 'Build systems that think. Build AI that acts.' }
@@ -1998,41 +1991,41 @@ var termHost = document.getElementById('hero-term-host');
   </script>
   <script>
   (function () {
-    var cosmicRoot = document.getElementById('cosmic');
-    var cosmicLog = document.getElementById('cosmic-agent-log');
-    if (!cosmicRoot || !cosmicLog) return;
+    var copprRoot = document.getElementById('coppr');
+    var copprLog = document.getElementById('coppr-agent-log');
+    if (!copprRoot || !copprLog) return;
 
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var cosmicLines = [
-      '→ Email drafted to team...',
-      '→ Calendar block created 3pm',
-      '→ Memory saved: user prefers dark mode',
-      '→ Research brief ready'
+    var copprLines = [
+      '→ Parsing design intent: 3.3V buck converter',
+      '→ Generating schematic… 47 components placed',
+      '→ Running DRC/ERC checks… 0 violations',
+      '→ Exporting Gerbers for fabrication'
     ];
-    var cosmicLineIndex = 0;
-    var cosmicLogTimer = null;
-    var cosmicScrambleStarted = false;
+    var copprLineIndex = 0;
+    var copprLogTimer = null;
+    var copprScrambleStarted = false;
 
-    function cosmicAppendLogLine() {
-      var text = cosmicLines[cosmicLineIndex % cosmicLines.length];
-      cosmicLineIndex += 1;
+    function copprAppendLogLine() {
+      var text = copprLines[copprLineIndex % copprLines.length];
+      copprLineIndex += 1;
       var row = document.createElement('div');
       row.className = 'cosmic-mockup__log-line' +
-        (cosmicLineIndex % 2 === 0 ? ' cosmic-mockup__log-line--accent' : '');
+        (copprLineIndex % 2 === 0 ? ' cosmic-mockup__log-line--accent' : '');
       row.textContent = text;
-      cosmicLog.appendChild(row);
-      while (cosmicLog.children.length > 6) {
-        cosmicLog.removeChild(cosmicLog.firstChild);
+      copprLog.appendChild(row);
+      while (copprLog.children.length > 6) {
+        copprLog.removeChild(copprLog.firstChild);
       }
     }
 
-    function cosmicRunHeadlineScramble() {
-      if (cosmicScrambleStarted || reduceMotion) return;
-      cosmicScrambleStarted = true;
+    function copprRunHeadlineScramble() {
+      if (copprScrambleStarted || reduceMotion) return;
+      copprScrambleStarted = true;
       var pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      var spans = cosmicRoot.querySelectorAll('.cosmic-showcase__title-char[data-cosmic-final]');
+      var spans = copprRoot.querySelectorAll('.cosmic-showcase__title-char[data-coppr-final]');
       spans.forEach(function (span, si) {
-        var finalCh = span.getAttribute('data-cosmic-final') || '';
+        var finalCh = span.getAttribute('data-coppr-final') || '';
         var step = 0;
         var maxStep = 8 + Math.floor(Math.random() * 6);
         setTimeout(function scrambleTick() {
@@ -2047,24 +2040,24 @@ var termHost = document.getElementById('hero-term-host');
       });
     }
 
-    function cosmicStartAgentLog() {
-      if (cosmicLogTimer) return;
-      cosmicAppendLogLine();
-      cosmicLogTimer = window.setInterval(cosmicAppendLogLine, 2000);
+    function copprStartAgentLog() {
+      if (copprLogTimer) return;
+      copprAppendLogLine();
+      copprLogTimer = window.setInterval(copprAppendLogLine, 2000);
     }
 
     if ('IntersectionObserver' in window) {
-      var cosmicIo = new IntersectionObserver(function (entries) {
+      var copprIo = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
           if (!en.isIntersecting) return;
-          cosmicRunHeadlineScramble();
-          cosmicStartAgentLog();
+          copprRunHeadlineScramble();
+          copprStartAgentLog();
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
-      cosmicIo.observe(cosmicRoot);
+      copprIo.observe(copprRoot);
     } else {
-      cosmicRunHeadlineScramble();
-      cosmicStartAgentLog();
+      copprRunHeadlineScramble();
+      copprStartAgentLog();
     }
   })();
   </script>
