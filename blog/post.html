@@ -322,8 +322,9 @@
           <div class="comments">
             <div class="comment-list" id="clist"></div>
             <form class="grid" id="cform">
-              <label>Name<input type="text" id="cname" maxlength="80" required /></label>
-              <label>Message<textarea id="cmsg" maxlength="2000" required></textarea></label>
+              <label>Name<input type="text" id="cname" name="author_name" maxlength="100" required autocomplete="name" /></label>
+              <label>Message<textarea id="cmsg" name="message" maxlength="2000" required></textarea></label>
+              <input type="text" id="cwebsite" name="website" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;opacity:0;pointer-events:none;" />
               <span class="form-err" id="cerr" hidden></span>
               <button type="submit">Post comment</button>
             </form>
@@ -335,18 +336,39 @@
 
   <script>
   (function () {
-    var API = window.BLOG_API_BASE || (window.location.protocol === 'http:' ? 'http://3.12.241.200:3001' : '');
+    var API_BASE = window.BLOG_API_BASE || 'https://c2ece0ad-4b2d-4af4-ae65-1b07660550dc.thelearnchain.com/blog-api';
     var params = new URLSearchParams(window.location.search);
     var slug = params.get('slug');
     var err = document.getElementById('err');
     var root = document.getElementById('root');
     var likeKey = slug ? 'liked_' + slug : '';
+    var fpKey = 'blog_fp';
 
     function heartOut() {
       return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.35-9-8.5C.58 9.58 2.5 6.5 6 6.5c1.74 0 3.41.81 4.5 2.09C11.59 7.31 13.26 6.5 15 6.5c3.5 0 5.42 3.08 3 6C19 16.65 12 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>';
     }
     function heartIn() {
       return '<svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 21s-7-4.35-9-8.5C.58 9.58 2.5 6.5 6 6.5c1.74 0 3.41.81 4.5 2.09C11.59 7.31 13.26 6.5 15 6.5c3.5 0 5.42 3.08 3 6C19 16.65 12 21 12 21Z"/></svg>';
+    }
+
+    function getFingerprint() {
+      try {
+        var existing = window.localStorage.getItem(fpKey);
+        if (existing) return existing;
+        var fp = 'fp_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        window.localStorage.setItem(fpKey, fp);
+        return fp;
+      } catch (e) {
+        return 'anon';
+      }
+    }
+
+    function apiErrorMessage(j, status) {
+      if (!j) return 'HTTP ' + status;
+      if (typeof j.detail === 'string') return j.detail;
+      if (j.error) return j.error;
+      if (j.message) return j.message;
+      return 'HTTP ' + status;
     }
 
     function fmtTs(iso) {
@@ -374,10 +396,9 @@
           j = null;
         }
         if (!r.ok) {
-          var msg = (j && (j.error || j.message)) || ('HTTP ' + r.status);
-          var err = new Error(msg);
-          err.body = j;
-          throw err;
+          var errObj = new Error(apiErrorMessage(j, r.status));
+          errObj.body = j;
+          throw errObj;
         }
         return j;
       });
@@ -407,7 +428,7 @@
     function loadLikes() {
       var le = document.getElementById('like-err');
       if (le) { le.hidden = true; le.textContent = ''; }
-      return fetch(API + '/api/likes/' + encodeURIComponent(slug))
+      return fetch(API_BASE + '/api/likes?slug=' + encodeURIComponent(slug))
         .then(readJsonResponse)
         .then(function (d) {
           paintLike(typeof d.count === 'number' ? d.count : 0);
@@ -421,20 +442,23 @@
         });
     }
 
-    if (!API) {
-      reactionPanel.hidden = true;
-      commentPanel.hidden = true;
-    }
-
     likeBtn.addEventListener('click', function () {
       if (liked) return;
       var le = document.getElementById('like-err');
       if (le) { le.hidden = true; le.textContent = ''; }
-      fetch(API + '/api/likes/' + encodeURIComponent(slug), { method: 'POST' })
+      var fp = getFingerprint();
+      fetch(API_BASE + '/api/likes?slug=' + encodeURIComponent(slug), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Fingerprint': fp
+        },
+        body: JSON.stringify({ fingerprint: fp })
+      })
         .then(readJsonResponse)
         .then(function (d) {
           liked = true;
-          window.localStorage.setItem(likeKey, '1');
+          try { window.localStorage.setItem(likeKey, '1'); } catch (e) {}
           paintLike(typeof d.count === 'number' ? d.count : parseInt(likeN.textContent, 10) + 1);
         })
         .catch(function (e) {
@@ -463,10 +487,10 @@
         top.className = 'comment-top';
         var n = document.createElement('span');
         n.className = 'comment-name';
-        n.textContent = c.name;
+        n.textContent = c.author_name || c.name || 'Anonymous';
         var t = document.createElement('span');
         t.className = 'comment-ts';
-        t.textContent = fmtTs(c.timestamp);
+        t.textContent = fmtTs(c.created_at || c.timestamp);
         top.appendChild(n);
         top.appendChild(t);
         var m = document.createElement('div');
@@ -479,10 +503,17 @@
     }
 
     function loadComments() {
-      return fetch(API + '/api/comments/' + encodeURIComponent(slug))
+      var ce = document.getElementById('cerr');
+      return fetch(API_BASE + '/api/comments?slug=' + encodeURIComponent(slug))
         .then(readJsonResponse)
         .then(function (d) { renderComments(Array.isArray(d) ? d : []); })
-        .catch(function () { renderComments([]); });
+        .catch(function (e) {
+          renderComments([]);
+          if (ce) {
+            ce.hidden = false;
+            ce.textContent = (e && e.message) ? e.message : 'Could not load comments.';
+          }
+        });
     }
 
     document.getElementById('cform').addEventListener('submit', function (e) {
@@ -491,19 +522,26 @@
       ce.hidden = true;
       var name = document.getElementById('cname').value.trim();
       var message = document.getElementById('cmsg').value.trim();
+      var website = document.getElementById('cwebsite').value;
       if (!name || !message) {
         ce.hidden = false;
         ce.textContent = 'Name and message are required.';
         return;
       }
-      fetch(API + '/api/comments/' + encodeURIComponent(slug), {
+      fetch(API_BASE + '/api/comments?slug=' + encodeURIComponent(slug), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name, message: message }),
+        body: JSON.stringify({
+          author_name: name,
+          message: message,
+          website: website
+        }),
       })
         .then(readJsonResponse)
         .then(function () {
+          document.getElementById('cname').value = '';
           document.getElementById('cmsg').value = '';
+          document.getElementById('cwebsite').value = '';
           return loadComments();
         })
         .catch(function (x) {
@@ -566,7 +604,7 @@
         liked = window.localStorage.getItem(likeKey) === '1';
         likeN.textContent = '0';
         paintLike(0);
-        return API ? Promise.all([loadLikes(), loadComments()]) : null;
+        return Promise.all([loadLikes(), loadComments()]);
       })
       .catch(function () {
         err.hidden = false;
