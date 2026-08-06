@@ -303,6 +303,7 @@
         <h1 class="title" id="title"></h1>
         <div class="meta" id="meta">
           <span id="date"></span>
+          <span id="authors" hidden></span>
           <span id="read"></span>
         </div>
         <div class="md" id="md"></div>
@@ -526,6 +527,12 @@
         document.getElementById('title').textContent = post.title;
         document.getElementById('date').textContent = new Date(post.date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         document.getElementById('read').textContent = readMin(md, post.readTime) + ' min read';
+        var authors = Array.isArray(post.authors) ? post.authors : (post.author ? [post.author] : []);
+        if (authors.length) {
+          var authorEl = document.getElementById('authors');
+          authorEl.textContent = 'By ' + authors.join(' and ');
+          authorEl.hidden = false;
+        }
 
         var hero = document.createElement('img');
         hero.className = 'post-hero';
