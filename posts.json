@@ -1,5 +1,16 @@
 [
   {
+    "slug": "why-coppr",
+    "title": "Why Coppr? The Case for Compiling Hardware",
+    "date": "2026-08-06",
+    "tags": ["Hardware", "AI", "Coppr", "Engineering"],
+    "excerpt": "The next great hardware tool will not hide engineering judgment. It will make intent executable, verification continuous, and every board easier to improve.",
+    "filename": "why-coppr.md",
+    "image": "/images/why-coppr-header.png",
+    "thumbnail": "/images/why-coppr-header.png",
+    "readTime": 9
+  },
+  {
     "slug": "building-cosmic",
     "title": "Building COSMIC: A Personal AI OS",
     "date": "2026-05-01",
@@ -8,17 +19,6 @@
     "filename": "building-cosmic.md",
     "image": "/images/building-cosmic-banner.jpg",
     "thumbnail": "/images/building-cosmic-banner.jpg"
-  },
-  {
-    "slug": "why-coppr",
-    "title": "Why Coppr? The Case for Compiling Hardware",
-    "date": "2026-08-06",
-    "tags": ["Hardware", "AI", "Coppr", "Engineering"],
-    "excerpt": "The next great hardware tool will not hide engineering judgment. It will make intent executable, verification continuous, and every board easier to improve.",
-    "filename": "why-coppr.md",
-    "image": "/images/why-coppr-banner-v2.png",
-    "thumbnail": "/images/why-coppr-banner-v2.png",
-    "readTime": 9
   },
   {
     "slug": "thalapathy-vijay-blueprint",

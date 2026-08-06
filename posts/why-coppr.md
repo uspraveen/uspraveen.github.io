@@ -34,6 +34,8 @@ The distinction matters. A generative system can produce a plausible-looking sch
 
 Coppr's promise is best understood as a loop, not a magic prompt:
 
+<div class="pipeline"><div class="pipeline-step"><span class="pipeline-num">01 / INTENT</span><strong>Describe the board</strong><span>Interfaces, power, size, and constraints.</span></div><div class="pipeline-step"><span class="pipeline-num">02 / COMPOSE</span><strong>Build from blocks</strong><span>Verified modules become a structured design.</span></div><div class="pipeline-step"><span class="pipeline-num">03 / VERIFY</span><strong>Check every change</strong><span>ERC, DRC, DFM, SPICE, and BOM checks.</span></div><div class="pipeline-step"><span class="pipeline-num">04 / SHIP</span><strong>Review the diff</strong><span>Approve the version that should reach fab.</span></div></div>
+
 1. You describe what the board must do, including interfaces, power, size, and constraints.
 2. Coppr composes the design from verified modules and records the choices it makes.
 3. The compiler produces the schematic, layout, BOM, and fabrication outputs.
@@ -41,6 +43,8 @@ Coppr's promise is best understood as a loop, not a magic prompt:
 5. You review the diff, revise the intent, and approve the version that should ship.
 
 The human is not removed from the loop. The loop gets shorter and more inspectable.
+
+<div class="decision-panel"><div><strong>Automate</strong><span>Repetitive placement, routing, checking, and artifact generation.</span></div><div><strong>Keep human-led</strong><span>Requirements, trade-offs, risk tolerance, and final approval.</span></div></div>
 
 This is the most important product decision in Coppr. “Autonomous” is not the same as “unaccountable.” For a hardware team, the best AI is not the one that hides complexity behind a confident answer. It is the one that can say: this regulator was selected because of the current budget; this trace is constrained by impedance; this part is unavailable; this check is still unresolved.
 
