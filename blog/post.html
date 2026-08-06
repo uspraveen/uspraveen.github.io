@@ -308,7 +308,7 @@
         </div>
         <div class="md" id="md"></div>
 
-        <section class="panel" aria-labelledby="lk">
+        <section class="panel" id="reaction-panel" aria-labelledby="lk">
           <h2 id="lk">Likes</h2>
           <button type="button" class="like-btn" id="like-btn" aria-pressed="false">
             <span id="like-ic"></span>
@@ -317,7 +317,7 @@
           <p class="form-err" id="like-err" hidden></p>
         </section>
 
-        <section class="panel" aria-labelledby="cm">
+        <section class="panel" id="comment-panel" aria-labelledby="cm">
           <h2 id="cm">Comments</h2>
           <div class="comments">
             <div class="comment-list" id="clist"></div>
@@ -335,7 +335,7 @@
 
   <script>
   (function () {
-    var API = 'http://3.12.241.200:3001';
+    var API = window.BLOG_API_BASE || (window.location.protocol === 'http:' ? 'http://3.12.241.200:3001' : '');
     var params = new URLSearchParams(window.location.search);
     var slug = params.get('slug');
     var err = document.getElementById('err');
@@ -390,6 +390,8 @@
     }
 
     var liked = window.localStorage.getItem(likeKey) === '1';
+    var reactionPanel = document.getElementById('reaction-panel');
+    var commentPanel = document.getElementById('comment-panel');
     var likeBtn = document.getElementById('like-btn');
     var likeIc = document.getElementById('like-ic');
     var likeN = document.getElementById('like-n');
@@ -417,6 +419,11 @@
           }
           paintLike(0);
         });
+    }
+
+    if (!API) {
+      reactionPanel.hidden = true;
+      commentPanel.hidden = true;
     }
 
     likeBtn.addEventListener('click', function () {
@@ -559,7 +566,7 @@
         liked = window.localStorage.getItem(likeKey) === '1';
         likeN.textContent = '0';
         paintLike(0);
-        return Promise.all([loadLikes(), loadComments()]);
+        return API ? Promise.all([loadLikes(), loadComments()]) : null;
       })
       .catch(function () {
         err.hidden = false;
