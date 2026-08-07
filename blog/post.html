@@ -186,87 +186,204 @@
     .like-btn {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
+      gap: 12px;
+      padding: 8px 8px 8px 10px;
       border: 1px solid var(--line);
+      border-radius: 999px;
       background: #fff;
       cursor: pointer;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 12px;
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      color: #333;
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     }
     .like-btn:hover:not(:disabled) {
-      border-color: var(--accent);
-      transform: translateY(-2px);
+      border-color: rgba(255, 80, 0, 0.45);
+      transform: scale(1.04);
+      color: var(--accent);
+      box-shadow: 0 8px 24px rgba(255, 80, 0, 0.1);
     }
-    .like-btn:disabled { opacity: 0.7; cursor: default; }
+    .like-btn:disabled {
+      cursor: default;
+      opacity: 1;
+    }
+    .like-btn.is-liked {
+      border-color: rgba(255, 80, 0, 0.4);
+      background: #fff8f4;
+      color: var(--accent);
+    }
+    .like-btn.is-pulsing {
+      animation: like-pulse 0.45s ease;
+    }
+    @keyframes like-pulse {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.14); }
+      70% { transform: scale(0.96); }
+      100% { transform: scale(1); }
+    }
+    .like-ic {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      transition: transform 0.2s ease;
+    }
+    .like-ic svg { display: block; }
+    .like-btn:hover:not(:disabled) .like-ic { transform: scale(1.08); }
+    .like-count {
+      min-width: 28px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      text-align: center;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .like-btn.is-liked .like-count,
+    .like-btn:hover:not(:disabled) .like-count {
+      background: var(--accent);
+      color: #fff;
+    }
 
-    .comments { margin-top: 10px; }
-    .comment-list { display: grid; gap: 12px; margin-top: 18px; }
-    .comment {
-      border: 1px solid var(--line);
-      padding: 14px 16px;
+    .comments { margin-top: 8px; }
+    .comment-list {
+      display: grid;
+      gap: 0;
+      margin: 0 0 28px;
     }
+    .comment {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .comment:first-child { padding-top: 4px; }
+    .comment:last-child { border-bottom: none; }
+    .comment-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #fff;
+      background: var(--accent);
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .comment-body { min-width: 0; }
     .comment-top {
       display: flex;
       flex-wrap: wrap;
+      align-items: baseline;
       gap: 8px 14px;
       margin-bottom: 8px;
     }
     .comment-name {
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
     }
     .comment-ts {
       font-family: 'JetBrains Mono', ui-monospace, monospace;
       font-size: 10px;
+      letter-spacing: 0.04em;
       color: #aaa;
     }
     .comment-msg {
       font-weight: 300;
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.65;
       color: #333;
       white-space: pre-wrap;
     }
+    .comment-empty {
+      font-weight: 300;
+      font-size: 14px;
+      color: #888;
+      padding: 8px 0 20px;
+    }
 
-    form.grid {
-      display: grid;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    form.grid label {
-      display: grid;
-      gap: 6px;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #666;
-    }
-    form.grid input, form.grid textarea {
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
-      padding: 11px 12px;
+    .comment-composer {
       border: 1px solid var(--line);
       background: #fff;
+      padding: 18px;
+      display: grid;
+      gap: 14px;
     }
-    form.grid textarea { min-height: 100px; resize: vertical; }
-    form.grid button {
-      justify-self: start;
+    .comment-composer-fields {
+      display: grid;
+      gap: 10px;
+    }
+    .comment-composer input,
+    .comment-composer textarea {
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text);
+      background: #fafafa;
+      border: 1px solid transparent;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .comment-composer input:focus,
+    .comment-composer textarea:focus {
+      background: #fff;
+      border-color: rgba(255, 80, 0, 0.45);
+    }
+    .comment-composer input::placeholder,
+    .comment-composer textarea::placeholder {
+      color: #aaa;
+      font-weight: 300;
+    }
+    .comment-composer textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .comment-composer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 16px;
+    }
+    .comment-submit {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
       font-weight: 600;
-      font-size: 12px;
-      letter-spacing: 0.08em;
+      font-size: 11px;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 12px 24px;
+      padding: 12px 22px;
       border: none;
       background: var(--accent);
       color: #fff;
       cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
-    form.grid button:hover { background: #e04800; }
+    .comment-submit:hover {
+      background: #e04800;
+      transform: translateY(-1px);
+    }
+    .comment-hint {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #bbb;
+    }
     .form-err { color: #b42318; font-size: 13px; }
 
     .err {
@@ -310,9 +427,9 @@
 
         <section class="panel" id="reaction-panel" aria-labelledby="lk">
           <h2 id="lk">Likes</h2>
-          <button type="button" class="like-btn" id="like-btn" aria-pressed="false">
-            <span id="like-ic"></span>
-            <span id="like-n">0</span>
+          <button type="button" class="like-btn" id="like-btn" aria-pressed="false" aria-label="Like this post">
+            <span class="like-ic" id="like-ic" aria-hidden="true"></span>
+            <span class="like-count" id="like-n">0</span>
           </button>
           <p class="form-err" id="like-err" hidden></p>
         </section>
@@ -321,12 +438,17 @@
           <h2 id="cm">Comments</h2>
           <div class="comments">
             <div class="comment-list" id="clist"></div>
-            <form class="grid" id="cform">
-              <label>Name<input type="text" id="cname" name="author_name" maxlength="100" required autocomplete="name" /></label>
-              <label>Message<textarea id="cmsg" name="message" maxlength="2000" required></textarea></label>
+            <form class="comment-composer" id="cform">
+              <div class="comment-composer-fields">
+                <input type="text" id="cname" name="author_name" maxlength="100" autocomplete="name" placeholder="Name (optional)" />
+                <textarea id="cmsg" name="message" maxlength="2000" required placeholder="Write a comment…"></textarea>
+              </div>
               <input type="text" id="cwebsite" name="website" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;opacity:0;pointer-events:none;" />
-              <span class="form-err" id="cerr" hidden></span>
-              <button type="submit">Post comment</button>
+              <div class="comment-composer-actions">
+                <button type="submit" class="comment-submit">Post Comment</button>
+                <span class="comment-hint">Name optional</span>
+                <span class="form-err" id="cerr" hidden></span>
+              </div>
             </form>
           </div>
         </section>
@@ -345,10 +467,40 @@
     var fpKey = 'blog_fp';
 
     function heartOut() {
-      return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.35-9-8.5C.58 9.58 2.5 6.5 6 6.5c1.74 0 3.41.81 4.5 2.09C11.59 7.31 13.26 6.5 15 6.5c3.5 0 5.42 3.08 3 6C19 16.65 12 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+      return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.1 20.55l-.1.1-.11-.1C7.14 16.24 4 13.39 4 10.2 4 7.9 5.8 6.1 8.1 6.1c1.34 0 2.63.64 3.4 1.64.77-1 2.06-1.64 3.4-1.64 2.3 0 4.1 1.8 4.1 4.1 0 3.19-3.14 6.04-7.9 10.35Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
     }
     function heartIn() {
-      return '<svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 21s-7-4.35-9-8.5C.58 9.58 2.5 6.5 6 6.5c1.74 0 3.41.81 4.5 2.09C11.59 7.31 13.26 6.5 15 6.5c3.5 0 5.42 3.08 3 6C19 16.65 12 21 12 21Z"/></svg>';
+      return '<svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M12.1 20.55l-.1.1-.11-.1C7.14 16.24 4 13.39 4 10.2 4 7.9 5.8 6.1 8.1 6.1c1.34 0 2.63.64 3.4 1.64.77-1 2.06-1.64 3.4-1.64 2.3 0 4.1 1.8 4.1 4.1 0 3.19-3.14 6.04-7.9 10.35Z"/></svg>';
+    }
+
+    function initials(name) {
+      var parts = String(name || 'A').trim().split(/\s+/).filter(Boolean);
+      if (!parts.length) return 'A';
+      if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    function avatarTone(name) {
+      var tones = ['#FF5000', '#0A0A0A', '#E04800', '#333333', '#C2410C'];
+      var s = String(name || 'A');
+      var h = 0;
+      for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+      return tones[h % tones.length];
+    }
+
+    function fmtTs(iso) {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return String(iso);
+      var now = Date.now();
+      var diff = Math.max(0, now - d.getTime());
+      var mins = Math.floor(diff / 60000);
+      if (mins < 1) return 'Just now';
+      if (mins < 60) return mins + 'm ago';
+      var hrs = Math.floor(mins / 60);
+      if (hrs < 24) return hrs + 'h ago';
+      var days = Math.floor(hrs / 24);
+      if (days < 7) return days + 'd ago';
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     }
 
     function getFingerprint() {
@@ -369,11 +521,6 @@
       if (j.error) return j.error;
       if (j.message) return j.message;
       return 'HTTP ' + status;
-    }
-
-    function fmtTs(iso) {
-      var d = new Date(iso);
-      return isNaN(d.getTime()) ? String(iso) : d.toLocaleString();
     }
 
     function readMin(md, fallback) {
@@ -417,12 +564,20 @@
     var likeIc = document.getElementById('like-ic');
     var likeN = document.getElementById('like-n');
 
-    function paintLike(count) {
+    function paintLike(count, pulse) {
       likeN.textContent = String(count);
       likeIc.innerHTML = liked ? heartIn() : heartOut();
-      likeIc.style.color = liked ? 'var(--accent)' : '#333';
+      likeBtn.classList.toggle('is-liked', liked);
       likeBtn.setAttribute('aria-pressed', liked ? 'true' : 'false');
       likeBtn.disabled = liked;
+      if (pulse) {
+        likeBtn.classList.remove('is-pulsing');
+        void likeBtn.offsetWidth;
+        likeBtn.classList.add('is-pulsing');
+        window.setTimeout(function () {
+          likeBtn.classList.remove('is-pulsing');
+        }, 450);
+      }
     }
 
     function loadLikes() {
@@ -459,7 +614,7 @@
         .then(function (d) {
           liked = true;
           try { window.localStorage.setItem(likeKey, '1'); } catch (e) {}
-          paintLike(typeof d.count === 'number' ? d.count : parseInt(likeN.textContent, 10) + 1);
+          paintLike(typeof d.count === 'number' ? d.count : parseInt(likeN.textContent, 10) + 1, true);
         })
         .catch(function (e) {
           if (le) {
@@ -474,30 +629,44 @@
       clist.innerHTML = '';
       if (!arr.length) {
         var p = document.createElement('p');
-        p.className = 'comment-msg';
-        p.style.opacity = '0.65';
-        p.textContent = 'No comments yet.';
+        p.className = 'comment-empty';
+        p.textContent = 'No comments yet. Be the first.';
         clist.appendChild(p);
         return;
       }
       arr.forEach(function (c) {
+        var name = c.author_name || c.name || 'Anonymous';
         var card = document.createElement('div');
         card.className = 'comment';
+
+        var avatar = document.createElement('div');
+        avatar.className = 'comment-avatar';
+        avatar.style.background = avatarTone(name);
+        avatar.textContent = initials(name);
+        avatar.setAttribute('aria-hidden', 'true');
+
+        var body = document.createElement('div');
+        body.className = 'comment-body';
+
         var top = document.createElement('div');
         top.className = 'comment-top';
         var n = document.createElement('span');
         n.className = 'comment-name';
-        n.textContent = c.author_name || c.name || 'Anonymous';
+        n.textContent = name;
         var t = document.createElement('span');
         t.className = 'comment-ts';
         t.textContent = fmtTs(c.created_at || c.timestamp);
         top.appendChild(n);
         top.appendChild(t);
+
         var m = document.createElement('div');
         m.className = 'comment-msg';
         m.textContent = c.message;
-        card.appendChild(top);
-        card.appendChild(m);
+
+        body.appendChild(top);
+        body.appendChild(m);
+        card.appendChild(avatar);
+        card.appendChild(body);
         clist.appendChild(card);
       });
     }
@@ -520,12 +689,12 @@
       e.preventDefault();
       var ce = document.getElementById('cerr');
       ce.hidden = true;
-      var name = document.getElementById('cname').value.trim();
+      var name = document.getElementById('cname').value.trim() || 'Anonymous';
       var message = document.getElementById('cmsg').value.trim();
       var website = document.getElementById('cwebsite').value;
-      if (!name || !message) {
+      if (!message) {
         ce.hidden = false;
-        ce.textContent = 'Name and message are required.';
+        ce.textContent = 'Message is required.';
         return;
       }
       fetch(API_BASE + '/api/comments?slug=' + encodeURIComponent(slug), {
