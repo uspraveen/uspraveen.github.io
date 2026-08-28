@@ -41,7 +41,7 @@ Here's what you get for $399:
 - **Open source (Apache-2.0)** — full RL training stack on GitHub. You can actually see how it works
 - **Sim2Real pipeline** — train behaviors in MuJoCo simulation, deploy on the real robot. No "just trust us" black box
 - **7 pre-trained behaviors** out of the box — walk, sit/stand, kick, grab, roller skate, get back up (critical for when it inevitably faceplants)
-- **4 colorways** — Cream, Graphite, Lavender, Sky. I went with Lavender. obviously
+- **4 colorways** — Cream, Graphite, Lavender, Sky. I went with cream. obviously
 
 But here's the thing that actually convinced me: it's not just a robot you remote-control with an app. It's a *platform*. The open-source RL stack means you can define new behaviors, train them in physics simulation, and deploy them on real hardware. That's not a toy — that's a research-grade robotics development kit at a consumer price point.
 
