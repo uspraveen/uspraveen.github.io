@@ -1,5 +1,18 @@
 [
   {
+    "slug": "cosmic-duck-day-0",
+    "title": "Cosmic Duck: Giving My AI OS a Body",
+    "date": "2026-08-28",
+    "tags": ["AI", "Robotics", "BuildInPublic", "Microduck", "COSMIC"],
+    "excerpt": "I bought a robot duck. My AI saw the email before I did and asked for a body. Here's what happens when a proactive AI OS gets eyes, a voice, and legs.",
+    "filename": "cosmic-duck-day-0.md",
+    "filepath": "/blog/posts/cosmic-duck-day-0.md",
+    "image": "/blog/posts/images/cosmic-duck/og-microduck-squad-v2.jpg",
+    "thumbnail": "/blog/posts/images/cosmic-duck/og-microduck-squad-v2.jpg",
+    "authors": ["Praveen Raj"],
+    "readTime": 12
+  },
+  {
     "slug": "why-coppr",
     "title": "Why Coppr? The Case for Compiling Hardware",
     "date": "2026-08-06",
