@@ -10,7 +10,7 @@ I stared at the screen for a good ten seconds. Then I typed back: "Why not."
 
 This is the story of Day 0 — the day COSMIC went from a digital-first AI operating system to one that might actually walk across my desk.
 
-![The four Microduck colorways — Cream, Graphite, Lavender, Sky](images/cosmic-duck/squad.webp)
+![The four Microduck colorways — Cream, Graphite, Lavender, Sky](/images/cosmic-duck/squad.webp)
 
 ## Wait, What is COSMIC?
 
@@ -32,7 +32,7 @@ Fair question. There are a lot of robots out there. Boston Dynamics has Atlas. U
 
 Because the [Pollen Robotics Microduck](https://pollen-robotics.com/microduck) is the first robot that makes "teaching your AI new tricks" actually accessible.
 
-![The Microduck up close — camera eyes, LiDAR, grasping beak](images/cosmic-duck/closeup.webp)
+![The Microduck up close — camera eyes, LiDAR, grasping beak](/images/cosmic-duck/closeup.webp)
 
 Here's what you get for $399:
 
@@ -81,7 +81,7 @@ The open-source stack means I'm not locked into whatever behaviors Pollen ships.
 
 I'm documenting everything. Every milestone, every failure, every moment the duck does something I didn't expect. Here's the plan:
 
-![Out of the box, ready to play](images/cosmic-duck/playtime.webp)
+![Out of the box, ready to play](/images/cosmic-duck/playtime.webp)
 
 **Day 0 — Today**
 Bought the robot. COSMIC asked for a body. Wrote this post. The duck hasn't shipped yet, but the software integration starts now.
@@ -103,7 +103,7 @@ COSMIC initiates physical actions based on digital context. "I see your phone is
 
 The dream: COSMIC doesn't wait for commands. It perceives, decides, and acts — in physical space. The same proactive intelligence that manages my email now manages a physical body.
 
-![The duck watches while you code — soon it will be coding back](images/cosmic-duck/watching.webp)
+![The duck watches while you code — soon it will be coding back](/images/cosmic-duck/watching.webp)
 
 ## What Could Go Wrong?
 
@@ -119,7 +119,7 @@ But that's the point. COSMIC has been a software-only system for a year. The jum
 
 I'll document every milestone here. Every breakthrough, every faceplant, every moment where the duck does something unexpected — either brilliantly unexpected or catastrophically unexpected.
 
-![Morning build sessions — Cosmic Duck on the desk](images/cosmic-duck/morning.webp)
+![Morning build sessions — Cosmic Duck on the desk](/images/cosmic-duck/morning.webp)
 
 If you want to follow along:
 
@@ -132,7 +132,7 @@ The Microduck ships before Christmas 2026. Between now and then, I'm building th
 
 Day 0. Let's go.
 
-![Taking its first steps in the wild](images/cosmic-duck/walkabout.webp)
+![Taking its first steps in the wild](/images/cosmic-duck/walkabout.webp)
 
 ---
 
