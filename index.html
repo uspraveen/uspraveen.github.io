@@ -2074,9 +2074,6 @@ var termHost = document.getElementById('hero-term-host');
   })();
   </script>
 
-<script>
-(function(){'use strict';var e='https://c2ece0ad-4b2d-4af4-ae65-1b07660550dc.thelearnchain.com/blog-api';function t(){var n=localStorage.getItem('portfolio_session_id');if(n)return n;var r='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var x=Math.random()*16|0;var v=c==='x'?x:(x&3|8);return v.toString(16)});localStorage.setItem('portfolio_session_id',r);return r}function o(){var n={page:window.location.pathname,referrer:document.referrer||'',session_id:t()};var s=JSON.stringify(n);if(navigator.sendBeacon){navigator.sendBeacon(e+'/track',new Blob([s],{type:'application/json'}))}else{fetch(e+'/track',{method:'POST',headers:{'Content-Type':'application/json'},body:s}).catch(function(){})}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',o)}else{o()}})();
-</script>
-
+<script>(function(){try{var k='session_id';var s;try{s=localStorage.getItem(k)}catch(e){s=null}if(!s){s='sess_'+Math.random().toString(36).slice(2,11)+Math.random().toString(36).slice(2,11);try{localStorage.setItem(k,s)}catch(e){}}var d=JSON.stringify({page:window.location.pathname,referrer:document.referrer||'',session_id:s});var u='https://c2ece0ad-4b2d-4af4-ae65-1b07660550dc.thelearnchain.com/blog-api/track';if(navigator.sendBeacon){try{var b=new Blob([d],{type:'application/json'});if(!navigator.sendBeacon(u,b))throw new Error('beacon');}catch(e){try{fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:d,keepalive:true}).catch(function(){})}catch(e2){}}}else{try{fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:d,keepalive:true}).catch(function(){})}catch(e){}}}catch(e){}})();</script>
 </body>
 </html>
