@@ -179,6 +179,48 @@
     .md .decision-panel > div { padding: 18px; background: #0b0d0e; color: #fff; }
     .md .decision-panel strong { display: block; margin-bottom: 7px; font-size: 16px; }
     .md .decision-panel span { display: block; color: #b7b9b9; font-size: 13px; line-height: 1.5; }
+    .md .viz {
+      margin: 1.6em 0;
+      border: 1px solid var(--line);
+      background: #fafafa;
+      overflow: hidden;
+    }
+    .md .viz-label {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    .md .viz-body { padding: 18px 12px 14px; background: #fff; }
+    .md .viz svg { display: block; width: 100%; height: auto; max-width: 680px; margin: 0 auto; }
+    .md .pull-quote {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 14px;
+      align-items: start;
+      margin: 1.6em 0;
+      padding: 22px 22px 20px;
+      background: #0b0d0e;
+      color: #f2f2f2;
+      border-top: 3px solid var(--accent);
+    }
+    .md .pull-quote svg { width: 28px; height: 28px; display: block; }
+    .md .pull-quote p { margin: 0; font-size: 18px; font-weight: 400; line-height: 1.55; letter-spacing: -0.02em; }
+    .md .pull-quote cite {
+      display: block;
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      font-style: normal;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #aeb2b2;
+    }
     .md pre {
       font-family: 'JetBrains Mono', ui-monospace, monospace;
       font-size: 13px;
@@ -525,6 +567,8 @@
       .md .pipeline { grid-template-columns: 1fr 1fr; }
       .md .pipeline-step:not(:last-child)::after { content: none; }
       .md .decision-panel { grid-template-columns: 1fr; }
+      .md .pull-quote { grid-template-columns: 1fr; padding: 18px; }
+      .md .pull-quote p { font-size: 16px; }
       .md { font-size: 16px; line-height: 1.75; }
     }
   </style>
@@ -874,14 +918,16 @@
           authorEl.hidden = false;
         }
 
-        var hero = document.createElement('img');
-        hero.className = 'post-hero';
-        hero.src = post.image || post.thumbnail || '';
-        hero.alt = '';
-        hero.loading = 'eager';
-        hero.decoding = 'async';
-        hero.onerror = function () { hero.remove(); };
-        document.getElementById('meta').after(hero);
+        if (post.image || post.thumbnail) {
+          var hero = document.createElement('img');
+          hero.className = 'post-hero';
+          hero.src = post.image || post.thumbnail;
+          hero.alt = '';
+          hero.loading = 'eager';
+          hero.decoding = 'async';
+          hero.onerror = function () { hero.remove(); };
+          document.getElementById('meta').after(hero);
+        }
 
         var th = document.getElementById('tags');
         th.innerHTML = '';
