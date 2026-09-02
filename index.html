@@ -573,13 +573,15 @@
       color: #888;
       margin-bottom: 14px;
     }
-    .tl-body {
-      font-weight: 300;
-      font-size: 16px;
-      line-height: 1.75;
-      color: #444;
-      max-width: 720px;
-      margin-bottom: 16px;
+    .tl-body a {
+      color: inherit;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(255, 80, 0, 0.35);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .tl-body a:hover {
+      color: #ff5000;
+      border-color: #ff5000;
     }
     .tl-story-link {
       display: inline-block;
@@ -1506,16 +1508,15 @@
             </div>
           </article>
           <article class="tl-item">
-            <p class="tl-badge tl-badge--muted">CO-FOUNDER &amp; CEO</p>
+            <p class="tl-badge tl-badge--muted">CO-FOUNDER &amp; CEO · FOUNDED 2020</p>
             <h3 class="tl-company">TriZ AI</h3>
-            <p class="tl-body">Founded and led TriZ AI - an AI infrastructure and services company. Designed and shipped LearnChain, a cross-cloud ETL and knowledge graph system built on Neo4j and GraphRAG, processing 100K+ nodes. Also built Supersense - a large-scale multimedia analysis system. Responsible for technical architecture, hiring, and go-to-market.</p>
+            <p class="tl-body">My first startup, founded in 2020: an AI-powered smart home with an emotionally intelligent assistant that spoke five Indian languages - built edge-first so the home never sent your life to the cloud. The hardware was the wrong battle to fight in 2020, but the core idea never left: intelligence that actually knows you. Five years later it has a name - <a href="https://cosmic.thelearnchain.com/" target="_blank" rel="noopener noreferrer">COSMIC</a>, the personal AI OS I run every day. And <a href="#coppr">Coppr</a>, my current venture, is the product we wish we had back then: rapid hardware design, from intent to Gerbers.</p>
             <a class="tl-story-link" href="/blog/post.html?slug=triz-ai-story">Read the full story</a>
             <div class="tl-pills">
-              <span class="tl-pill">Neo4j</span>
-              <span class="tl-pill">GraphRAG</span>
-              <span class="tl-pill">ETL</span>
-              <span class="tl-pill">LLM Fine-tuning</span>
-              <span class="tl-pill">Distributed Systems</span>
+              <span class="tl-pill">Edge AI</span>
+              <span class="tl-pill">Embedded Systems</span>
+              <span class="tl-pill">NLP</span>
+              <span class="tl-pill">Hardware</span>
             </div>
           </article>
           <article class="tl-item">
