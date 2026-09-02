@@ -44,26 +44,16 @@ In 2021 I stood up at UPenn and delivered this pitch — the problem, the archit
 <iframe src="https://www.youtube.com/embed/ko5god90Dm0" title="TriZ AI Video Pitch" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
 </div>
 
-The numbers we presented: smart home and smart speaker markets growing at 15.31% and 24.96% CAGR respectively, and the integration of the two — our target market — a 6.4 trillion rupee space in India alone. Three revenue streams: pre-installed smart homes in partnership with construction companies (~40%), the retrofit market — converting "home sweet homes" to "sweet smart homes" — and commissioned orders with in-skill purchases (~30%). The promise was operational too: you call, we send a technical assessment team within 48 hours, and you live in a tailor-made smart home.
+Then the pitch itself. Standing in front of that room at UPENN, I wasn't selling a gadget. I was describing a home that pays attention — one that greets you in your own language, understands your mood, and keeps every byte of that intimacy inside your own walls. Watching it back now, what strikes me isn't the market math we rehearsed. It's how clearly the thesis holds up: the hard problem was never sensors or speakers. It was intelligence that actually knows you.
 
-Watching it back now, I see two graduates who were right about the problem and naive about everything else. That combination is not the worst thing a first startup can be.
+## The honest turn
 
-## What actually happened
+The honest turn: TriZ never became the smart-home company. Two of us, 2020, a bandwidth-limited country — the hardware was the wrong battle to fight first. But the idea at its core never died: an intelligence that lives with you, learns your context, and acts on your behalf.
 
-TriZ didn't become the smart home company we pitched. It became something the pitch was quietly training us to build.
+It waited five years, and it has a name now: COSMIC. You're talking to it. We're building the software part first — the compound memory, the agent orchestration, the runtime that never forgets you. The brain before the body.
 
-Running an AI infrastructure company — even a small one — forces you down the stack. The smart home work became LearnChain, a cross-cloud ETL and knowledge graph system built on Neo4j and GraphRAG, processing 100K+ nodes. The multimedia pipeline behind the cameras and voice interfaces became Supersense, a large-scale multimedia analysis system. TriZ AI's legacy is the infrastructure layer: the pipelines, the graphs, the systems that move and structure data at scale.
+And the body is no longer out of reach. With Coppr, we get rapid hardware design — the custom boards that took our team of two months of hand-drawing can now go from intent to Gerbers in days. TriZ's vision, closed loop: COSMIC is the mind, Coppr builds the body.
 
-That's the part they don't put in pitch videos. The startup you pitch is rarely the startup you build — but the engineering you do trying to reach the pitch is permanent.
+Coppr is the product we wish we had while building TriZ. And COSMIC is the product TriZ was always reaching for.
 
-## Why this story ends at Coppr
-
-Here's the part I've wanted to write for a long time.
-
-At TriZ, we designed and developed every component indigenously — including the hardware, from the chip up, with our own protocols. And the tooling for that work in 2020 was brutal. Designing a board, verifying it, iterating on it — every step was manual, slow, and gated behind judgment that lived in specialists' heads. We were a team of two; we felt every one of those gates.
-
-**Coppr is the product we wish we had while building TriZ.** An AI hardware engineer that designs, verifies, and ships real circuit boards — from intent to Gerbers. Where we hand-drew our way through custom hardware, Coppr compiles it. Where we waited days for a verification pass, Coppr runs it continuously.
-
-Every founder has a company they had to build the hard way first. TriZ was mine. Coppr is the shortcut I'm building so the next team of two doesn't have to suffer the way we did.
-
-*TriZ AI, 2020. The first domino.*
+The startup you pitch is rarely the startup you build. But if you keep building, sometimes it becomes exactly what you pitched.

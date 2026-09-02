@@ -91,6 +91,21 @@
       letter-spacing: -0.03em;
       line-height: 1.1;
       margin-bottom: 12px;
+      position: relative;
+    }
+    .title::after {
+      content: '';
+      display: block;
+      height: 2px;
+      width: 100%;
+      margin-top: 12px;
+      background: linear-gradient(90deg, transparent 0%, var(--accent) 40%, #ffb088 50%, var(--accent) 60%, transparent 100%);
+      background-size: 220% 100%;
+      animation: titleShimmer 4.5s ease-in-out infinite;
+    }
+    @keyframes titleShimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
     }
     .meta {
       display: flex;
@@ -128,7 +143,20 @@
     }
     .md h2 { font-size: 20px; }
     .md h3 { font-size: 17px; }
-    .md a { color: var(--accent); font-weight: 600; border-bottom: 1px solid rgba(255, 80, 0, 0.35); }
+    .md a {
+      color: var(--accent);
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255, 80, 0, 0.35);
+      transition: border-color 0.25s ease, color 0.25s ease;
+      background-image: linear-gradient(var(--accent), var(--accent));
+      background-position: 0 100%;
+      background-repeat: no-repeat;
+      background-size: 0 1px;
+    }
+    .md a:hover {
+      border-color: var(--accent);
+      background-size: 100% 1px;
+    }
     .md blockquote {
       border-left: 3px solid var(--accent);
       padding: 12px 18px;
@@ -177,6 +205,82 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
       display: block;
       object-fit: cover;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .md img:hover {
+      transform: scale(1.015);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+    }
+    .post-hero {
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .post-hero:hover {
+      transform: scale(1.01);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+    }
+
+    .md > p,
+    .md > h1,
+    .md > h2,
+    .md > h3,
+    .md > blockquote,
+    .md > figure,
+    .md > img,
+    .md > ul,
+    .md > ol,
+    .md > pre,
+    .md > div,
+    .post-hero {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .md > p.is-visible,
+    .md > h1.is-visible,
+    .md > h2.is-visible,
+    .md > h3.is-visible,
+    .md > blockquote.is-visible,
+    .md > figure.is-visible,
+    .md > img.is-visible,
+    .md > ul.is-visible,
+    .md > ol.is-visible,
+    .md > pre.is-visible,
+    .md > div.is-visible,
+    .post-hero.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .post-hero.is-visible:hover {
+      transform: scale(1.01);
+    }
+    .md > img.is-visible:hover {
+      transform: scale(1.015);
+    }
+    .md figure.is-visible img:hover {
+      transform: scale(1.015);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .title::after { animation: none; background-position: 50% 0; }
+      .md > p,
+      .md > h1,
+      .md > h2,
+      .md > h3,
+      .md > blockquote,
+      .md > figure,
+      .md > img,
+      .md > ul,
+      .md > ol,
+      .md > pre,
+      .md > div,
+      .post-hero {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .md img:hover,
+      .post-hero:hover { transform: none; }
+      .md a { background-size: 0 0; }
     }
     .md figure {
       max-width: min(720px, 100%);
@@ -802,6 +906,27 @@
             img.replaceWith(figure);
           }
         });
+
+        (function revealOnScroll() {
+          var nodes = document.querySelectorAll('.md > p, .md > h1, .md > h2, .md > h3, .md > blockquote, .md > figure, .md > img, .md > ul, .md > ol, .md > pre, .md > div, .post-hero');
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            nodes.forEach(function (el) { el.classList.add('is-visible'); });
+            return;
+          }
+          if (!('IntersectionObserver' in window)) {
+            nodes.forEach(function (el) { el.classList.add('is-visible'); });
+            return;
+          }
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) {
+                en.target.classList.add('is-visible');
+                io.unobserve(en.target);
+              }
+            });
+          }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+          nodes.forEach(function (el) { io.observe(el); });
+        })();
 
         root.hidden = false;
         liked = window.localStorage.getItem(likeKey) === '1';
