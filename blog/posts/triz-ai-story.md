@@ -1,6 +1,6 @@
 # TriZ: The Startup That Taught Me What to Build
 
-> **TriZ AI (2020)** — my first startup. A privacy-first smart home system that worked in complete isolation from the internet. Co-founded by two graduates with more conviction than experience, [pitched on a stage at UPenn](https://youtu.be/ko5god90Dm0). This is the story — and why everything I'm building with Coppr traces back to it.
+> **TriZ AI (2020)** — my first startup. A privacy-first smart home system that worked in complete isolation from the internet. Co-founded by two graduates with more conviction than experience, [pitched on a stage at UPenn](https://youtu.be/1Ak_nusjyVM). This is the story — and why everything I'm building with Coppr traces back to it.
 
 ## "Home is where our heart is"
 
@@ -36,13 +36,17 @@ The assistant controlled the entire array of smart home devices and acted as a c
 
 <div class="stat-grid"><div class="stat"><strong>2</strong><span>founders, 2020</span></div><div class="stat"><strong>5</strong><span>Indian languages, on-device</span></div><div class="stat"><strong>0</strong><span>cloud hops for the home</span></div></div>
 
+<div class="triz-rule" aria-hidden="true"></div>
+
 ## The pitch
 
-In 2021 I stood up at UPenn and delivered this pitch — the problem, the architecture, the market, the business. You can watch the pitch I gave at UPenn [here](https://youtu.be/ko5god90Dm0).
+In 2021 I stood up at UPenn and delivered this pitch — the problem, the architecture, the market, the business. You can watch the pitch I gave at UPenn [here](https://youtu.be/1Ak_nusjyVM).
 
 Standing in front of that room at UPENN, I wasn't selling a gadget. I was describing a home that pays attention — one that greets you in your own language, understands your mood, and keeps every byte of that intimacy inside your own walls. Watching it back now, what strikes me isn't the market math we rehearsed. It's how clearly the thesis holds up: the hard problem was never sensors or speakers. It was intelligence that actually knows you.
 
 <div class="triz-quote"><p>The hard problem was never sensors or speakers. It was intelligence that actually knows you.</p><cite>UPenn, 2021 · still the thesis</cite></div>
+
+<div class="triz-rule" aria-hidden="true"></div>
 
 ## The honest turn
 

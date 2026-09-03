@@ -245,6 +245,37 @@
       text-transform: uppercase;
       color: #40E0D0;
     }
+    .md .triz-rule {
+      height: 1px;
+      max-width: 96px;
+      margin: 2.4em auto;
+      background: linear-gradient(90deg, transparent, #40E0D0, transparent);
+      border: 0;
+    }
+    body.post-triz .md a {
+      color: #0d8a80;
+      border-bottom-color: rgba(64, 224, 208, 0.55);
+      background-image: linear-gradient(#40E0D0, #40E0D0);
+    }
+    body.post-triz .md a:hover {
+      color: #08756b;
+      border-color: #40E0D0;
+    }
+    body.post-triz .md blockquote {
+      border-left: 3px solid #40E0D0;
+      background: #0b0d0e;
+      color: #e8eeed;
+    }
+    body.post-triz .md blockquote strong { color: #40E0D0; }
+    body.post-triz .md blockquote a {
+      color: #40E0D0;
+      border-bottom-color: rgba(64, 224, 208, 0.45);
+    }
+    body.post-triz .md h2,
+    body.post-triz .md h3 {
+      border-bottom-color: rgba(64, 224, 208, 0.55);
+    }
+    body.post-triz .md .stat { border-top-color: #40E0D0; }
     .md pre {
       font-family: 'JetBrains Mono', ui-monospace, monospace;
       font-size: 13px;
@@ -657,6 +688,7 @@
     var API_BASE = window.BLOG_API_BASE || 'https://c2ece0ad-4b2d-4af4-ae65-1b07660550dc.thelearnchain.com/blog-api';
     var params = new URLSearchParams(window.location.search);
     var slug = params.get('slug');
+    if (slug === 'triz-ai-story') document.body.classList.add('post-triz');
     var err = document.getElementById('err');
     var root = document.getElementById('root');
     var likeKey = slug ? 'liked_' + slug : '';
