@@ -1,6 +1,6 @@
 # TriZ: The Startup That Taught Me What to Build
 
-> **TriZ AI (2020)** — my first startup. A privacy-first smart home system that worked in complete isolation from the internet. Co-founded by two graduates with more conviction than experience, pitched on a stage at UPenn. This is the story — and why everything I'm building with Coppr traces back to it.
+> **TriZ AI (2020)** — my first startup. A privacy-first smart home system that worked in complete isolation from the internet. Co-founded by two graduates with more conviction than experience, [pitched on a stage at UPenn](https://youtu.be/ko5god90Dm0). This is the story — and why everything I'm building with Coppr traces back to it.
 
 ## "Home is where our heart is"
 
@@ -38,11 +38,7 @@ The assistant controlled the entire array of smart home devices and acted as a c
 
 ## The pitch
 
-In 2021 I stood up at UPenn and delivered this pitch — the problem, the architecture, the market, the business. The full video is here, unlisted until now:
-
-<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border:1px solid #e8e8e8;margin:1.5em 0;">
-<iframe src="https://www.youtube.com/embed/ko5god90Dm0" title="TriZ AI Video Pitch" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-</div>
+In 2021 I stood up at UPenn and delivered this pitch — the problem, the architecture, the market, the business. You can watch the pitch I gave at UPenn [here](https://youtu.be/ko5god90Dm0).
 
 Standing in front of that room at UPENN, I wasn't selling a gadget. I was describing a home that pays attention — one that greets you in your own language, understands your mood, and keeps every byte of that intimacy inside your own walls. Watching it back now, what strikes me isn't the market math we rehearsed. It's how clearly the thesis holds up: the hard problem was never sensors or speakers. It was intelligence that actually knows you.
 
