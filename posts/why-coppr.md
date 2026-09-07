@@ -74,17 +74,17 @@ Coppr is particularly interesting for these teams because it turns expertise int
 
 ## This is not a solo bet
 
-Coppr is not the only team that noticed the gap between what hardware demands and what current tools provide. A small cohort is forming around AI for hardware design, and that is a healthy sign — the problem is recognized, not invented.
+Coppr is not the only team that noticed the gap between what hardware demands and what current tools provide. A small cohort is forming around AI for hardware design, and that is a healthy sign - the problem is recognized, not invented.
 
 **Quilter** has built the most visible wedge: physics-driven reinforcement learning for PCB placement and routing. With roughly $40M raised, they are betting that the layout bottleneck can be solved with first-principles RL rather than heuristics. Their focus is the routing stage, and they integrate back into standard EDA tools for final review.
 
-**Diode Computers** takes a broader swing — an end-to-end platform from requirements to manufactured boards, with a code-first workflow and an in-house fabrication path. Backed by a16z and YC, they describe their system as a "PCB compiler," though their model includes manufacturing as a first-class step rather than stopping at Gerbers.
+**Diode Computers** takes a broader swing - an end-to-end platform from requirements to manufactured boards, with a code-first workflow and an in-house fabrication path. Backed by a16z and YC, they describe their system as a "PCB compiler," though their model includes manufacturing as a first-class step rather than stopping at Gerbers.
 
-**Atrisa** works at a different layer — analog integrated circuit design rather than board-level work. Formerly Refortif.ai and YC-backed, their agents help analog engineers reason about circuit topology, simulation, and debug. That is complementary to board-level tools, not competitive.
+**Atrisa** works at a different layer - analog integrated circuit design rather than board-level work. Formerly Refortif.ai and YC-backed, their agents help analog engineers reason about circuit topology, simulation, and debug. That is complementary to board-level tools, not competitive.
 
 Each team is attacking a real piece of the problem from a different angle. Quilter compresses layout. Diode compresses the path to fabrication. Atrisa compresses analog reasoning. What they share is the conviction that hardware design is a compilation problem waiting for the right abstraction.
 
-Coppr's particular angle is the full intent-to-Gerbers path with verification and provenance as first-class outputs — less focused on any single stage and more on keeping engineering judgment legible across the entire loop. Whether that is the right wedge is a question the market will answer. But the fact that multiple serious teams are converging from different directions suggests the category is real, and it is not going to wait.
+Coppr's particular angle is the full intent-to-Gerbers path with verification and provenance as first-class outputs - less focused on any single stage and more on keeping engineering judgment legible across the entire loop. Whether that is the right wedge is a question the market will answer. But the fact that multiple serious teams are converging from different directions suggests the category is real, and it is not going to wait.
 
 ## What Coppr should never pretend
 

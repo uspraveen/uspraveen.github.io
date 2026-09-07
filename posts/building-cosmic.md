@@ -12,6 +12,6 @@ I still think in pipelines and failure modes because that is what pays my bills 
 
 If you are reading this on a portfolio site, you are probably the kind of person who ships anyway. COSMIC is for you. Not because you need more AI, but because you deserve one that stays in the room with you while you build the next thing.
 
-The uncomfortable truth is that most “personal AI” demos are stateless theater. I want the opposite: state you control, agents you can audit, and a system that gets better because it watched you work — not because it scraped the internet for a vibe.
+The uncomfortable truth is that most “personal AI” demos are stateless theater. I want the opposite: state you control, agents you can audit, and a system that gets better because it watched you work - not because it scraped the internet for a vibe.
 
 This is early. The seams show. I would rather ship honestly and tighten the bolts in public than polish a slide deck and call it done. Welcome to the build.
