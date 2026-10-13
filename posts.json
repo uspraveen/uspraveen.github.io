@@ -1,5 +1,18 @@
 [
   {
+    "slug": "jevify-jev-bench",
+    "title": "Jevify: Teaching Open Models to Answer in Probabilities",
+    "date": "2026-10-13",
+    "tags": ["AI", "LLMs", "Calibration", "Benchmarks", "Jevify", "Open Source"],
+    "excerpt": "I built jev-bench - 166,054 real human-labeled rows - to check whether a decision model's probabilities can be trusted, and Jevify to turn open LLMs into ones that can. Plain fine-tuning made models contradict themselves; a coherence penalty cut that tenfold at no accuracy cost, and open models now beat Jev on accuracy, calibration and self-consistency.",
+    "filename": "jevify-jev-bench.md",
+    "filepath": "/blog/posts/jevify-jev-bench.md",
+    "image": "/images/jevify/thumb.jpg",
+    "thumbnail": "/images/jevify/thumb.jpg",
+    "authors": ["Praveen Raj"],
+    "readTime": 9
+  },
+  {
     "slug": "triz-ai-story",
     "title": "TriZ: The Startup That Taught Me What to Build",
     "date": "2026-09-02",
