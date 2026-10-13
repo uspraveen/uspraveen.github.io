@@ -61,3 +61,15 @@ Coppr is the tool that would facilitate the hardware side - rapid hardware desig
 Coppr is the product we wish we had while building TriZ. And COSMIC is the product TriZ was always reaching for.
 
 The startup you pitch is rarely the startup you build. But if you keep building, sometimes it becomes exactly what you pitched.
+
+<div class="triz-rule" aria-hidden="true"></div>
+
+## P.S. - October 2026
+
+On October 5, [Ghost came out of stealth](https://techcrunch.com/2026/10/05/at-19-ghost-founder-raises-11-million-to-build-a-3499-computer-for-your-personal-ai/) with an $11M seed led by Andreessen Horowitz. Its founder and CEO, Zain Javaid, is 19. The product, Core, is a $3,499 screenless personal AI computer with an Nvidia RTX Pro GPU. It runs local models and always-on agents across your files, apps and smart-home devices. No cloud, no subscription. The first batch sold out.
+
+Reading that felt like seeing a letter we mailed in 2021 finally get delivered. A private home intelligence that never leaves your walls was the whole TriZ thesis. We just showed up a little early, with hand-drawn boards and the language models of 2021. The thesis was right; the timing and the silicon were still loading.
+
+Congratulations to Zain and the Ghost team. Seeing a16z back this idea is the best kind of validation, and we'll be cheering for Core.
+
+And if hardware iteration speed ever becomes their wall the way it became ours, that's exactly why we're building [Coppr](/blog/post.html?slug=why-coppr).
