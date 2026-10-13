@@ -2,6 +2,8 @@
 
 > **Jevify** is my open engine for turning ordinary open-weight LLMs into *System One* decision models - models that never write text, only return probabilities your code can branch on. **jev-bench** is the benchmark I built to check whether those probabilities can be trusted. This is what I found after scoring 46 models on 22,773 test questions - including the result I'm proudest of: fine-tuning made models contradict themselves, and one training penalty cut that roughly tenfold at no accuracy cost.
 
+<p class="hf-meta"><a href="https://huggingface.co/datasets/Praveenrajus/jev-bench">jev-bench on Hugging Face</a> · <span class="hf-stat" data-hf-dataset="Praveenrajus/jev-bench" data-field="downloads">11.3K</span> downloads · <span class="hf-stat" data-hf-dataset="Praveenrajus/jev-bench" data-field="likes">7</span> likes</p>
+
 ![jev-bench: every model, accuracy vs calibration](/images/jevify/accuracy-vs-ece.png)
 
 ## A model that doesn't talk
@@ -116,7 +118,7 @@ And one finding cuts the other way: on a community phishing benchmark someone el
 
 ## Try it
 
-Everything is open:
+Everything is open. The dataset has been downloaded <span class="hf-stat" data-hf-dataset="Praveenrajus/jev-bench" data-field="downloads">11.3K</span> times so far (Hugging Face's recent-downloads count) - if you use it, I'd love to hear what you find.
 
 - **Dataset:** [Praveenrajus/jev-bench](https://huggingface.co/datasets/Praveenrajus/jev-bench) - `load_dataset("Praveenrajus/jev-bench", "chaosnli", split="test")`
 - **Engine:** [github.com/uspraveen/Jevify](https://github.com/uspraveen/Jevify) - metrics, runner, training recipes, and `jevify-serve`, a drop-in for the TypeSafe SDK

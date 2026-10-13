@@ -164,6 +164,10 @@
       background: #fafafa;
       color: #444;
     }
+    .md .hf-meta { margin: -0.4em 0 1.4em; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.04em; color: #999; }
+    .md .hf-meta a { color: #999; text-decoration: none; border-bottom: 1px dotted #ccc; }
+    .md .hf-meta a:hover { color: var(--accent); }
+    .md .hf-stat { font-variant-numeric: tabular-nums; }
     .md .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 1.4em 0; }
     .md .stat { padding: 16px; background: #0b0d0e; color: #fff; border-top: 3px solid var(--accent); }
     .md .stat strong { display: block; font-size: 25px; letter-spacing: -0.04em; color: #fff; }
@@ -1011,6 +1015,30 @@
           }
         });
 
+
+        (function hydrateHfStats() {
+          var nodes = document.querySelectorAll('.md .hf-stat[data-hf-dataset][data-field]');
+          if (!nodes.length || !window.fetch) return;
+          function fmt(n) {
+            if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (n >= 1e3) return (n / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
+            return String(n);
+          }
+          var byRepo = {};
+          nodes.forEach(function (el) { (byRepo[el.getAttribute('data-hf-dataset')] = byRepo[el.getAttribute('data-hf-dataset')] || []).push(el); });
+          Object.keys(byRepo).forEach(function (repo) {
+            fetch('https://huggingface.co/api/datasets/' + repo)
+              .then(function (r) { return r.ok ? r.json() : null; })
+              .then(function (d) {
+                if (!d) return;
+                byRepo[repo].forEach(function (el) {
+                  var v = d[el.getAttribute('data-field')];
+                  if (typeof v === 'number' && isFinite(v)) { el.textContent = fmt(v); el.setAttribute('data-hydrated', '1'); }
+                });
+              })
+              .catch(function () { /* keep static fallback */ });
+          });
+        })();
         (function revealOnScroll() {
           var nodes = document.querySelectorAll('.md > p, .md > h1, .md > h2, .md > h3, .md > blockquote, .md > figure, .md > img, .md > ul, .md > ol, .md > pre, .md > div, .post-hero');
           if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
