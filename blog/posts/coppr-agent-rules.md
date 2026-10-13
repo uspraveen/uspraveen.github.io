@@ -52,9 +52,9 @@ A parts specialist might make forty tool calls during one search, querying suppl
 
 Every specialist returns the same small, typed shape, and it is validated against a schema:
 
-<div class="decision-panel"><div><strong>status</strong><span>One of <code>complete</code>, <code>partial</code> or <code>blocked</code>. Nothing else is accepted.</span></div><div><strong>summary</strong><span>The one paragraph the orchestrator actually reads. Capped at 1,200 characters.</span></div><div><strong>findings</strong><span>The payload the specialist exists for, typed per specialist.</span></div><div><strong>evidence</strong><span>Up to 40 claims, each with a source it rests on.</span></div><div><strong>open_questions</strong><span>Up to 12. This is how a specialist refuses to guess.</span></div></div>
+<figure><a href="/images/coppr-agent-rules/contract-v2.png"><picture><source media="(max-width: 640px)" srcset="/images/coppr-agent-rules/contract-v2-m.png"><img src="/images/coppr-agent-rules/contract-v2.png" alt="" aria-describedby="cap-contract" loading="lazy"></picture></a><figcaption id="cap-contract">The result contract every specialist returns</figcaption></figure>
 
-We care most about the last two. The code comment on the schema says why: *a fabricated part number costs more than an admitted gap.* A specialist that can't finish says so in `status`, and can describe the remaining work so the orchestrator can give it more turns and pick up where it stopped.
+We care most about `evidence` and `open_questions`. The code comment on the schema says why: *a fabricated part number costs more than an admitted gap.* A specialist that can't finish says so in `status`, and can describe the remaining work so the orchestrator can give it more turns and pick up where it stopped.
 
 We test this rather than trusting it. One test runs a full verification delegation. It checks that the specialist's result reaches the orchestrator and that none of the specialist's own tool calls do.
 
